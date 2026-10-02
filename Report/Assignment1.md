@@ -110,7 +110,9 @@ SECTION FOUR: DATA DESCRIPTION, CURRENT DATA DICTONARY, AND DOMAIN QUESTIONS
 
 SECTION FIVE: TASK ABSTRACTIONS
 
-	The questions above are domain-specific because they refer directly to CTA buses, Ventra, routes, and bus stops. For visualization design, we need to translate them into more general user tasks. This helps us avoid deciding on a particular chart or map before determining what a viewer actually needs to accomplish.
+	The questions above are domain-specific because they refer directly to CTA buses, Ventra, routes, and bus stops. For visualization design, we need to translate them into more general user tasks. This helps us to avoid tunnel vision, in which the group as a whole decides on a particular chart or map before determining what a user actually needs to accomplish. Furthermore, creating such abstractions will ensure that the visualization is able to answer some of the most pertinent questions, by mapping specific domain level questions to abstract level actions, ensuring that the visualization can support the types of queries and exploration a user will require when exploring a visualization of CTA usablity.
+
+	Below are some of the domain to task mappings the group has created. 
 
 	Domain Question 1: How accurately does Ventra predict the arrival of the next bus?
 	Abstract Action: Compare
