@@ -1,32 +1,43 @@
-Research Topic: Areas of Interest and Data Exploration:
-	The Chicago Transit Authority is the leading agency for public transportation in the Chicago metropolitan region. The agency, which is comprised of an elevated train system, known as the CTA ‘L’, and bus system serves over 1,000,000 riders per weekday, with the bus alone accounting for approximately 620,000 of those clients.[^1]  Given the importance public transit plays in the City of Chicago, reliable services, especially bus service, which accounts for two thirds of all riders, is essential. However, in the past few years, bus arrivals have become erratic. Buses frequently arrive late, arrive one after another in a bunched-up manner—thereby resulting in long wait times—, or at times don’t arrive at all. Many times, passenger have come to look at the Ventra app, the official app of CTA, Pace, and Metra, for arrival times and have found the “next bus arriving” information displayed on the app to be incorrect. This condition is known as ghost buses, and is something that has vexed riders, CTA officials, business leaders, and other government officials. As such, the visualization proposed in this research will help Chicagoans better understand bus reliability throughout the city. At this preliminary stage, it is anticipated that the visualization will show average arrival times, wait times, ghost buses, and more. 
+SECTION ONE: Research Topic: Areas of Interest and Data Exploration:
+	The Chicago Transit Authority is the leading agency for public transportation in the Chicago metropolitan region. The agency, which is comprised of an elevated train system, known as the CTA ‘L’, and bus system serves over 1,000,000 riders per weekday, with the bus alone accounting for approximately 620,000 of those clients.[^1]  Given the importance public transit plays in the City of Chicago, reliable services, especially bus service, which accounts for two thirds of all riders, is essential. However, in the past few years, bus arrivals have become erratic. Buses frequently arrive late, arrive one after another in a bunched-up manner—thereby resulting in long wait times—, or at times don’t arrive at all. Many times, passenger have come to look at the Ventra app, the official app of CTA, Pace, and Metra, for arrival times and have found the “next bus arriving” information displayed on the app to be incorrect. This condition is known as ghost buses, and is something that has vexed riders, CTA officials, business leaders, and other government officials. The CTA has promised to fix this with a new program called the "Frequent Network Initiative" with a promise of 10 minute headways during peak travel times 20 minutes during non peak times, and waitimes to not exceed 30 mins on other lines, with buses expected to arrive no more than 1 minute before and 5 minutes after a scheduled Ventra time. [^3]  As such, the visualization proposed in this research will help Chicagoans better understand bus reliability throughout the city. At this preliminary stage, it is anticipated that the visualization will show average arrival times, wait times, ghost buses, and more. 
 
-Observation and Data Collection Plan:
+SECTION TWO: Observation and Data Collection Plan:
 	To create a visualization necessary to convey bus reliability, data was collected in the field. First, the team met to discuss the general framework they thought would be best for obtaining the data needed to create the visualization. The three team members decided that the best way to collect data would employ direct in the field collection. The rough idea the group had would be for each member to stand in front of a bus stop and observe how long it took for the next bus to arrive, while also recording “the next bus information” displayed on the official Ventra app. This process would then be repeated over and over again. 
 	However, before data could be collected, the group had to decide what variables, features and measures needed in order to capture bus frequencies and reliability. These attributes would be decided in a two step process: first decide in general what features the group thinks could be important and necessary to collect, and second to conduct a pilot data collection and then based on the experience, refine the features and data types necessary, as well as methods for collecting data.
 	
 	Pre-Pilot Features:
 	Before codifying the specific variables needed, the group began by creating thinking through what features would be necessary for this type of visualization. Certain variables were obvious: bus arrival times, ventra times, route and stop numbers were the first to come to mind. Next, the group decided that capturing the time when the previous bus arrived (excluding buses that arrived before observations began) would also be important.
 
+	First, a rough idea of multiple domain questions was proposed:
+	1. Are buses reliable in the city of Chicago? For this group reliable means do they arrive within 1 minute before, 5 minutes after Ventra time?
+	2. Are there variations in bus dependability accross the city? What are the variations in bus service accross differing socio-economic communities?
+	3. The CTA is committed to making changes. Has service gotten better (comparing the final data collection points to the earliest to see if service is improving)?
+	4. If certain lines are heavily affected by poor bus service, what other factors might be causing this? Here we plan to overlay demographic data to help visualize and in turn answer this.
+
 	At this point, an initial data dictionary was created (in subsequent sections of this report, a refined data dictionary is presented).
 
 	Attribute                  Type                 Description
 	Observation Number         Numeric              Keeps track of observations
+	Date                       Date/Temporal        Date of Observation
+	Time                       Date/Temporal        Time of Observation
 	Stop Location              Text                 Helps define location of stop
 	Stop ID                    Numeric              Helps define location of stop using CTA numeric system
-	
+	Next-Bus Arrival           Numeric              Number of Minutes until next bus arrives
+	Comments                   Text                 Additional Comments
 
-	Pre-Pilot Data Collection:
+	This pre-pilot data dictionary was a rough sketch. The group decided this data could be used as good starting point for what data would be necessary to create a visualization modeling CTA bus dependability. It should be noted that the group only saw the above features as a basic starting point, and that they were not exhaustive. In order to ensure that the final dataset was a complete as possible, group members decided to capture any further attributes they felt were important during the pilot and to relay these to each other via the group Discord channel. This enabled the group to test determine the sufficiency of the data--using the pilot as an opportunity to evaluate suppositions--while ensuring that all team members agreed and could also test these additional attributes during their pilot.
+
+	Pre-Pilot Data Collection Process:
 	With this rough idea of what features would be necessary for this visualization, the data collection process was then discussed. In particular, the group posed these questions first, and then sought to answer them:
 	1. If we want to better understand bus arrivals, what routes and areas of the city should we observe?
 	2. How should we observe buses, should we stand in front of bus stops during rush hour, the average middle of a workday, evening, night, etc.?
 	3. Is this process workable? Knowing that every stop and every route cannot be observed during the semester by a small group of students, what can be accomplished, and will this be enough to carry out a visualization? How long will it take to get just a few observations?
 
 	Final Pre-Pilot Steps:
-	With these questions in mind, the group was almost ready to conduct a small pilot data collection.	However, before collecting data, census data was quickly reviewed. Even in the pilot collection, the group wanted to try and cover different demographic regions. These regions needed to be different not just in terms of income and household wealth, but also in terms of lifestyle--vibrant downtown, walkable residential, suburban/bunglow belt, etc. neighborhoods--to ensure that the visualization captures CTA reliability as felt by all Chicago residents. For this part of the research, the group turned to the American Community Survey to look at demographic and lifestyle data to help determine the different socio-economic neighborhoods in the city, allowing the group to select neighborhoods, that even in the pilot, represent the city's population as a whole [^3].
+	With these questions in mind, the group was almost ready to conduct a small pilot data collection.	However, before collecting data, census data was quickly reviewed. Even in the pilot collection, the group wanted to try and cover different demographic regions. These regions needed to be different not just in terms of income and household wealth, but also in terms of lifestyle--vibrant downtown, walkable residential, suburban/bunglow belt, etc. neighborhoods--to ensure that the visualization captures CTA reliability as felt by all Chicago residents. For this part of the research, the group turned to the American Community Survey to look at demographic and lifestyle data to help determine the different socio-economic neighborhoods in the city, allowing the group to select neighborhoods, that even in the pilot, represent the city's population as a whole [^4]. Finally, it is important to note that it will be impossible to cover every bus stop, route, line, neighborhood, or community district in the city. This was acknowledged by the group, and is something we will keep in mind. However, it was decided that a sample that does its best to cover as much variation in the city's socio-economic and demographic makeup is the best we can hope for.
 
 	Pilot Data Collection, Locations, and Brief Description:
-	With this in mind, the following data collection was conducted for the pilot study:
+	With the initial data dictionary, domain questions, and demographic data in hand, the following data collection was conducted for the pilot study:
 	1. Matt covered both the Fulton Market and River North submarkets, representing the downtown region, whose population consists of workers in offices, downtown vistors, downtown residents, and tourists. In this part of the process, Matt observed buses arriving on September 21 at around 9:45 AM in Fulton Market (Halsted and Fulton Market) in the West Loop during morning rush, and again on September 26 at around 5:20 PM in River North (Kingsbury and Grand) in River North, observing weekend traffic into the entertainment and shopping district.
 	2. Kaya (Shambhawi) covered Edgewater and Rogers Park residential districts, whose population consists of families and students from the nearby Loyola University (Lakeshore Campus). In this part of the process, Kaya observed buses arriving on September 23 at around 5:45 PM in Rogers Park (Clark and Devon) during evening rush hours (residents returning from work in downtown and work districts), and again on September 28 at around 8:45 AM in Edgewater (Sheridan and Granville) during morning rush hours (residents traveling to work in downtown and work districts).
 
@@ -38,10 +49,6 @@ Data description, discussion of preliminary data dictionary, and Domain Question
 	At the same time, converting the observations into rows necessarily removed information from the original phenomenon. We did not record the exact location of every bus along its route before arrival, the number of passengers waiting, the number of passengers boarding, traffic conditions, the bus's position before it reached the stop, or the reasons for a delay. We also did not initially record every bus that was expected but failed to arrive, which makes it difficult to distinguish a true "ghost bus" from a prediction that was simply updated or removed by the application. The decision to use the bus arrival as the unit of observation also means that our dataset emphasizes individual arrival events rather than the experience of a passenger waiting continuously at a stop. These limitations became important as we began thinking about the questions our data could actually support.
 
 	After conducting the pilot, the group refined the data dictionary to the following:
-
-	
-
-	
 
 	Attribute	 Type	        Description	                                Example
 	ID	         Categorical	Keep Track of Records, Unique 
@@ -64,13 +71,12 @@ Data description, discussion of preliminary data dictionary, and Domain Question
                                                                             Bus arrived far later than expected.
 
 
-The above data dictionary captures all of the item data type and attributes needed to visualize bus arrival times, and the nature of schedule dependability. In addition, the data encapsulated in the above data dictionary accomplishes some of the most imporant aspects of visual analytic system: answering domain questions through data questions, and allowing futher exploration.
+	The above data dictionary captures all of the item data type and attributes needed to visualize bus arrival times, and the nature of schedule dependability. In addition, the data encapsulated in the above data dictionary accomplishes some of the most imporant aspects of visual analytic system: answering domain questions through data questions, and allowing futher exploration.
+
+	Revised Domain Questions:
 
 
 
-
-
-Revised Domain Questions:
 	Question 1 -- How accurately does Ventra predict the arrival of the next CTA bus?
 	One question that emerged directly from our observations is whether the arrival information presented to passengers corresponds closely to what actually happens. This can be investigated by comparing "Observation Next", which represents the predicted time until the next bus, with "Actual Next", which represents the observed time until the next bus. The difference between these two values provides a measure of prediction error. For example, an observation where Ventra predicts 12 minutes but the bus arrives 8 minutes later represents a substantially different passenger experience from one where Ventra predicts 12 minutes and the bus arrives after 11 minutes. We are particularly interested in whether prediction errors are isolated events or whether they appear repeatedly at particular routes, stops, or times.
 
@@ -90,4 +96,5 @@ Revised Domain Questions:
 
 [^1] CTA (2026), “Facts at a Glance”, Chicago Transit Authority, Available at: CTA Facts at a Glance - CTA, Accessed on: 27 September 2026. 
 [^2] Stanton, Liam (2026), “CTA has long road ahead to regain riders’ trust”, Chicago Sun Times, Available at: CTA has long road ahead to regain riders' trust - Chicago Sun-Times, Accessed on: 27 September 2026
-[^3] Census.gov (2026), "Search: Chicago, Illinois", United States Census Bureau, Available at: https://data.census.gov/all?q=Chicago+city,+Illinois, Accessed on: 2 October 2026
+[^3] CTA (2026), "CTA Launches New Frequent Network For Buses", Chicago Transit Authority, Available at: https://www.transitchicago.com/cta-launches-new-frequent-network-for-buses/, Accessed on: 2 October 2026, Smentkowski, Elena (2026), "The CTA Is Expanding Bus Service Citywide--Here's What It Means For You", Secret Chicago, Avaliable at: https://secretchicago.com/cta-expanded-bus-service-chicago-2026/, Accessed on: 2 October, 2026, CTA (2023), "Chicago Transit Authority Service Standards and Policies", Chicago Transit Authority, Available at: https://www.transitchicago.com/assets/1/6/Chicago_Transit_Authority_Service_Standards.pdf, Accessed on: 2 October 2026. 
+[^4] Census.gov (2026), "Search: Chicago, Illinois", United States Census Bureau, Available at: https://data.census.gov/all?q=Chicago+city,+Illinois, Accessed on: 2 October 2026
