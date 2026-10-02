@@ -1,4 +1,5 @@
 SECTION ONE: RESEARCH TOPIC, AREAS OF INTEREST, AND DATA EXPLORATION:
+
 	The Chicago Transit Authority is the leading agency for public transportation in the Chicago metropolitan region. The agency, which is comprised of an elevated train system, known as the CTA ‘L’, and bus system serves over 1,000,000 riders per weekday, with the bus alone accounting for approximately 620,000 of those clients.[^1]  Given the importance public transit plays in the City of Chicago, reliable services, especially bus service, which accounts for two thirds of all riders, is essential. However, in the past few years, bus arrivals have become erratic. Buses frequently arrive late, arrive one after another in a bunched-up manner—thereby resulting in long wait times—, or at times don’t arrive at all. Many times, passenger have come to look at the Ventra app, the official app of CTA, Pace, and Metra, for arrival times and have found the “next bus arriving” information displayed on the app to be incorrect. This condition is known as ghost buses, and is something that has vexed riders, CTA officials, business leaders, and other government officials. The CTA has promised to fix this with a new program called the "Frequent Network Initiative" with a promise of 10 minute headways during peak travel times 20 minutes during non peak times, and waitimes to not exceed 30 mins on other lines, with buses expected to arrive no more than 1 minute before and 5 minutes after a scheduled Ventra time. [^3]  As such, the visualization proposed in this research will help Chicagoans better understand bus reliability throughout the city. At this preliminary stage, it is anticipated that the visualization will show average arrival times, wait times, ghost buses, and more. 
 
 SECTION TWO: OBSERVATION AND DATA COLLECTION PLAN:
@@ -109,7 +110,54 @@ SECTION FOUR: DATA DESCRIPTION, CURRENT DATA DICTONARY, AND DOMAIN QUESTIONS
 
 SECTION FIVE: TASK ABSTRACTIONS
 
+	The questions above are domain-specific because they refer directly to CTA buses, Ventra, routes, and bus stops. For visualization design, we need to translate them into more general user tasks. This helps us avoid deciding on a particular chart or map before determining what a viewer actually needs to accomplish.
 
+	Domain Question 1: How accurately does Ventra predict the arrival of the next bus?
+	Abstract Action: Compare
+	Target: Predicted and actual arrival intervals
+	Purpose: Determine the magnitude and direction of discrepancies between expected and observed service.
+
+	Domain Question 2: Where and when do buses bunch together?
+	Abstract Action: Identify
+	Target: Unusually short headways and subsequent long gaps
+	Purpose: Recognize individual observations or sequences that indicate irregular service patterns.
+
+	Domain Question 3: Which routes or locations show larger differences between expected and observed service?
+	Abstract Action: Compare
+	Target: Service reliability measures across routes and stops
+	Purpose: Compare reliability across geographic locations and routes.
+
+	Domain Question 4: How does bus reliability vary across time of day and day of week?
+	Abstract Action: Compare
+	Target: Reliability measures across temporal periods
+	Purpose: Determine whether service patterns differ across different times.
+
+	Domain Question 5: Which routes or locations have the greatest variation in bus spacing?
+	Abstract Action: Summarize/Compare
+	Target: Distribution and variation of bus headways
+	Purpose: Understand both typical service frequency and unusual gaps or bunching.
+
+	The first domain question concerns the accuracy of passenger-facing arrival predictions. The primary abstract task is compare, with the target being the predicted and actual arrival intervals. The viewer should be able to compare two related quantitative values and determine whether the prediction was early, late, or substantially different from the observed arrival. For example, if Ventra indicates that the next bus is 15 minutes away but another bus arrives two minutes later, the important task is not simply to identify that bus as a “ghost bus.” Rather, the viewer needs to compare the expected and observed intervals and recognize the magnitude of the discrepancy. This abstraction also allows the same task to be applied to cases where Ventra's prediction is relatively accurate.
+
+	The second domain question concerns the identification of irregular arrival sequences. The primary abstract task is identify, with the target being unusually short headways and the subsequent long gaps that can occur after buses bunch together. This is particularly important for Route 157 in our observations. Three buses may arrive within only a few minutes of one another, followed by a substantially longer period without a bus. The visualization should allow a viewer to recognize this sequence rather than treating each bus arrival as an independent event. The target is therefore not simply “buses that are late.” Instead, it is the pattern of intervals between consecutive observations. This distinction is important because a bus arriving two minutes after another bus may be on time relative to its own schedule while still contributing to an irregular passenger experience.
+
+	The third domain question asks whether observed service patterns differ between routes and locations. The abstract task is compare, with the target being service reliability measures associated with different routes and stops. Relevant measures include actual headways, predicted headways, prediction error, and unusually long or short intervals. For example, the observations from Route 96 show much longer intervals between buses than those observed for Route 157. A viewer should be able to compare these different service patterns without needing to inspect every individual observation. This task is intentionally stated without specifying a map or chart. The comparison could potentially be supported through geographic position, aligned route views, small multiples, or another visual representation.
+
+	The fourth domain question concerns temporal variation in service. The abstract task is again compare, with the target being reliability measures across different temporal periods. Our observations were collected at different times of day, including early morning, morning rush, evening rush, and midday. The viewer should be able to compare characteristics such as headway, prediction error, and service gaps across these periods. This task is especially relevant because the meaning of a long headway depends partly on the normal frequency of a route. A 30-minute interval may be relatively normal for Route 96 but would represent a substantially different service pattern on a route where buses normally arrive every few minutes. The visualization therefore needs to support comparison while retaining the temporal context of each observation.
+
+	The fifth domain question asks which routes or locations have the greatest variation in bus spacing. This involves both summarizing and comparing. The target is the distribution of headways, rather than a single average headway. This distinction is important because an average can conceal irregular service. For example, a route could have an average headway of approximately 10 minutes while actually alternating between buses arriving two minutes apart and gaps of nearly 20 minutes. The average alone would not communicate this pattern. A useful visualization should therefore allow viewers to understand both the typical spacing of buses and the extent to which individual observations deviate from that pattern.
+
+	These tasks are related but address different aspects of bus reliability:
+
+	1. Compare predicted and actual values to understand prediction accuracy.
+	2. Identify unusual sequences of short and long headways to detect bunching and service gaps.
+	3. Compare service characteristics across routes and locations.
+	4. Compare service characteristics across different temporal periods.
+	5.Summarize and compare the variation in headways rather than relying only on averages.
+
+	Together, these abstractions shifted our project away from treating “ghost buses” as the single outcome of interest. The field observations showed that reliability is better understood as a collection of related phenomena: prediction discrepancies, irregular spacing, bunching, long service gaps, and differences in service frequency.
+
+SECTION SIX: VISUALIZATION SKETCHES
 
 [^1] CTA (2026), “Facts at a Glance”, Chicago Transit Authority, Available at: CTA Facts at a Glance - CTA, Accessed on: 27 September 2026. 
 [^2] Stanton, Liam (2026), “CTA has long road ahead to regain riders’ trust”, Chicago Sun Times, Available at: CTA has long road ahead to regain riders' trust - Chicago Sun-Times, Accessed on: 27 September 2026
