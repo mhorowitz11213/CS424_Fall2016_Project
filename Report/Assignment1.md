@@ -159,13 +159,17 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	After codifying the abstract questions and tasks that users will have, regarding CTA bus reliablity, the group then discussed potential visual designs that can help convey the data the group observed. Each member of the group sketched three ideas, which are presented in this section:
 
-	Visualization 1 (Figure 1): Map Selection, Reliability, and Probability of On Time Arrival
+	Sketch 1 (Figure 1): Map Selection, Reliability, and Probability of On Time Arrival
 
 	Main Idea: This sketch is comprised of three linked views. At the top, a map is presented, enabling users to select up to two routes from any geographic area in Chicago to compare. Because routes on direct geographic headings are being compared, a map is suitable for this part. This map contains marks that are the lines bus routes take, with the channels being the color of the lines, their geo-coordinate positions, and once up to two routes are selected by clicking on them, their highlighting. Once two routes are selected, the lower two portions of the sketch--a histogram on the bottom left showing average arrival time and an overlay of exponential distribution of predicted arrival time and two histograms on the bottom right showing the observed arrival times (binned in intervals of 5 minutes)--will populate with the corresponding information for the two selected bus lines. Here the marks are the rectangle histograms and the lines that make up the exponential distribution depicting the probability of when the next bus arrives by minutes. This attribute will need to be calculated. The channels are colors, x, y axis positions, and probability for the exponential distribution.
 
-	The main motivation for the sketch is that we want people to be able to a. compare and contrast bus line reliability across the city (including socio economic zones), and felt that overlaying bus routes over a map was the best way to do so. In addition, histograms and exponential distributions are some of the best ways to show is there is a wide variation in bus arrival times and reliabity across different bus lines.
+	Motivation: The main motivation for the sketch is that we want people to be able to a. compare and contrast bus line reliability across the city (including socio economic zones), and felt that overlaying bus routes over a map was the best way to do so. In addition, histograms and exponential distributions are some of the best ways to show is there is a wide variation in bus arrival times and reliabity across different bus lines.
 
-	At this time, this sketch still depicts a very conceptual idea, but there are still aspects that need to be worked on. How we encode socio-economic information into the map will still need to be worked out. This is important 
+	Comments, Discussion, and Limitations: At this time, this sketch still depicts a very conceptual idea, but there are still aspects that need to be worked on. How we encode socio-economic information into the map will still need to be worked out. This is important because we really want users to be able to see bus service variation across different socio-economic areas. Over the course of the semester, we anticipate reviewing and revising the conceptual idea behind this sketch to create a refined visualization.
+
+	Sketch 2 (Figure 2): Radial Bar Chart Showing Probability Bus Arrives On Time (As set by CTA):
+
+	Main Idea: 
 
 --SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
 	Fig 4: Bus Service Rhythm/Arrival Timeline
