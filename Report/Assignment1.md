@@ -157,7 +157,7 @@ SECTION FIVE: TASK ABSTRACTIONS
 
 SECTION SIX: VISUALIZATION SKETCHES
 
-	After codifying the abstract questions and tasks that users will have, regarding CTA bus reliablity, the group then discussed potential visual designs that can help convey the data the group observed. Members of the group sketched nine ideas in total, which are presented in this section. Each sketch is discussed in detail, with the main idea addressed, motivation, and a list of relevant abstract task questions presented. After which a brief discussion of limitations are discussed:
+	After codifying the abstract questions and tasks that users will have, regarding CTA bus reliablity, the group then discussed potential visual designs that can help convey the data the group observed. Members of the group sketched nine ideas in total, which are presented in this section. Each sketch, for the most part, uses very different marks and design templates to convey CTA reliablity, though two sketches do reuse histograms and line charts to convey two very different calculations (see discussion section). This section discusses the sketches in detail, with the main idea addressed, motivation, and a list of relevant abstract task questions presented. After which a brief discussion of limitations are discussed:
 
 	Sketch 1 (Figure 1): Map Selection, Reliability, and Probability of On Time Arrival
 
@@ -277,14 +277,18 @@ SECTION SIX: VISUALIZATION SKETCHES
 	
 	This visualization is a divergence from the others, in that it takes inspiration from Google Maps' Directions but reinvents it by focusing on dependable over quickest routes. It uses simple easy to understand bubble and arrow networks to show a travel path and super imposes it over a map to give some geographic context to the traveller. However, this visualization could not stand on its own and would have to be part of a much greater visual anyaltic system. The biggest issue again is coverage. Can the group sample enough routes and enough stops to make the visualization workable? If not, then it won't work. This is something the group will have to think over.
 
-	Sketch 9 (Figure 9): 
+	Sketch 9 (Figure 9): Histogram and Exponential Distribution For Prognosticating the Future Bus Arrivales
+
+	Main Idea: This visualization utilizes a histogram in which a user will be able to select a subset of routes and plot a histograph of average bus wait times when observations began (September 2026) ended (anticipated November 2026) and the future, which will be calculated using an ARIMA method. In addition, 
+
+
 
 	Comments on Rough Sketches:
 
 	Before presenting and discussing the refined sketches, some commentary on the rough sketches is warranted. It became obvious as we wrote up the preceeding section, and discussed our sketches, that some worked and some did not. In particular:
 	-Sketches that depended on probability may not work well, based on the necessary number of observations needed to calculate a   	probability.
 	-Maps were a common reoccuring theme, in large part because this group really wants to capture demographic variations in bus service. Visualizing this is best done with a map (or at least using a map as part of a linked visualization).
-	-Some visualizations were created with the intention of incorporating multiple abstract tasks/questions than others. In particular some group members wanted to test visualizations that supported multiple tasks simultaneously, with complex elements including multiple marks and channels, while others wanted to create tighter visualizations that sought to answer only one or two tasks per visualization. The idea behind this was to see which strategy worked better, while iterating through design choices. Question such as, should multiple more basic single (or at most two) task question visualization be created and linked together, or should more complex visualizations be created. At this time, we are still not sure which strategy works best, and in creating the final refined sketches, both methods were deployed.
+	-Some visualizations were created with the intention of incorporating multiple abstract tasks/questions than others. In particular some group members wanted to test visualizations that supported multiple tasks simultaneously, with complex elements including multiple marks and channels, while others wanted to create tighter visualizations that sought to answer only one or two tasks per visualization, with the benefit being that the visualizations could be simpler with less elements, and thus easier for the user to understand. The idea behind this was to see which strategy worked better, while iterating through design choices. Question such as, should multiple more basic single (or at most two) task question visualization be created and linked together, or should more complex visualizations be created. At this time, we are still not sure which strategy works best, and in creating the final refined sketches, both methods were deployed.
 	-Sometimes visual marks, such as histograms, and maps were used in multiple sketches. This holds especially true for Sketches 1 and 9, which both heavily feature bar charts and exponential probability distribtions. However, in both cases these design choices were repeated to test if they work better for depicting discriptive data (Sketch 1) or for showing time series data (Sketch 9). Here the main motivation was not to re-use the same design but to see if two types of popular marks--bars in a histogram and lines in a line graph--work better for one type of analysis over another, while ensuring that sketch 1 visualization heavily depends on map based filtering, while Sketch 9 depends on radio button filtering without using a map--which futher tests if histograms and line charts can be visually interesting enough without the addition of a map--. 
 
 	Refined Sketches:
