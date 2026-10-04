@@ -174,7 +174,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 2 (Figure 2): Radial Bar Chart Showing Probability Bus Arrives On Time (As set by CTA):
 
-	Main Idea: The sketch is designed to show the probability that a bus arrives on time, allowing a user to compare up to 10 or so bus lines at a time --as of now we haven't figured out how many buses lines should be shown at once--. The variable for probability will be computed. Here the emphasis is on creating visual that depicts in a bold and obvious way the differences in expected on time performance of bus lines. A Radial chart does this by exaggerating differences between bus lines.
+	Main Idea: The sketch is designed to show the probability that a bus arrives on time, allowing a user to compare up to 10 or so bus lines at a time --as of now we haven't figured out how many buses lines should be shown at once--. The variable for probability will be computed. Here the emphasis is on creating visual that depicts in a bold and obvious way the differences in expected on time performance of bus lines. A Radial chart does this by exaggerating differences between bus lines. Here, the marks are the rectangles that make up the radial bar chart, while color and size are the main channel encodings.
 
 	Motivation: The main motivation for this sketch to convey the any potential extreme differences between bus lines. Of all the sketches proposed by the group, this one was crafted in particular to focus on differences between service, based on probability of bus arriving with the expected arrival time of 10-30 minute headways (based on line), as set by the CTA. Furthermore, this specific design was selected after doing some cursory internet searches. Basic internet indicated that radial bar graphs are some of the visual conduits for showing extreme variation between classifications.[^5] 
 
@@ -186,7 +186,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 3 (Figure 3): Tree Map of Average Wait Times and Hit/Miss Target 80 Percent of Time
 
-	Main Idea: As noted in this report, the CTA expects buses to hit their either 10 or 30 minute headway target at least 80 percent of the time (being no more than 1 minute early or 5 minutes late). Here, the group decided that they 
+	Main Idea: As noted in this report, the CTA expects buses to hit their either 10 or 30 minute headway target at least 80 percent of the time (being no more than 1 minute early or 5 minutes late). Here, the group decided that they wanted to try a visualization that could support cross comparisons (average wait times across service lines) and a simple yes no 
 
 --SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
 	Fig 4: Bus Service Rhythm/Arrival Timeline
