@@ -186,7 +186,9 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 3 (Figure 3): Tree Map of Average Wait Times and Hit/Miss Target 80 Percent of Time
 
-	Main Idea: As noted in this report, the CTA expects buses to hit their either 10 or 30 minute headway target at least 80 percent of the time (being no more than 1 minute early or 5 minutes late). Here, the group decided that they wanted to try a visualization that could support cross comparisons (average wait times across service lines) and a simple yes no for meeting targets. Tree maps are a good conduit for showing variation across a large number of categories, while they are good for also encoding important discrete variables, such as met on time targets or not, in a compact overlay format.[^6]
+	Main Idea: As noted in this report, the CTA expects buses to hit their either 10 or 30 minute headway target at least 80 percent of the time (being no more than 1 minute early or 5 minutes late). Here, the group decided that they wanted to try a visualization that could support cross comparisons (average wait times across service lines) and a simple yes no for meeting targets. Tree maps are a good conduit for showing variation across a large number of categories, while they are good for also encoding important discrete variables, such as met on time targets or not, in a compact overlay format.[^6] This visualization will utilize marks of squares representing each bus line (or perhaps a subset if it becomes too busy including all lines). The channels on this tree map will be the sizes of the squares with lines with the longest headways having the largest squares and a color scheme in which will depict if a bus met the 80 percent on time threshold or not (multi color may be used to differentiate between the 10 and 30 minute headways categories)
+
+	Motivation: 
 
 --SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
 	Fig 4: Bus Service Rhythm/Arrival Timeline
@@ -247,6 +249,16 @@ SECTION SIX: VISUALIZATION SKETCHES
 	4. Which routes show the strongest evidence of bunching and uneven service spacing?
 	5. How does the distribution of headway patterns differ across the observed routes?
 	6. Are most observations close to balanced service, or are they concentrated far from the y = x reference line?
+
+
+	Comments on Rough Sketches:
+
+	Before presenting and discussing the refined sketches, some commentary on the rough sketches is warranted. It became obvious as we wrote up the preceeding section, and discussed our sketches, that some worked and some did not. In particular:
+	-Sketches that depended on probability may not work well, based on the necessary number of observations needed to calculate a   	probability.
+	-Maps were a common reoccuring theme, in large part because this group really wants to capture demographic variations in bus service. Visualizing this is best done with a map (or at least using a map as part of a linked visualization).
+	-Some visualizations did a better job of incorporating multiple abstract tasks/questions than others. In particular some group members wanted to test visualizations that supported multiple tasks simultaneously, while others wanted to create tighter visualizations that sought to answer only one or two tasks per visualization to see which strategy worked better, while iterating through design choices. At this time, we are still not sure which strategy works best, and in creating the final refined sketches, both methods were deployed.
+
+	Refined Sketches:
 
 SECTION SEVEN: SUMMARIZING
 	This project has been a iterative work in progress. As a group, we really wanted to visualize a major issue affecting the lives of Chicagoans on a daily basis. Bus reliability has been in the news over the past few years, and with over 600,000 daily rides taken on the bus system, it's worth exploring this topic through visual analysis.
