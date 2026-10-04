@@ -206,34 +206,32 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Motivation: Here, the main motivation for this sketch was the observation that average headway alone does not describe the experience of waiting for a bus. Route 157 provides a particularly strong example: buses arrive approximately two minutes apart, followed by a gap of approximately twenty minutes. The timeline makes this pattern visually obvious because three or four marks are tightly clustered together and are followed by a large empty interval. Route 96 produces a very different visual pattern, with buses separated by approximately thirty minutes and one gap of almost an hour. Routes 147 and 22 provide intermediate cases. This sketch primarily addresses the abstract tasks of identifying temporal patterns, detecting anomalies, and comparing variation in bus spacing.
 
-	
-
 	Abstract Task/Questions Addressed:
 	1. Where and when do buses bunch together?
 	2. Where are unusually long service gaps?
 	3. How variable is bus spacing across routes?
 	4. How does predicted service compare with actual service?
 
-	Comments, Discussion, and Limitations: 
+	Comments, Discussion, and Limitations: This is one of the first more complex visualization. Here, four tasks were addressed. The big challenge was to see if this large number of abstract tasks could be addressed in a visualization without the visualization becoming too busy. We think that we found the right balance using a temporal rhythm design over bar charts or line charts, as employing those designs would undoubtably make the visualization hard to interpret. We definetly want to incorporate this sketch into our final design, but will need to think if it really addresses all four tasks.
 
-	Fig 5: Ventra vs. Reality “Service Clock”
+	Sketch 5 (Figure 5): Ventra vs. Reality “Service Clock”
 
 	Main idea: This sketch takes a very different approach by representing each route or observation period as a circular clock. Instead of reading service from left to right along a timeline, the viewer looks at the relationship between predicted and actual bus arrivals around a shared time reference. Actual bus arrivals are placed on the outer part of the clock, while Ventra-predicted arrivals are placed on an inner ring. Each predicted arrival is connected to the corresponding actual arrival with a line. The length and direction of this connection represent the discrepancy between what Ventra predicted and what actually happened.
 
-	The motivation for this design is that the project is not only about whether buses are late; it is also about whether the passenger-facing prediction is reliable. For example, on Route 157, Ventra can indicate that another bus is approximately 12–15 minutes away even though another bus arrives only two minutes later. In contrast, the Route 96 observations show that Ventra can also correctly reflect very long service intervals, such as the approximately one-hour gap between buses. The clock structure makes these differences conceptually separate from ordinary arrival delay: one can see whether the system is consistently predicting the next bus correctly even when the underlying service is infrequent or irregular.
-
 	This sketch addresses the abstract tasks of comparing expected and actual values and identifying discrepancies. The main attributes are Real Time, Ventra Time, Observation Next, and Actual Next. The marks are points around a circular time axis and connecting lines between predicted and actual arrivals. Position on the circle represents time, while the distance between corresponding predicted and actual marks represents prediction error. The design is substantially different from the first sketch because it focuses less on continuous service rhythm and more on the relationship between the transit system and the information presented to passengers.
 
-	A strength of this design is that it makes prediction errors visually prominent. It could reveal whether errors are small and consistent or whether a few observations contain very large discrepancies. It may also make unusual cases, such as a Ventra prediction of 15 minutes followed by a bus arriving only two minutes later, particularly noticeable. A weakness is that circular time is less immediately intuitive than a standard horizontal timeline. If many observations were added, the connecting lines could also overlap and become difficult to interpret. This sketch therefore sacrifices some scalability in order to emphasize the prediction problem.
+	Motivation: The motivation for this design is that the project is not only about whether buses are late; it is also about whether the passenger-facing prediction is reliable. For example, on Route 157, Ventra can indicate that another bus is approximately 12–15 minutes away even though another bus arrives only two minutes later. In contrast, the Route 96 observations show that Ventra can also correctly reflect very long service intervals, such as the approximately one-hour gap between buses. The clock structure makes these differences conceptually separate from ordinary arrival delay: one can see whether the system is consistently predicting the next bus correctly even when the underlying service is infrequent or irregular.
 
-	Questions addressed:
+	Abstract Tasks/Questions Addressed:
 
 	1. How accurately does Ventra predict the next CTA bus?
 	2. Which observations have the largest prediction errors?
 	3. Are prediction errors associated with bunching or service gaps?
 	4. Does Ventra accurately communicate periods of very infrequent service?
 
-	Fig 6: Spatial Reliability Map with Stop-Level Service Glyphs
+	Comments, Discussion, and Limitations: A strength of this design is that it makes prediction errors visually prominent. It could reveal whether errors are small and consistent or whether a few observations contain very large discrepancies. It may also make unusual cases, such as a Ventra prediction of 15 minutes followed by a bus arriving only two minutes later, particularly noticeable. A weakness is that circular time is less immediately intuitive than a standard horizontal timeline. If many observations were added, the connecting lines could also overlap and become difficult to interpret. This sketch therefore sacrifices some scalability in order to emphasize the prediction problem. In addition, as noted in previous sketches, this sketch attempts to address up to four tasks, we will need to see if this is feasible or not.
+
+	Sketch 6 (Figure 6): Spatial Reliability Map with Stop-Level Service Glyphs
 
 	Main idea: This sketch shifts the focus from time to geographic context. A map of Chicago is used as the overall structure, with the observed CTA stops plotted at their geographic locations. Instead of representing each stop simply as a point, each stop contains a small custom glyph summarizing the observed service pattern at that location. For example, the glyph could contain several concentric or radial segments representing typical headway, the largest observed gap, and the number of closely spaced or bunched buses. The CTA route itself can be drawn through or near each observation point so that the viewer can see how the service observations relate to the broader transit network.
 
