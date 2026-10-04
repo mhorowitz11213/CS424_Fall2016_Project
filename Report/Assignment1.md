@@ -151,11 +151,19 @@ SECTION FIVE: TASK ABSTRACTIONS
 	2. Identify unusual sequences of short and long headways to detect bunching and service gaps.
 	3. Compare service characteristics across routes and locations.
 	4. Compare service characteristics across different temporal periods.
-	5.Summarize and compare the variation in headways rather than relying only on averages.
+	5. Summarize and compare the variation in headways rather than relying only on averages.
 
 	Together, these abstractions shifted our project away from treating “ghost buses” as the single outcome of interest. The field observations showed that reliability is better understood as a collection of related phenomena: prediction discrepancies, irregular spacing, bunching, long service gaps, and differences in service frequency.
 
 SECTION SIX: VISUALIZATION SKETCHES
+
+	After codifying the abstract questions and tasks that users will have, regarding CTA bus reliablity, the group then discussed potential visual designs that can help convey the data the group observed. Each member of the group sketched three ideas, which are presented in this section:
+
+	Visualization 1 (Figure 1): Map Selection, Reliability, and Probability of On Time Arrival
+
+	Main Idea: This sketch is comprised of three linked views. At the top, a map is presented, enabling users to select up to two routes from any geographic area in Chicago to compare. Because routes on direct geographic headings are being compared, a map is suitable for this part. This map contains marks that are the lines bus routes take, with the channels being the color of the lines, their geo-coordinate positions, and once up to two routes are selected by clicking on them, their highlighting. Once two routes are selected, the lower two portions of the sketch--a histogram on the bottom left showing average arrival time and an overlay of exponential distribution of predicted arrival time and two histograms on the bottom right showing the observed arrival times (binned in intervals of 5 minutes)--will populate with the corresponding information for the two selected bus lines. Here the marks are the rectangle histograms and the lines that make up the exponential distribution, and the channels are colors, x, y axis positions, and probability for the exponential distribution.
+
+	The main motivation for the sketch is that 
 
 --SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
 	Fig 4: Bus Service Rhythm/Arrival Timeline
