@@ -275,7 +275,9 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Comments, Discussion, and Limitations: 
 	
+	This visualization is a divergence from the others, in that it takes inspiration from Google Maps' Directions but reinvents it by focusing on dependable over quickest routes. It uses simple easy to understand bubble and arrow networks to show a travel path and super imposes it over a map to give some geographic context to the traveller. However, this visualization could not stand on its own and would have to be part of a much greater visual anyaltic system. The biggest issue again is coverage. Can the group sample enough routes and enough stops to make the visualization workable? If not, then it won't work. This is something the group will have to think over.
 
+	Sketch 9 (Figure 9): 
 
 	Comments on Rough Sketches:
 
