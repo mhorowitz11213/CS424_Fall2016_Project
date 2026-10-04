@@ -158,6 +158,64 @@ SECTION FIVE: TASK ABSTRACTIONS
 SECTION SIX: VISUALIZATION SKETCHES
 
 --SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
+	Fig 4: Bus Service Rhythm/Arrival Timeline
+	Main idea: This sketch represents bus service as a temporal “rhythm” rather than as a conventional line or bar chart. Each route and stop is represented as a horizontal lane, with the x-axis showing time and each observed bus represented by a mark placed at its actual arrival time. The horizontal distance between consecutive bus marks represents the actual headway between buses. Ventra's predicted next arrival is shown as a second, lighter or hollow mark connected to the current bus by a small arrow. This allows the viewer to see both the rhythm of actual service and the difference between expected and observed arrivals.
+
+	The main motivation for this sketch was the observation that average headway alone does not describe the experience of waiting for a bus. Route 157 provides a particularly strong example: buses arrive approximately two minutes apart, followed by a gap of approximately twenty minutes. The timeline makes this pattern visually obvious because three or four marks are tightly clustered together and are followed by a large empty interval. Route 96 produces a very different visual pattern, with buses separated by approximately thirty minutes and one gap of almost an hour. Routes 147 and 22 provide intermediate cases. This sketch primarily addresses the abstract tasks of identifying temporal patterns, detecting anomalies, and comparing variation in bus spacing.
+
+	The main attributes represented are Real Time, Observation Previous, Observation Next, Actual Next, route, and stop. The primary mark is a point or short vertical stroke, with horizontal position encoding actual arrival time. The distance between points encodes actual headway, while hollow or secondary marks represent Ventra's prediction. Arrows between predicted and actual positions encode prediction error. A major strength of the sketch is that it preserves the sequential nature of the observations, making bunching and long service gaps immediately visible. A weakness is that adding predicted arrival marks may make the timeline cluttered if many buses and stops are included. The sketch is also primarily temporal and does not communicate geographic relationships very well.
+
+	Questions addressed:
+	1. Where and when do buses bunch together?
+	2. Where are unusually long service gaps?
+	3. How variable is bus spacing across routes?
+	4. How does predicted service compare with actual service?
+
+	Fig 5: Ventra vs. Reality “Service Clock”
+
+	Main idea: This sketch takes a very different approach by representing each route or observation period as a circular clock. Instead of reading service from left to right along a timeline, the viewer looks at the relationship between predicted and actual bus arrivals around a shared time reference. Actual bus arrivals are placed on the outer part of the clock, while Ventra-predicted arrivals are placed on an inner ring. Each predicted arrival is connected to the corresponding actual arrival with a line. The length and direction of this connection represent the discrepancy between what Ventra predicted and what actually happened.
+
+	The motivation for this design is that the project is not only about whether buses are late; it is also about whether the passenger-facing prediction is reliable. For example, on Route 157, Ventra can indicate that another bus is approximately 12–15 minutes away even though another bus arrives only two minutes later. In contrast, the Route 96 observations show that Ventra can also correctly reflect very long service intervals, such as the approximately one-hour gap between buses. The clock structure makes these differences conceptually separate from ordinary arrival delay: one can see whether the system is consistently predicting the next bus correctly even when the underlying service is infrequent or irregular.
+
+	This sketch addresses the abstract tasks of comparing expected and actual values and identifying discrepancies. The main attributes are Real Time, Ventra Time, Observation Next, and Actual Next. The marks are points around a circular time axis and connecting lines between predicted and actual arrivals. Position on the circle represents time, while the distance between corresponding predicted and actual marks represents prediction error. The design is substantially different from the first sketch because it focuses less on continuous service rhythm and more on the relationship between the transit system and the information presented to passengers.
+
+	A strength of this design is that it makes prediction errors visually prominent. It could reveal whether errors are small and consistent or whether a few observations contain very large discrepancies. It may also make unusual cases, such as a Ventra prediction of 15 minutes followed by a bus arriving only two minutes later, particularly noticeable. A weakness is that circular time is less immediately intuitive than a standard horizontal timeline. If many observations were added, the connecting lines could also overlap and become difficult to interpret. This sketch therefore sacrifices some scalability in order to emphasize the prediction problem.
+
+	Questions addressed:
+
+	1. How accurately does Ventra predict the next CTA bus?
+	2. Which observations have the largest prediction errors?
+	3. Are prediction errors associated with bunching or service gaps?
+	4. Does Ventra accurately communicate periods of very infrequent service?
+
+	Fig 6: Spatial Reliability Map with Stop-Level Service Glyphs
+
+	Main idea: This sketch shifts the focus from time to geographic context. A map of Chicago is used as the overall structure, with the observed CTA stops plotted at their geographic locations. Instead of representing each stop simply as a point, each stop contains a small custom glyph summarizing the observed service pattern at that location. For example, the glyph could contain several concentric or radial segments representing typical headway, the largest observed gap, and the number of closely spaced or bunched buses. The CTA route itself can be drawn through or near each observation point so that the viewer can see how the service observations relate to the broader transit network.
+
+	The motivation for this sketch comes from the original research question: bus reliability is not only a temporal problem but also a spatial problem. The current observations intentionally cover different kinds of Chicago environments, including downtown/near-downtown areas and residential neighborhoods. A map allows the viewer to connect service patterns with location and, in a later version of the dataset, with neighborhood-level demographic or transportation characteristics. For example, the current observations could show the very different service patterns at Route 157 in the West Loop and Route 96 in the northern residential area. As more observations are collected, the same design could be expanded to compare additional CTA stops.
+
+	This sketch addresses the abstract tasks of locating, comparing, and identifying geographic patterns. Position encodes the location of each stop, while the glyph inside each stop summarizes service behavior. Within a glyph, radial length or segment size could represent headway, while the number of segments could represent the number of observed buses or service events. A separate visual channel such as orientation, line thickness, or annotation could distinguish bunching from long gaps. The main strength of this design is that it combines the geographic question with the temporal data rather than treating the two as separate analyses. Its main weakness is that the glyphs could become complicated to read, particularly if many variables are included at each stop. With only four current locations, the map would also be relatively sparse, so its usefulness would increase substantially as more stops are observed.
+
+	Questions addressed:
+	1. How does observed bus reliability vary geographically?
+	2. Which observed locations show bunching or unusually long gaps?
+	3. How do different neighborhood contexts correspond to different service patterns?
+	4. How could service reliability later be compared with demographic or transportation characteristics?
+
+	Fig 7: Bunching Gap Diagram
+	Main idea: This sketch shifts the focus from the exact timing of individual buses to the relationship between the spacing before and after each bus. Each observed bus is represented as a single point in a two-dimensional coordinate system. The x-axis represents the actual headway from the previous bus, while the y-axis represents the actual headway to the next bus. A diagonal reference line, where y = x, represents balanced service, meaning that the bus arrived after approximately the same amount of time as the interval until the next bus. Points that fall far from this diagonal represent an imbalance in service spacing. For example, a point at approximately (20, 2) represents a bus that arrived after a 20-minute gap but was followed only two minutes later by another bus, while a point around (2, 20) represents a bus that arrived only two minutes after the previous bus and was followed by a 20-minute gap. These patterns can reveal bunching and the service gaps that may follow it.
+
+	The motivation for this sketch comes from the observation that unusually short and unusually long headways are often more informative when considered together rather than independently. A timeline can show that buses arrived two minutes apart and that another bus did not arrive for twenty minutes, but it requires the viewer to mentally connect those events. This design represents the relationship directly. For example, the Route 157 observations include several buses arriving approximately two minutes apart followed by a much longer gap. These observations would appear as points far from the balanced-service diagonal, making the relationship between bunching and subsequent service gaps immediately visible. The design therefore focuses on the structure of service spacing rather than simply showing when buses arrived.
+
+	This sketch addresses the abstract tasks of identifying, comparing, and summarizing patterns in bus spacing. Position on the x-axis represents the headway from the previous bus, while position on the y-axis represents the headway to the next bus. The diagonal reference line provides a baseline for balanced spacing, and the distance and direction of a point from this line indicate the degree and type of imbalance. Points can be grouped by route so that the viewer can compare whether some routes have more extreme spacing patterns than others. The main strength of this design is that it makes the relationship between short headways and subsequent long gaps explicit, rather than requiring the viewer to infer that relationship from a sequence of individual observations. Its main weakness is that it removes the actual temporal order of the buses and their geographic locations. It also requires the viewer to understand the meaning of the two axes and the diagonal reference line before interpreting the patterns.
+
+	Questions addressed:
+	1. Which routes show the greatest imbalance between the headway before and after a bus?
+	2. Are unusually short headways commonly followed by unusually long service gaps?
+	3. Are long service gaps commonly followed by another bus arriving shortly afterward?
+	4. Which routes show the strongest evidence of bunching and uneven service spacing?
+	5. How does the distribution of headway patterns differ across the observed routes?
+	6. Are most observations close to balanced service, or are they concentrated far from the y = x reference line?
 
 SECTION SEVEN: SUMMARIZING
 	This project has been a iterative work in progress. As a group, we really wanted to visualize a major issue affecting the lives of Chicagoans on a daily basis. Bus reliability has been in the news over the past few years, and with over 600,000 daily rides taken on the bus system, it's worth exploring this topic through visual analysis.
