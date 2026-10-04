@@ -302,8 +302,13 @@ SECTION SIX: VISUALIZATION SKETCHES
 	Refined Sketches:
 
 SECTION SEVEN: SUMMARIZING
+
+	The sketching processes 
+
+SECTION EIGHT: CONCLUDING COMMENTS AND FUTURE QUESTIONS THE GROUP WILL NEED TO ANSWER
 	This project has been a iterative work in progress. As a group, we really wanted to visualize a major issue affecting the lives of Chicagoans on a daily basis. Bus reliability has been in the news over the past few years, and with over 600,000 daily rides taken on the bus system, it's worth exploring this topic through visual analysis.
 	But with that noted, we as a group really did not know how to tackle this topic. So we decided to follow the iterative approach, starting with the broadest goals, testing suppositions--including data collection--and then refining our research.
+	
 	This process entailed:
 	1. Deciding on what data sources are necessary: could this research be done with simple API calls to Ventra or was in the field data collection necessary.
 	Here, we as a group realized that simply put if we wanted to see how accurate and reliable both the bus system and the Ventra Bus Tracker really are, then deploying a team to the field became essential.
@@ -311,6 +316,11 @@ SECTION SEVEN: SUMMARIZING
 	As noted in Section Two of this report, we had a rough idea of what features and data we needed to collect. But like all research, until one starts collecting data--in our case going out to individual bus stops-- it is impossible to know exactly what is necessary, what can be captured, and how it should be captured. Initially, the group thought that having route number, date and time, and the number of minutes until the next bus would be enough. But as we continued to work on our dataset, we began to realize that there were attributes and factors we did not account for. These include:
 	-When should Ventra times be captured. Initially we did not realize how important having standardized processes would be to ensure that the data captured by members of the group would remained standardized and as such could be unified. It might seem trivial, but without a unified manner of recording this time, making direct comparisions between Ventra predicted, and actual arrival times could not be made across the entire data set, unless this issue was accounted for. The group was ultimately able to agree that the best way to capture elapsed time--as predicted by Ventra app--was to record one reading, when the previous bus departed. But, this still left the question of what to do with the Ventra time corresponding to the first bus set to arrive when members of the team  arrive at a stop, and begin recording observations. In an ideal world, the group members would exclude any observations related to the first bus to arrive during each data collection cycle, and begin all observations starting with the second bus, to ensure uniformity, across all observations. But because of the length of time it takes to record arrivals at a stop, this correction is simply not feasable. For now, all members of the team record the predicted Ventra time and expected elapsed minutes as soon as they arrive at a stop, but as we work through this project we might need to adjust this approach.
 	-Weather, anticipated construction, or other advisories. There are many factors that can affect bus performance, and these are supposedly accounted for in the real time updates that go into calcuating Ventra's predicted arrival time. [^8] Right now, the CTA and Ventra account for long term construction projects in their prognostications, for example the Chicago/Halsted rebuild affecting the 8 and 66 Bus lines. But weather delays and travel advisories can affect arrivals. As now the group is unsure how to account for these, and will need to further discuss. As of this point in time, the group has decided to record such anomalies--which appear to affect a minority of bus arrivals we've encountered--by making note of such in the comments variable (noted in the data dictionary). In the future, we may need to either compute a variable based on the comments, or create an entirely new feature(s) to account for these instances.
+	3. Deciding on visualization approaches. 
+	-Questions we asked as we started to discuss and sketch out our initial ideas included:
+	--Should we include lots of features or not in analysis?
+	--Should a visualization attempt to help and answer multiple tasks, data questions, and ultimately domain questions or should many linked  views be used instead, with each visualization attempting to be narrow in its approach? Specifically which is easier for users?
+	-At this point, the team is still unsure, but has settled on a strategy that combining multiple diverse tasks into a single view is best. Members of the group came to realize that the visualizations that support exploring and conducting multiple abstract tasks tend to be more dynamic, support greater interactivity and data analysis then simpler target visualization. But as we go through the process, we may find that this supposition no longer holds, or only holds for specific situations. We will revisit such issues as we work through this project.
 
 
 
