@@ -165,9 +165,10 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Motivation: The main motivation for the sketch is that we want people to be able to a. compare and contrast bus line reliability across the city (including socio economic zones), and felt that overlaying bus routes over a map was the best way to do so. In addition, histograms and exponential distributions are some of the best ways to show is there is a wide variation in bus arrival times and reliabity across different bus lines.
 
-	Questions Addressed:
+	Abstract Tasks/Questions Addressed:
 
-	1. 
+	1. Compare actual and predicted values
+	2. Compare variation in headways.
 
 	Comments, Discussion, and Limitations: At this time, this sketch still depicts a very conceptual idea, but there are still aspects that need to be worked on. How we encode socio-economic information into the map will still need to be worked out. This is important because we really want users to be able to see bus service variation across different socio-economic areas. Over the course of the semester, we anticipate reviewing and revising the conceptual idea behind this sketch to create a refined visualization.
 
