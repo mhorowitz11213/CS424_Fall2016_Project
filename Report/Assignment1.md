@@ -1,7 +1,9 @@
 SECTION ONE: RESEARCH TOPIC, AREAS OF INTEREST, AND DATA EXPLORATION:
+
 	The Chicago Transit Authority is the leading agency for public transportation in the Chicago metropolitan region. The agency, which is comprised of an elevated train system, known as the CTA ‘L’, and bus system serves over 1,000,000 riders per weekday, with the bus alone accounting for approximately 620,000 of those clients.[^1]  Given the importance public transit plays in the City of Chicago, reliable services, especially bus service, which accounts for two thirds of all riders, is essential. However, in the past few years, bus arrivals have become erratic. Buses frequently arrive late, arrive one after another in a bunched-up manner—thereby resulting in long wait times—, or at times don’t arrive at all. Many times, passenger have come to look at the Ventra app, the official app of CTA, Pace, and Metra, for arrival times and have found the “next bus arriving” information displayed on the app to be incorrect. This condition is known as ghost buses, and is something that has vexed riders, CTA officials, business leaders, and other government officials. The CTA has promised to fix this with a new program called the "Frequent Network Initiative" with a promise of 10 minute headways during peak travel times 20 minutes during non peak times, and waitimes to not exceed 30 mins on other lines, with buses expected to arrive no more than 1 minute before and 5 minutes after a scheduled Ventra time. [^3]  As such, the visualization proposed in this research will help Chicagoans better understand bus reliability throughout the city. At this preliminary stage, it is anticipated that the visualization will show average arrival times, wait times, ghost buses, and more. 
 
 SECTION TWO: OBSERVATION AND DATA COLLECTION PLAN:
+
 	To create a visualization necessary to convey bus reliability, data was collected in the field. First, the team met to discuss the general framework they thought would be best for obtaining the data needed to create the visualization. The three team members decided that the best way to collect data would employ direct in the field collection. In person data collection was determined to be the best approach since the only way to compare actual arrival times to Ventra scheduled arrivals is by observing first hand. The rough idea the group had would be for each member to stand in front of a bus stop and observe how long it took for the next bus to arrive, while also recording “the next bus information” displayed on the official Ventra app. This process would then be repeated over and over again. 
 	However, before data could be collected, the group had to decide what variables, features and measures needed in order to capture bus frequencies and reliability. These attributes would be decided in a two step process: first decide in general what features the group thinks could be important and necessary to collect, and second to conduct a pilot data collection and then based on the experience, refine the features and data types necessary, as well as methods for collecting data.
 	
@@ -37,6 +39,7 @@ SECTION TWO: OBSERVATION AND DATA COLLECTION PLAN:
 	With these questions in mind, the group was almost ready to conduct a small pilot data collection.	However, before collecting data, census data was quickly reviewed. Even in the pilot collection, the group wanted to try and cover different demographic regions. These regions needed to be different not just in terms of income and household wealth, but also in terms of lifestyle--vibrant downtown, walkable residential, suburban/bunglow belt, etc. neighborhoods--to ensure that the visualization captures CTA reliability as felt by all Chicago residents. For this part of the research, the group turned to the American Community Survey to look at demographic and lifestyle data to help determine the different socio-economic neighborhoods in the city, allowing the group to select neighborhoods, that even in the pilot, represent the city's population as a whole [^4]. Finally, it is important to note that it will be impossible to cover every bus stop, route, line, neighborhood, or community district in the city. This was acknowledged by the group, and is something we will keep in mind. However, it was decided that a sample that does its best to cover as much variation in the city's socio-economic and demographic makeup is the best we can hope for.
 
 SECTION THREE: PILOT AND DATA COLLECTION:
+
 	Pilot Data Collection Locations and General Description of Process:
 	With the initial data dictionary, domain questions, and demographic data in hand, the following data collection was conducted for the pilot study:
 	1. Matt covered both the Fulton Market and River North submarkets, representing the downtown region, whose population consists of workers in offices, downtown vistors, downtown residents, and tourists. In this part of the process, Matt observed buses arriving on September 21 at around 9:45 AM in Fulton Market (Halsted and Fulton Market) in the West Loop during morning rush, and again on September 26 at around 5:20 PM in River North (Kingsbury and Grand) in River North, observing weekend traffic into the entertainment and shopping district.
@@ -49,6 +52,7 @@ SECTION THREE: PILOT AND DATA COLLECTION:
 	4. It is also important to note that this is a timely process. Only 5 to 6 buses on average arrive per hour. This means data collection is timely. Since many team members are flexible schedules this shouldn't be too much of an impediment, however it is important to note that this could become a bigger problem as the group continues to collect data.
 
 SECTION FOUR: DATA DESCRIPTION, CURRENT DATA DICTONARY, AND DOMAIN QUESTIONS
+
 	Our pilot and initial data collection resulted in a small observational dataset consisting of 10 bus-arrival observations across at least three CTA routes and three geographically/demographically distinct areas per group member. The observations currently cover Route 147 at Sheridan and Granville in Edgewater, Route 22 at Clark and Devon in Rogers Park, Route 8 at Halsted and Fulton in Fulton Market and Route 66 at Grand and Kingsbury in River North. Each observation records the date, day of the week, route, stop, stop id, direction of travel, the arrival time predicted by the Ventra application, the actual bus arrival time, the time elapsed since the previous observed bus, the next-arrival time predicted by Ventra, and the actual time until the next bus when it could be observed. We also recorded qualitative comments describing events such as buses arriving early or late, buses appearing to bunch together, and buses being added to the Ventra application after the previous bus had already arrived. The observations therefore contain variation across route, geographic location, date, time of day, direction, predicted arrival, and actual arrival behavior. The pilot dataset provides observations from downtown and near-downtown areas as well as residential areas and college neighborhoods, allowing us to begin thinking about the differences each of the environments. However, the current dataset is still limited in both size and geographic and temporal coverage. The observations were collected during relatively short observation periods and primarily during morning or evening commuting periods, so they do not represent all times of day or all days of the week. The selected locations were also chosen deliberately to represent different types of neighborhoods rather than through a random sample of all CTA stops. Consequently, our observations cannot be used to claim that a particular route or neighborhood is generally more or less reliable across the entire CTA system. There may also be observer-related differences in recording times, particularly when buses arrive very close together or when the Ventra application updates while an observation is taking place.
 	The process of turning bus service into structured data required us to make several decisions about what constitutes an observation. We defined an observation around the arrival of a bus at a particular stop, while also recording information about the previous and subsequent buses when possible. This allowed us to represent the phenomenon not simply as whether a bus was "on time," but as a sequence of bus arrivals and intervals between them. The "Ventra Time" and "Real Time" attributes capture the difference between what the passenger-facing application predicts and what actually occurs, while "Observation Previous" and "Actual Next" allow us to study the spacing between buses. The qualitative "Comments" field was retained because some events could not be adequately represented using numerical values alone. For example, a sequence of buses arriving close together may indicate bunching, while a bus appearing in the Ventra application only after a previous bus has arrived may suggest an update or prediction problem.
 	At the same time, converting the observations into rows necessarily removed information from the original phenomenon. We did not record the exact location of every bus along its route before arrival, the number of passengers waiting, the number of passengers boarding, traffic conditions, the bus's position before it reached the stop, or the reasons for a delay. We also did not initially record every bus that was expected but failed to arrive, which makes it difficult to distinguish a true "ghost bus" from a prediction that was simply updated or removed by the application. The decision to use the bus arrival as the unit of observation also means that our dataset emphasizes individual arrival events rather than the experience of a passenger waiting continuously at a stop. These limitations became important as we began thinking about the questions our data could actually support.
@@ -106,6 +110,7 @@ SECTION FOUR: DATA DESCRIPTION, CURRENT DATA DICTONARY, AND DOMAIN QUESTIONS
 	A fifth question emerged from thinking about the difference between average service and consistent service. Two routes could have similar average arrival intervals while producing very different passenger experiences if one route has relatively regular intervals and the other alternates between very long gaps and very short intervals. Using "Observation Previous", "Actual Next", and the predicted intervals, we can investigate the variability of bus spacing rather than only its average. This question may ultimately be more informative for our visualization than simply counting "ghost buses," because it captures both long waits and subsequent bunching.
 
 SECTION FIVE: TASK ABSTRACTIONS
+
 	The questions above are domain-specific because they refer directly to CTA buses, Ventra, routes, and bus stops. For visualization design, we need to translate them into more general user tasks. This helps us to avoid tunnel vision, in which the group as a whole decides on a particular chart or map before determining what a user actually needs to accomplish. Furthermore, creating such abstractions will ensure that the visualization is able to answer some of the most pertinent questions, by mapping specific domain level questions to abstract level actions, ensuring that the visualization can support the types of queries and exploration a user will require when exploring a visualization of CTA usablity.
 
 	Below are some of the domain to task mappings the group has created. 
@@ -161,6 +166,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 1 (Figure 1): Map Selection, Reliability, and Probability of On Time Arrival
 
+![Fig_1](Sketches/Rough Sketches/Fig 1.png)
+
 	Main Idea: This sketch is comprised of three linked views. At the top, a map is presented, enabling users to select up to two routes from any geographic area in Chicago to compare. Because routes on direct geographic headings are being compared, a map is suitable for this part. This map contains marks that are the lines bus routes take, with the channels being the color of the lines, their geo-coordinate positions, and once up to two routes are selected by clicking on them, their highlighting. Once two routes are selected, the lower two portions of the sketch--a histogram on the bottom left showing average arrival time and an overlay of exponential distribution of predicted arrival time and two histograms on the bottom right showing the observed arrival times (binned in intervals of 5 minutes)--will populate with the corresponding information for the two selected bus lines. Here the marks are the rectangle histograms and the lines that make up the exponential distribution depicting the probability of when the next bus arrives by minutes. This attribute will need to be calculated. The channels are colors, x, y axis positions, size of histogram bars, and probability for the exponential distribution.
 
 	Motivation: The main motivation for the sketch is that we want people to be able to a. compare and contrast bus line reliability across the city (including socio economic zones), and felt that overlaying bus routes over a map was the best way to do so. In addition, histograms and exponential distributions are some of the best ways to show is there is a wide variation in bus arrival times and reliabity across different bus lines.
@@ -175,6 +182,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 2 (Figure 2): Radial Bar Chart Showing Probability Bus Arrives On Time (As set by CTA):
 
+![Fig_2](Sketches/Rough Sketches/Fig 2.png)
+
 	Main Idea: The sketch is designed to show the probability that a bus arrives on time, allowing a user to compare up to 10 or so bus lines at a time --as of now we haven't figured out how many buses lines should be shown at once--. The variable for probability will be computed. Here the emphasis is on creating visual that depicts in a bold and obvious way the differences in expected on time performance of bus lines. A Radial chart does this by exaggerating differences between bus lines. Here, the marks are the rectangles that make up the radial bar chart, while color and size are the main channel encodings.
 
 	Motivation: The main motivation for this sketch to convey the any potential extreme differences between bus lines. Of all the sketches proposed by the group, this one was crafted in particular to focus on differences between service, based on probability of bus arriving with the expected arrival time of 10-30 minute headways (based on line), as set by the CTA. Furthermore, this specific design was selected after doing some cursory internet searches. Basic internet indicated that radial bar graphs are some of the visual conduits for showing extreme variation between classifications.[^5] 
@@ -186,6 +195,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 	Comments, Discussion, and Limitations:  This sketch is heavily dependent on probabilities of bus arrivals. But this may require many more observations than the group is capable of obtaining. Also, if after collecting all data, variations are not apparent between bus lines, then using radial bar chart may not be the best strategy. We may have to revisit this idea if the data does not pan out.
 
 	Sketch 3 (Figure 3): Tree Map of Average Wait Times and Hit/Miss Target 80 Percent of Time
+
+![Fig_3](Sketches/Rough Sketches/Fig 3.png)
 
 	Main Idea: As noted in this report, the CTA expects buses to hit their either 10 or 30 minute headway target at least 80 percent of the time (being no more than 1 minute early or 5 minutes late). Here, the group decided that they wanted to try a visualization that could support cross comparisons (average wait times across service lines) and a simple yes no for meeting targets. Tree maps are a good conduit for showing variation across a large number of categories, while they are good for also encoding important discrete variables, such as met on time targets or not, in a compact overlay format.[^6] This visualization will utilize marks of squares representing each bus line (or perhaps a subset if it becomes too busy including all lines). The channels on this tree map will be the sizes of the squares with lines with the longest headways having the largest squares and a color scheme in which will depict if a bus met the 80 percent on time threshold or not (multi color may be used to differentiate between the 10 and 30 minute headways categories)
 
@@ -199,6 +210,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 	Comments, Discussion, and Limitations: This is one of the more basic visualizations created. Its purpose is test if a basic visualization whose sole goal is to help identify large variations in reliabilty between lines, would work well. As of now, this is one of the group's favorite visualizations, but it does suffer from one big flaw. For this visualization to be effective, the group will need to collect data from a large number of bus lines which may not be feasable for a semester long research. The group would very much like to use this or a similar visualization either as a stand alone or as part of a linked visualization, provided enough data from enough different bus lines can be observed.
 
 	Sketch 4 (Figure 4): Bus Service Rhythm/Arrival Timeline
+
+![Fig_4](Sketches/Rough Sketches/Fig 4.png)
 
 	Main idea: This sketch represents bus service as a temporal “rhythm” rather than as a conventional line or bar chart. Each route and stop is represented as a horizontal lane, with the x-axis showing time and each observed bus represented by a mark placed at its actual arrival time. The horizontal distance between consecutive bus marks represents the actual headway between buses. Ventra's predicted next arrival is shown as a second, lighter or hollow mark connected to the current bus by a small arrow. This allows the viewer to see both the rhythm of actual service and the difference between expected and observed arrivals.
 
@@ -215,6 +228,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 	Comments, Discussion, and Limitations: This is one of the first more complex visualization. Here, four tasks were addressed. The big challenge was to see if this large number of abstract tasks could be addressed in a visualization without the visualization becoming too busy. We think that we found the right balance using a temporal rhythm design over bar charts or line charts, as employing those designs would undoubtably make the visualization hard to interpret. We definetly want to incorporate this sketch into our final design, but will need to think if it really addresses all four tasks.
 
 	Sketch 5 (Figure 5): Ventra vs. Reality “Service Clock”
+
+![Fig_5](Sketches/Rough Sketches/Fig 5.png)
 
 	Main idea: This sketch takes a very different approach by representing each route or observation period as a circular clock. Instead of reading service from left to right along a timeline, the viewer looks at the relationship between predicted and actual bus arrivals around a shared time reference. Actual bus arrivals are placed on the outer part of the clock, while Ventra-predicted arrivals are placed on an inner ring. Each predicted arrival is connected to the corresponding actual arrival with a line. The length and direction of this connection represent the discrepancy between what Ventra predicted and what actually happened.
 
@@ -234,6 +249,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 6 (Figure 6): Spatial Reliability Map with Stop-Level Service Glyphs
 
+![Fig_6](Sketches/Rough Sketches/Fig 6.png)
+
 	Main idea: This sketch shifts the focus from time to geographic context. A map of Chicago is used as the overall structure, with the observed CTA stops plotted at their geographic locations. Instead of representing each stop simply as a point, each stop contains a small custom glyph summarizing the observed service pattern at that location. For example, the glyph could contain several concentric or radial segments representing typical headway, the largest observed gap, and the number of closely spaced or bunched buses. The CTA route itself can be drawn through or near each observation point so that the viewer can see how the service observations relate to the broader transit network.
 
 	Motivation: The motivation for this sketch comes from the original research question: bus reliability is not only a temporal problem but also a spatial problem. The current observations intentionally cover different kinds of Chicago environments, including downtown/near-downtown areas and residential neighborhoods. A map allows the viewer to connect service patterns with location and, in a later version of the dataset, with neighborhood-level demographic or transportation characteristics. For example, the current observations could show the very different service patterns at Route 157 in the West Loop and Route 96 in the northern residential area. As more observations are collected, the same design could be expanded to compare additional CTA stops.
@@ -248,6 +265,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 	Comments, Discussion, and Limitations: This sketch addresses the abstract tasks of locating, comparing, and identifying geographic patterns. Position encodes the location of each stop, while the glyph inside each stop summarizes service behavior. Within a glyph, radial length or segment size could represent headway, while the number of segments could represent the number of observed buses or service events. A separate visual channel such as orientation, line thickness, or annotation could distinguish bunching from long gaps. The main strength of this design is that it combines the geographic question with the temporal data rather than treating the two as separate analyses. Its main weakness is that the glyphs could become complicated to read, particularly if many variables are included at each stop. With only four current locations, the map would also be relatively sparse, so its usefulness would increase substantially as more stops are observed.
 
 	Sketch 7 (Figure 7): Bunching Gap Diagram
+
+![Fig_7](Sketches/Rough Sketches/Fig 7.png)
 
 	Main idea: This sketch shifts the focus from the exact timing of individual buses to the relationship between the spacing before and after each bus. Each observed bus is represented as a single point in a two-dimensional coordinate system. The x-axis represents the actual headway from the previous bus, while the y-axis represents the actual headway to the next bus. A diagonal reference line, where y = x, represents balanced service, meaning that the bus arrived after approximately the same amount of time as the interval until the next bus. Points that fall far from this diagonal represent an imbalance in service spacing. For example, a point at approximately (20, 2) represents a bus that arrived after a 20-minute gap but was followed only two minutes later by another bus, while a point around (2, 20) represents a bus that arrived only two minutes after the previous bus and was followed by a 20-minute gap. These patterns can reveal bunching and the service gaps that may follow it.
 
@@ -265,6 +284,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 8 (Figure 8): The Interactive Route
 
+![Fig_8](Sketches/Rough Sketches/Fig 8.png)
+
 	Main Idea: Google Maps has long supported giving transit directions from point A to B using the shortest path, only updating for immediate issues like delays happening in the current time. However, here what we propose is a visualization that allows users to find the top three (or so) best routes based on bus reliablity--buses with the lowest headway times--instead of shortest path, and then to select the path to see details. This visualization diverges from the others in that this one is designed for the user who simply is interested in planning their own travel, and is unsure of the true fastest route for getting to a destination with the most reliable service. Unlike the other visualization this one is intended for the general communiting audience and not as much for researchers and policy makers. This visualization utilizes marks in the form of bubbles corresponding to destinations and potential transfers, and the links showing the route. These are super inposed on both the route section where the channel is the order of the selected route from start at top to destination at bottom, and imposed on the map where the main channels are the coordinate system. To further differentiate this visualization from the others, should it be possible, it would be nice to generate a few points of interest at every destination or transfer on a path, that can be seen when the user clicks on one of the bubbles. This will add a more exploratory touch to this visualization.
 
 	Motivation: The goal with this visualization is to be more informative, and less research based. Here we want users to have fun and explore not only the best path of travel but to learn something about the city.
@@ -280,6 +301,8 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 9 (Figure 9): Histogram and Exponential Distribution For Prognosticating the Future Bus Arrivales
 
+![Fig_9](Sketches/Rough Sketches/Fig 9.png)
+
 	Main Idea: This visualization utilizes a histogram in which a user will be able to select a subset of routes and plot a histogram of average bus wait times when observations began (September 2026) ended (anticipated November 2026) and the future (say December 2026), which will be calculated using an ARIMA method. In addition, exponential distributions for each of the bus lines for the three temporal periods. As such, the marks used are the bars in the histogram and lines in the line graph, with the channels being colors for the bar chart--to distinguish beteen routes--and their sizes, while the histogram will uses line colors--to distinguish between routes--and x,y position with x being time and y being probability, with a key used to distinguish the lines.
 
 	Motivation: The group wanted to see whether or not a visualization could support doing time series research. In particular predicting the future. Looking at statistics books, it appears that using histograms and exponential distributions is the best way to convey this.[^7] In particular we wanted users to be able to do some level of prediction, and thought it would be worth while exploring this type of visualization.
@@ -290,8 +313,6 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Comments, Discussion, and Limitations: To the group, this sketch was the most controversal for multiple reasons. First, it appears from a literature search that the best method for visualizing time series data is using histograms and exponential distributions, to types of data structures that have been used in Sketch 1--though in this case we omitted the map control and focus on overlaying different temporal time series data on top of each other to allow direct evaluation--. Second, showing multiple bus routes with multiple temporal times may be difficult for a user to interpret, it might make the visualization too busy. This is something we will also need to think about. Finally, time series data is notorious difficult to formulate without sufficient data. It may be too hard to acquire the data needed to create this visualization, and we also believe that while interesting, this visualization will probably be of least interest to a user given its statistics heavy application. Finally when crafting this visualization, we tried to make it as different from Figure 1. We did not include a map, and did not focus on just a two way comparison, but instead on a time comparison. It just so happens that histograms and exponential distributions work best for both direct descriptive comparison and time series comparison. In addition, aticipated interactivity would differ between the two with this visualization including interactive control to change time periods, within the range stated above, to manipulate the distributions themselves, thus employing a very different interface relative to sketch 1 (see next section for futher discussion). At the time of writing, this is the group's least favorite sketch, and if included in a final visualization, will need to be part of a much greater linked analytic system.
 
-
-
 	Comments on Rough Sketches:
 
 	Before presenting and discussing the refined sketches, some commentary on the rough sketches is warranted. It became obvious as we wrote up the preceeding section, and discussed our sketches, that some worked and some did not. In particular:
@@ -301,6 +322,88 @@ SECTION SIX: VISUALIZATION SKETCHES
 	-Sometimes visual marks, such as histograms, and maps were used in multiple sketches. This holds especially true for Sketches 1 and 9, which both heavily feature bar charts and exponential probability distribtions. However, in both cases these design choices were repeated to test if they work better for depicting discriptive data (Sketch 1) or for showing time series data (Sketch 9). Here the main motivation was not to re-use the same design but to see if two types of popular marks--bars in a histogram and lines in a line graph--work better for one type of analysis over another, while ensuring that sketch 1 visualization heavily depends on map based filtering, while Sketch 9 depends on radio button filtering without using a map--which futher tests if histograms and line charts can be visually interesting enough without the addition of a map--. 
 
 	Refined Sketches:
+
+	Refined Sketch 1 (Fig 10): Interactive Route Reliability Map
+
+![Fig_10](Sketches/Refined Sketches/Fig 10.png)
+
+	Main idea: This refined sketch combines the geographic focus of Sketch 1 and Sketch 6 with the temporal reliability information from Sketch 4. The visualization begins with a map of Chicago showing the observed CTA bus routes and stops. Each observed stop is represented by a mark positioned according to its geographic coordinates. Users can select one or two routes or stops on the map, after which the lower portion of the visualization updates to show the reliability characteristics of the selected locations. Rather than using a complicated glyph to encode every variable directly on the map, the map is primarily used for geographic selection, while the detailed service information is shown in a linked view below it. This keeps the map readable while still allowing users to connect service reliability to geographic context. 
+
+	The linked detail view contains a horizontal timeline for the selected route or stop. Individual bus arrivals are represented as points positioned according to their actual arrival time, with the horizontal distance between consecutive points representing the observed headway. Ventra's predicted arrival can be represented by a smaller secondary mark connected to the corresponding actual arrival, allowing prediction errors to be identified without overwhelming the map itself. A small summary panel can also report measures such as typical headway, largest observed gap, and number of closely spaced buses. The goal is therefore to allow the map to answer where the service pattern occurs while the linked timeline explains what the service pattern looks like.
+
+	The main questions addressed are whether reliability differs across geographic locations, which routes or stops show unusual bunching or long gaps, and how predicted service compares with actual service. The relevant attributes include route, stop location, date, direction, Real Time, Ventra Time, Observation Previous, Observation Next, and Actual Next. Geographic coordinates determine the position of the stop and route marks on the map. In the timeline, actual arrival time determines horizontal position, while the distance between consecutive marks represents actual headway. Ventra predictions are represented by secondary marks, with the distance between predicted and actual positions representing prediction error. Route selection and highlighting provide an interaction channel that connects the map to the detailed view.
+
+	The main strength of this refined design is that it separates the geographic comparison task from the more detailed temporal analysis task. A user can first locate an area or route of interest and then inspect the actual service behavior at that location. This also leaves room for demographic or transportation characteristics to be added to the map later without forcing those variables into the service glyph itself. The main limitation is that the visualization depends on having enough observations across different geographic locations to make the map meaningful. With only a few observed stops, the map would remain sparse and should not be interpreted as representing citywide reliability.
+
+	Question or task addressed:
+
+	1. Compare observed bus reliability across different geographic locations.
+	2. Identify locations with unusual bunching or long service gaps.
+	3. Compare predicted and actual bus arrivals at selected locations.
+	4. Locate routes or stops where service patterns warrant further investigation.
+
+	Relevant attributes:
+	1. Route
+	2. Stop location and CTA stop ID
+	3. Direction
+	4. Date and time
+	5. Real Time
+	6. Ventra Time
+	7. Observation Previous
+	8. Observation Next
+	9. Actual Next
+
+	Marks and visual channels:
+	1. Map: route lines and stop points
+	2. Map position: geographic location
+	3. Timeline points: individual bus arrivals
+	4. Horizontal position: arrival time
+	5. Distance between points: actual headway
+	6. Secondary predicted marks: Ventra arrival predictions
+	7. Distance between predicted and actual marks: prediction error
+	8. Selection/highlighting: selected route or stop
+
+	What the viewer should learn: The viewer should be able to identify where service reliability differs, determine whether a particular stop experiences bunching or long gaps, and then inspect the actual sequence of buses responsible for that pattern. The visualization should make it possible to move from a broad geographic question such as “Where are reliability problems occurring?” to a more specific question such as “What does the service pattern at this stop actually look like?”
+
+	Refined Sketch 2 (Fig 11): Headway Imbalance and Bunching Diagnostic
+
+![Fig_11](Sketches/Refined Sketches/Fig 11.png)
+
+	Main idea: This refined sketch develops the Headway Balance/Bunching Gap Diagram from Sketch 7 while incorporating the sequential information that made Sketch 4's Bus Service Rhythm useful. Instead of representing every bus primarily according to its arrival time, the visualization represents each bus according to the relationship between the headway before it and the headway after it. The x-axis represents the actual headway from the previous bus, while the y-axis represents the actual headway to the next bus. A diagonal reference line, y = x, represents balanced service. Points close to this line indicate that the spacing before and after a bus was relatively similar, while points far from the line indicate a substantial change in service spacing.
+
+	The visualization is particularly useful for identifying bunching followed by a service gap. For example, a bus that arrives two minutes after the previous bus and is followed twenty minutes later by another bus would appear near (2,20). Conversely, a bus that arrives after a twenty-minute gap and is followed only two minutes later would appear near (20,2). These points provide a direct representation of the uneven spacing that occurs when buses bunch together. The observations can be separated or grouped by route so that the viewer can compare the patterns of Routes 147, 22, 157, and 96.
+
+	The relevant attributes are Observation Previous, Actual Next, route, stop, direction, and date. The primary mark is a point, with the x-position encoding the previous actual headway and the y-position encoding the following actual headway. The diagonal reference line acts as a visual baseline for balanced service. The position of each point relative to this line communicates the degree and direction of headway imbalance. Route can be represented through grouping or a selectable filter rather than adding several additional visual channels to every point. Selecting an individual point could optionally reveal the corresponding date, stop, and bus observation, allowing the user to connect an unusual point back to the original observation.
+
+	This refined sketch focuses on fewer tasks than the original timeline and therefore avoids trying to simultaneously communicate geography, prediction accuracy, and temporal sequence. Its primary purpose is to identify and compare uneven service-spacing patterns. The design is particularly appropriate for the Route 157 observations, where several buses arrived approximately two minutes apart and were followed by a much longer service gap. Route 96 provides a contrasting pattern because its buses are generally separated by much longer intervals. The visualization therefore allows the viewer to determine whether a route's reliability problem is primarily caused by generally long headways, extreme variation in headways, or a specific bunching-and-gap pattern.
+
+	The main strength of this design is that it makes a relationship that is difficult to see in a conventional timeline explicit: the connection between the spacing before a bus and the spacing after it. The viewer does not need to mentally connect two separate intervals to recognize a bunching event. The main limitation is that the visualization removes geographic location and much of the chronological sequence. It should therefore be used as a focused diagnostic view rather than as the only visualization of the dataset.
+
+	Question or task addressed:
+	1. Identify buses associated with unusually uneven service spacing.
+	2. Compare headway patterns across routes.
+	3. Determine whether short headways are followed by long service gaps.
+	4. Determine whether long gaps are followed by closely spaced buses.
+	5. Identify routes with the strongest evidence of bunching.
+
+	Relevant attributes:
+	1. Observation Previous
+	2. Actual Next
+	3. Route
+	4. Stop
+	5. Direction
+	6. Date
+
+	Marks and visual channels:
+	1. Point: individual bus observation
+	2. X-position: actual headway from previous bus
+	3. Y-position: actual headway to next bus
+	4. Diagonal reference line (y = x): balanced service
+	5. Distance from diagonal: degree of headway imbalance
+	6. Position above/below diagonal: direction of the imbalance
+	7. Grouping/selection: route
+
+	What the viewer should learn: The viewer should be able to see whether buses are arriving at a relatively consistent rhythm or whether service spacing changes sharply from one bus to the next. In particular, the visualization should make patterns such as “two buses arrive two minutes apart, followed by a twenty-minute gap” immediately recognizable. It should also allow comparison between routes to determine whether uneven spacing is an isolated observation or a recurring pattern within a particular route.
 
 SECTION SEVEN: SUMMARIZING
 
@@ -314,6 +417,7 @@ SECTION SEVEN: SUMMARIZING
 	However, until the visualization is coded up and deployed in a test, it will be impossible to truly determine how well they work for answering domain questions. We felt that grounding them in the abstract tasks is the best way to keep the sketches grounded, while open to new domain questions, but until coded up and deployed, it is impossible to know, and thus, our entire strategy may need to be refined or even reconducted. 
 
 SECTION EIGHT: CONCLUDING COMMENTS AND FUTURE QUESTIONS THE GROUP WILL NEED TO ANSWER
+
 	This project has been a iterative work in progress. As a group, we really wanted to visualize a major issue affecting the lives of Chicagoans on a daily basis. Bus reliability has been in the news over the past few years, and with over 600,000 daily rides taken on the bus system, it's worth exploring this topic through visual analysis.
 	But with that noted, we as a group really did not know how to tackle this topic. So we decided to follow the iterative approach, starting with the broadest goals, testing suppositions--including data collection--and then refining our research.
 	
@@ -330,13 +434,31 @@ SECTION EIGHT: CONCLUDING COMMENTS AND FUTURE QUESTIONS THE GROUP WILL NEED TO A
 	--Should a visualization attempt to help and answer multiple tasks, data questions, and ultimately domain questions or should many linked  views be used instead, with each visualization attempting to be narrow in its approach? Specifically which is easier for users?
 	-At this point, the team is still unsure, but has settled on a strategy that combining multiple diverse tasks into a single view is best. Members of the group came to realize that the visualizations that support exploring and conducting multiple abstract tasks tend to be more dynamic, support greater interactivity and data analysis then simpler target visualization. But as we go through the process, we may find that this supposition no longer holds, or only holds for specific situations. We will revisit such issues as we work through this project.
 
+SECTION NINE: COLLABORATION PROCESS
 
+	The group consisted of Matthew Horowitz, Kaya (Shambhawi) Sharma, and Mahd Rai. We communicated primarily through Discord, which we used to coordinate progress, discuss questions and challenges, share scanned sketches and other project artifacts, and update one another about commits to the shared GitHub repository, where all three members were added as collaborators. In addition to online communication, the group met twice a week to review the progress of the assignment, discuss the results of the data collection, evaluate visualization ideas, and determine the next steps. This regular communication helped the group make decisions collectively rather than having individual members work independently without feedback from the rest of the group.
 
-[^1] CTA (2026), “Facts at a Glance”, Chicago Transit Authority, Available at: CTA Facts at a Glance - CTA, Accessed on: 27 September 2026. 
-[^2] Stanton, Liam (2026), “CTA has long road ahead to regain riders’ trust”, Chicago Sun Times, Available at: CTA has long road ahead to regain riders' trust - Chicago Sun-Times, Accessed on: 27 September 2026
-[^3] CTA (2026), "CTA Launches New Frequent Network For Buses", Chicago Transit Authority, Available at: https://www.transitchicago.com/cta-launches-new-frequent-network-for-buses/, Accessed on: 2 October 2026, Smentkowski, Elena (2026), "The CTA Is Expanding Bus Service Citywide--Here's What It Means For You", Secret Chicago, Avaliable at: https://secretchicago.com/cta-expanded-bus-service-chicago-2026/, Accessed on: 2 October, 2026, CTA (2023), "Chicago Transit Authority Service Standards and Policies", Chicago Transit Authority, Available at: https://www.transitchicago.com/assets/1/6/Chicago_Transit_Authority_Service_Standards.pdf, Accessed on: 2 October 2026. 
-[^4] Census.gov (2026), "Search: Chicago, Illinois", United States Census Bureau, Available at: https://data.census.gov/all?q=Chicago+city,+Illinois, Accessed on: 2 October 2026
-[^5] Visualizing.org (2026), "Radial Bar Charts", Visualizing.org, Available at: https://www.visualizing.org/radial-bar-chart, Accessed on 3 October 2026.
-[^6] Tableau (2026), "What is a Tree Map?", Tableau, Available at: https://www.tableau.com/chart/what-is-treemap, Access on: 3 October 2026.
-[^7] Siegel, Eric (2013), Predictive Analytics, Wiley: Hoboken
-[^8] CTA (2026), CTA Bus Tracker, Chicago Transit Authority, Available at: https://ctabustracker.com/home, Accessed on: 2 October 2026.
+	Data collection was divided among the three members so that each person was responsible for collecting observations from multiple bus routes and from different areas of Chicago. For the pilot dataset, members initially observed at least two routes in different geographic contexts, with the goal of including downtown or near-downtown areas as well as residential neighborhoods. The group also intentionally looked for routes that, based on prior observation, experience, or discussions found through online resources, might exhibit interesting service patterns such as bunching or unusually long gaps. As the project expanded, each member collected observations from additional routes, with the goal of obtaining at least five observations per route. Dividing the collection this way allowed the group to cover more routes and geographic areas than would have been possible if all members had collected observations from the same locations.
+
+	The group also worked to maintain consistency in how observations were recorded. Before collecting the larger dataset, the members discussed which attributes should be recorded, including the route, stop, direction, Ventra predicted arrival, actual arrival, previous headway, following predicted headway, following actual headway, and qualitative comments. Using the same set of fields and the same general observation procedure allowed observations collected by different members to be combined into a common dataset. The pilot collection was particularly useful for identifying ambiguities in the recording process and determining which information was practical to collect in the field. This helped the group refine the collection process before expanding the dataset.
+
+	Sketches and other artifacts were shared through Discord and GitHub. Members scanned or photographed their hand-drawn sketches and posted them in the shared Discord channel so that the other members could review them and provide feedback. The GitHub repository was used to maintain the shared project materials and track changes to the report and other files. This made the design process iterative: rather than having one member create a visualization and treat it as finished, members could propose different approaches, discuss their strengths and weaknesses, and revise them based on group feedback.
+
+	The visualization design process was therefore divided between individual sketching and group refinement. Members generated different visualization ideas rather than all producing identical designs, which resulted in a broad range of approaches, including maps, timelines, prediction comparisons, and headway-based diagrams. Matthew and Kaya contributed substantially to the sketching and refinement process, while the group as a whole reviewed the proposed designs and discussed how well each one addressed the project's research questions and abstract tasks. The group also consulted online resources and visualization literature when evaluating design choices. Through these discussions, some initial ideas were retained, others were modified, and some were rejected when the group determined that they required too much data or would be too difficult to interpret. This iterative process ultimately led the group toward refined visualizations that separated geographic analysis from more focused temporal and service-spacing analysis.
+
+	Several aspects of the collaboration worked particularly well. The division of labor allowed the group to collect observations across more routes and locations while also distributing the writing, sketching, and editing responsibilities. Regular Discord communication and twice-weekly meetings made it possible to identify problems early and make decisions together. Sharing sketches before they were finalized was especially useful because members could identify confusing encodings, overly complicated designs, or questions that a visualization did not actually answer. The shared GitHub repository also provided a common location for the project materials and made individual contributions easier to integrate into the final report.
+
+	The group encountered several challenges. Coordinating data collection around three different schedules made it difficult to observe all routes under exactly the same conditions, and observations had to be collected at different locations and times. There was also a need to ensure that each member interpreted and recorded the observation fields consistently, particularly when documenting predicted versus actual arrival intervals and unusual events such as bunching. The visualization process presented another challenge because several of the initial ideas attempted to answer too many questions simultaneously. Through group discussion and iteration, the members recognized that a visualization does not necessarily need to encode every attribute at once and that linked or complementary visualizations could provide clearer answers to different tasks.
+
+	Overall, the group's collaborative process directly shaped both the dataset and the visualization designs. Dividing data collection among members produced greater geographic and route variation, while comparing observations helped the group recognize patterns such as bunching, long service gaps, and differences in prediction accuracy. Similarly, sharing and critiquing sketches caused the visualization designs to evolve from broad conceptual ideas into more focused designs tied to specific questions and tasks. The process was therefore iterative rather than strictly divided into independent individual assignments: members collected data, discussed what the data revealed, proposed visual designs, reviewed one another's work, and revised the designs based on what they learned. This collaboration helped the final project balance the different perspectives of the three group members while keeping the data collection and visualization design connected to the overall goal of understanding CTA bus reliability.
+
+SECTION TEN: REFERENCES
+
+	[^1] CTA (2026), “Facts at a Glance”, Chicago Transit Authority, Available at: CTA Facts at a Glance - CTA, Accessed on: 27 September 2026. 
+	[^2] Stanton, Liam (2026), “CTA has long road ahead to regain riders’ trust”, Chicago Sun Times, Available at: CTA has long road ahead to regain riders' trust - Chicago Sun-Times, Accessed on: 27 September 2026
+	[^3] CTA (2026), "CTA Launches New Frequent Network For Buses", Chicago Transit Authority, Available at: https://www.transitchicago.com/cta-launches-new-frequent-network-for-buses/, Accessed on: 2 October 2026, Smentkowski, Elena (2026), "The CTA Is Expanding Bus Service Citywide--Here's What It Means For You", Secret Chicago, Avaliable at: https://secretchicago.com/cta-expanded-bus-service-chicago-2026/, Accessed on: 2 October, 2026, CTA (2023), "Chicago Transit Authority Service Standards and Policies", Chicago Transit Authority, Available at: https://www.transitchicago.com/assets/1/6/Chicago_Transit_Authority_Service_Standards.pdf, Accessed on: 2 October 2026. 
+	[^4] Census.gov (2026), "Search: Chicago, Illinois", United States Census Bureau, Available at: https://data.census.gov/all?q=Chicago+city,+Illinois, Accessed on: 2 October 2026
+	[^5] Visualizing.org (2026), "Radial Bar Charts", Visualizing.org, Available at: https://www.visualizing.org/radial-bar-chart, Accessed on 3 October 2026.
+	[^6] Tableau (2026), "What is a Tree Map?", Tableau, Available at: https://www.tableau.com/chart/what-is-treemap, Access on: 3 October 2026.
+	[^7] Siegel, Eric (2013), Predictive Analytics, Wiley: Hoboken
+	[^8] CTA (2026), CTA Bus Tracker, Chicago Transit Authority, Available at: https://ctabustracker.com/home, Accessed on: 2 October 2026.
