@@ -169,7 +169,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 2 (Figure 2): Radial Bar Chart Showing Probability Bus Arrives On Time (As set by CTA):
 
-	Main Idea: 
+	Main Idea: The sketch is designed to show the probability that a bus arrives on time, allowing a user to compare up to 10 or so bus lines at a time --as of now we haven't figured out how many buses lines should be shown at once--. Here the emphasis is on creating visual that depicts in a bold and obvious way the differences in expected on time performance of bus lines. 
 
 --SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
 	Fig 4: Bus Service Rhythm/Arrival Timeline
