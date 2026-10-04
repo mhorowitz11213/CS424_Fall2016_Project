@@ -270,7 +270,11 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Abstract Tasks/Questions Addressed:
 
-	1. 
+	1. To allow users to explore the best paths of travel using CTA bus
+	2. To allow users to explore the city, to learn more about areas where they will be travelling to or transfering through, and to browse areas of interest.
+
+	Comments, Discussion, and Limitations: 
+	
 
 
 	Comments on Rough Sketches:
