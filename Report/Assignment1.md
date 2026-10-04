@@ -166,7 +166,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 1 (Figure 1): Map Selection, Reliability, and Probability of On Time Arrival
 
-![Fig_1](Sketches/Rough Sketches/Fig 1.png)
+![Fig_1](Sketches/Rough%20Sketches/Fig%201.png)
 
 	Main Idea: This sketch is comprised of three linked views. At the top, a map is presented, enabling users to select up to two routes from any geographic area in Chicago to compare. Because routes on direct geographic headings are being compared, a map is suitable for this part. This map contains marks that are the lines bus routes take, with the channels being the color of the lines, their geo-coordinate positions, and once up to two routes are selected by clicking on them, their highlighting. Once two routes are selected, the lower two portions of the sketch--a histogram on the bottom left showing average arrival time and an overlay of exponential distribution of predicted arrival time and two histograms on the bottom right showing the observed arrival times (binned in intervals of 5 minutes)--will populate with the corresponding information for the two selected bus lines. Here the marks are the rectangle histograms and the lines that make up the exponential distribution depicting the probability of when the next bus arrives by minutes. This attribute will need to be calculated. The channels are colors, x, y axis positions, size of histogram bars, and probability for the exponential distribution.
 
@@ -182,7 +182,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 2 (Figure 2): Radial Bar Chart Showing Probability Bus Arrives On Time (As set by CTA):
 
-![Fig_2](Sketches/Rough Sketches/Fig 2.png)
+![Fig_2](Sketches/Rough%20Sketches/Fig%202.png)
 
 	Main Idea: The sketch is designed to show the probability that a bus arrives on time, allowing a user to compare up to 10 or so bus lines at a time --as of now we haven't figured out how many buses lines should be shown at once--. The variable for probability will be computed. Here the emphasis is on creating visual that depicts in a bold and obvious way the differences in expected on time performance of bus lines. A Radial chart does this by exaggerating differences between bus lines. Here, the marks are the rectangles that make up the radial bar chart, while color and size are the main channel encodings.
 
@@ -196,7 +196,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 3 (Figure 3): Tree Map of Average Wait Times and Hit/Miss Target 80 Percent of Time
 
-![Fig_3](Sketches/Rough Sketches/Fig 3.png)
+![Fig_3](Sketches/Rough%20Sketches/Fig%203.png)
 
 	Main Idea: As noted in this report, the CTA expects buses to hit their either 10 or 30 minute headway target at least 80 percent of the time (being no more than 1 minute early or 5 minutes late). Here, the group decided that they wanted to try a visualization that could support cross comparisons (average wait times across service lines) and a simple yes no for meeting targets. Tree maps are a good conduit for showing variation across a large number of categories, while they are good for also encoding important discrete variables, such as met on time targets or not, in a compact overlay format.[^6] This visualization will utilize marks of squares representing each bus line (or perhaps a subset if it becomes too busy including all lines). The channels on this tree map will be the sizes of the squares with lines with the longest headways having the largest squares and a color scheme in which will depict if a bus met the 80 percent on time threshold or not (multi color may be used to differentiate between the 10 and 30 minute headways categories)
 
@@ -211,7 +211,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 4 (Figure 4): Bus Service Rhythm/Arrival Timeline
 
-![Fig_4](Sketches/Rough Sketches/Fig 4.png)
+![Fig_4](Sketches/Rough%20Sketches/Fig%204.png)
 
 	Main idea: This sketch represents bus service as a temporal “rhythm” rather than as a conventional line or bar chart. Each route and stop is represented as a horizontal lane, with the x-axis showing time and each observed bus represented by a mark placed at its actual arrival time. The horizontal distance between consecutive bus marks represents the actual headway between buses. Ventra's predicted next arrival is shown as a second, lighter or hollow mark connected to the current bus by a small arrow. This allows the viewer to see both the rhythm of actual service and the difference between expected and observed arrivals.
 
@@ -229,7 +229,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 5 (Figure 5): Ventra vs. Reality “Service Clock”
 
-![Fig_5](Sketches/Rough Sketches/Fig 5.png)
+![Fig_5](Sketches/Rough%20Sketches/Fig%205.png)
 
 	Main idea: This sketch takes a very different approach by representing each route or observation period as a circular clock. Instead of reading service from left to right along a timeline, the viewer looks at the relationship between predicted and actual bus arrivals around a shared time reference. Actual bus arrivals are placed on the outer part of the clock, while Ventra-predicted arrivals are placed on an inner ring. Each predicted arrival is connected to the corresponding actual arrival with a line. The length and direction of this connection represent the discrepancy between what Ventra predicted and what actually happened.
 
@@ -249,7 +249,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 6 (Figure 6): Spatial Reliability Map with Stop-Level Service Glyphs
 
-![Fig_6](Sketches/Rough Sketches/Fig 6.png)
+![Fig_6](Sketches/Rough%20Sketches/Fig%206.png)
 
 	Main idea: This sketch shifts the focus from time to geographic context. A map of Chicago is used as the overall structure, with the observed CTA stops plotted at their geographic locations. Instead of representing each stop simply as a point, each stop contains a small custom glyph summarizing the observed service pattern at that location. For example, the glyph could contain several concentric or radial segments representing typical headway, the largest observed gap, and the number of closely spaced or bunched buses. The CTA route itself can be drawn through or near each observation point so that the viewer can see how the service observations relate to the broader transit network.
 
@@ -266,7 +266,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 7 (Figure 7): Bunching Gap Diagram
 
-![Fig_7](Sketches/Rough Sketches/Fig 7.png)
+![Fig_7](Sketches/Rough%20Sketches/Fig%207.png)
 
 	Main idea: This sketch shifts the focus from the exact timing of individual buses to the relationship between the spacing before and after each bus. Each observed bus is represented as a single point in a two-dimensional coordinate system. The x-axis represents the actual headway from the previous bus, while the y-axis represents the actual headway to the next bus. A diagonal reference line, where y = x, represents balanced service, meaning that the bus arrived after approximately the same amount of time as the interval until the next bus. Points that fall far from this diagonal represent an imbalance in service spacing. For example, a point at approximately (20, 2) represents a bus that arrived after a 20-minute gap but was followed only two minutes later by another bus, while a point around (2, 20) represents a bus that arrived only two minutes after the previous bus and was followed by a 20-minute gap. These patterns can reveal bunching and the service gaps that may follow it.
 
@@ -284,7 +284,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 8 (Figure 8): The Interactive Route
 
-![Fig_8](Sketches/Rough Sketches/Fig 8.png)
+![Fig_8](Sketches/Rough%20Sketches/Fig%208.png)
 
 	Main Idea: Google Maps has long supported giving transit directions from point A to B using the shortest path, only updating for immediate issues like delays happening in the current time. However, here what we propose is a visualization that allows users to find the top three (or so) best routes based on bus reliablity--buses with the lowest headway times--instead of shortest path, and then to select the path to see details. This visualization diverges from the others in that this one is designed for the user who simply is interested in planning their own travel, and is unsure of the true fastest route for getting to a destination with the most reliable service. Unlike the other visualization this one is intended for the general communiting audience and not as much for researchers and policy makers. This visualization utilizes marks in the form of bubbles corresponding to destinations and potential transfers, and the links showing the route. These are super inposed on both the route section where the channel is the order of the selected route from start at top to destination at bottom, and imposed on the map where the main channels are the coordinate system. To further differentiate this visualization from the others, should it be possible, it would be nice to generate a few points of interest at every destination or transfer on a path, that can be seen when the user clicks on one of the bubbles. This will add a more exploratory touch to this visualization.
 
@@ -301,7 +301,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 9 (Figure 9): Histogram and Exponential Distribution For Prognosticating the Future Bus Arrivales
 
-![Fig_9](Sketches/Rough Sketches/Fig 9.png)
+![Fig_9](Sketches/Rough%20Sketches/Fig%209.png)
 
 	Main Idea: This visualization utilizes a histogram in which a user will be able to select a subset of routes and plot a histogram of average bus wait times when observations began (September 2026) ended (anticipated November 2026) and the future (say December 2026), which will be calculated using an ARIMA method. In addition, exponential distributions for each of the bus lines for the three temporal periods. As such, the marks used are the bars in the histogram and lines in the line graph, with the channels being colors for the bar chart--to distinguish beteen routes--and their sizes, while the histogram will uses line colors--to distinguish between routes--and x,y position with x being time and y being probability, with a key used to distinguish the lines.
 
@@ -325,7 +325,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Refined Sketch 1 (Fig 10): Interactive Route Reliability Map
 
-![Fig_10](Sketches/Refined Sketches/Fig 10.png)
+![Fig_10](Sketches/Refined%20Sketches/Fig%2010.png)
 
 	Main idea: This refined sketch combines the geographic focus of Sketch 1 and Sketch 6 with the temporal reliability information from Sketch 4. The visualization begins with a map of Chicago showing the observed CTA bus routes and stops. Each observed stop is represented by a mark positioned according to its geographic coordinates. Users can select one or two routes or stops on the map, after which the lower portion of the visualization updates to show the reliability characteristics of the selected locations. Rather than using a complicated glyph to encode every variable directly on the map, the map is primarily used for geographic selection, while the detailed service information is shown in a linked view below it. This keeps the map readable while still allowing users to connect service reliability to geographic context. 
 
@@ -367,7 +367,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Refined Sketch 2 (Fig 11): Headway Imbalance and Bunching Diagnostic
 
-![Fig_11](Sketches/Refined Sketches/Fig 11.png)
+![Fig_11](Sketches/Refined%20Sketches/Fig%2011.png)
 
 	Main idea: This refined sketch develops the Headway Balance/Bunching Gap Diagram from Sketch 7 while incorporating the sequential information that made Sketch 4's Bus Service Rhythm useful. Instead of representing every bus primarily according to its arrival time, the visualization represents each bus according to the relationship between the headway before it and the headway after it. The x-axis represents the actual headway from the previous bus, while the y-axis represents the actual headway to the next bus. A diagonal reference line, y = x, represents balanced service. Points close to this line indicate that the spacing before and after a bus was relatively similar, while points far from the line indicate a substantial change in service spacing.
 
