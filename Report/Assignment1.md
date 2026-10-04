@@ -196,21 +196,25 @@ SECTION SIX: VISUALIZATION SKETCHES
 	1. Identify unusual sequences of buses, looking at average wait times
 	2. Compare service characteristics across lines
 
-	Comments, Discussion, and Limitations: 
+	Comments, Discussion, and Limitations: This is one of the more basic visualizations created. Its purpose is test if a basic visualization whose sole goal is to help identify large variations in reliabilty between lines, would work well. As of now, this is one of the group's favorite visualizations, but it does suffer from one big flaw. For this visualization to be effective, the group will need to collect data from a large number of bus lines which may not be feasable for a semester long research. The group would very much like to use this or a similar visualization either as a stand alone or as part of a linked visualization, provided enough data from enough different bus lines can be observed.
 
---SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
-	Fig 4: Bus Service Rhythm/Arrival Timeline
+	Sketch 4 (Figure 4): Bus Service Rhythm/Arrival Timeline
+
 	Main idea: This sketch represents bus service as a temporal “rhythm” rather than as a conventional line or bar chart. Each route and stop is represented as a horizontal lane, with the x-axis showing time and each observed bus represented by a mark placed at its actual arrival time. The horizontal distance between consecutive bus marks represents the actual headway between buses. Ventra's predicted next arrival is shown as a second, lighter or hollow mark connected to the current bus by a small arrow. This allows the viewer to see both the rhythm of actual service and the difference between expected and observed arrivals.
-
-	The main motivation for this sketch was the observation that average headway alone does not describe the experience of waiting for a bus. Route 157 provides a particularly strong example: buses arrive approximately two minutes apart, followed by a gap of approximately twenty minutes. The timeline makes this pattern visually obvious because three or four marks are tightly clustered together and are followed by a large empty interval. Route 96 produces a very different visual pattern, with buses separated by approximately thirty minutes and one gap of almost an hour. Routes 147 and 22 provide intermediate cases. This sketch primarily addresses the abstract tasks of identifying temporal patterns, detecting anomalies, and comparing variation in bus spacing.
 
 	The main attributes represented are Real Time, Observation Previous, Observation Next, Actual Next, route, and stop. The primary mark is a point or short vertical stroke, with horizontal position encoding actual arrival time. The distance between points encodes actual headway, while hollow or secondary marks represent Ventra's prediction. Arrows between predicted and actual positions encode prediction error. A major strength of the sketch is that it preserves the sequential nature of the observations, making bunching and long service gaps immediately visible. A weakness is that adding predicted arrival marks may make the timeline cluttered if many buses and stops are included. The sketch is also primarily temporal and does not communicate geographic relationships very well.
 
-	Questions addressed:
+	Motivation: Here, the main motivation for this sketch was the observation that average headway alone does not describe the experience of waiting for a bus. Route 157 provides a particularly strong example: buses arrive approximately two minutes apart, followed by a gap of approximately twenty minutes. The timeline makes this pattern visually obvious because three or four marks are tightly clustered together and are followed by a large empty interval. Route 96 produces a very different visual pattern, with buses separated by approximately thirty minutes and one gap of almost an hour. Routes 147 and 22 provide intermediate cases. This sketch primarily addresses the abstract tasks of identifying temporal patterns, detecting anomalies, and comparing variation in bus spacing.
+
+	
+
+	Abstract Task/Questions Addressed:
 	1. Where and when do buses bunch together?
 	2. Where are unusually long service gaps?
 	3. How variable is bus spacing across routes?
 	4. How does predicted service compare with actual service?
+
+	Comments, Discussion, and Limitations: 
 
 	Fig 5: Ventra vs. Reality “Service Clock”
 
@@ -264,7 +268,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 	Before presenting and discussing the refined sketches, some commentary on the rough sketches is warranted. It became obvious as we wrote up the preceeding section, and discussed our sketches, that some worked and some did not. In particular:
 	-Sketches that depended on probability may not work well, based on the necessary number of observations needed to calculate a   	probability.
 	-Maps were a common reoccuring theme, in large part because this group really wants to capture demographic variations in bus service. Visualizing this is best done with a map (or at least using a map as part of a linked visualization).
-	-Some visualizations did a better job of incorporating multiple abstract tasks/questions than others. In particular some group members wanted to test visualizations that supported multiple tasks simultaneously, while others wanted to create tighter visualizations that sought to answer only one or two tasks per visualization to see which strategy worked better, while iterating through design choices. At this time, we are still not sure which strategy works best, and in creating the final refined sketches, both methods were deployed.
+	-Some visualizations were created with the intention of incorporating multiple abstract tasks/questions than others. In particular some group members wanted to test visualizations that supported multiple tasks simultaneously, with complex elements including multiple marks and channels, while others wanted to create tighter visualizations that sought to answer only one or two tasks per visualization. The idea behind this was to see which strategy worked better, while iterating through design choices. Question such as, should multiple more basic single (or at most two) task question visualization be created and linked together, or should more complex visualizations be created. At this time, we are still not sure which strategy works best, and in creating the final refined sketches, both methods were deployed.
 
 	Refined Sketches:
 
