@@ -264,7 +264,13 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Sketch 8 (Figure 8): The Interactive Route
 
-	Main Idea: Google Maps has long supported giving transit directions from point A to B using the shortest path, only updating for immediate issues like delays happening in the current time. However, he what we propose is a visualization that allows users to find the top three (or so) best routes based on bus reliablity--buses with the lowest headway times--instead of shortest path. This visualization diverges from the others in that this one is designed for the user who simply is interested in planning their own travel, and is unsure of the true fastest route for getting to a destination with the most reliable service. Unlike the other visualization this one is intended for the general communiting audience and not as much for researchers and policy makers. This visualization utilizes marks in the form of To further differentiate this visualization from the others 
+	Main Idea: Google Maps has long supported giving transit directions from point A to B using the shortest path, only updating for immediate issues like delays happening in the current time. However, here what we propose is a visualization that allows users to find the top three (or so) best routes based on bus reliablity--buses with the lowest headway times--instead of shortest path, and then to select the path to see details. This visualization diverges from the others in that this one is designed for the user who simply is interested in planning their own travel, and is unsure of the true fastest route for getting to a destination with the most reliable service. Unlike the other visualization this one is intended for the general communiting audience and not as much for researchers and policy makers. This visualization utilizes marks in the form of bubbles corresponding to destinations and potential transfers, and the links showing the route. These are super inposed on both the route section where the channel is the order of the selected route from start at top to destination at bottom, and imposed on the map where the main channels are the coordinate system. To further differentiate this visualization from the others, should it be possible, it would be nice to generate a few points of interest at every destination or transfer on a path, that can be seen when the user clicks on one of the bubbles. This will add a more exploratory touch to this visualization.
+
+	Motivation: The goal with this visualization is to be more informative, and less research based. Here we want users to have fun and explore not only the best path of travel but to learn something about the city.
+
+	Abstract Tasks/Questions Addressed:
+
+	1. 
 
 
 	Comments on Rough Sketches:
