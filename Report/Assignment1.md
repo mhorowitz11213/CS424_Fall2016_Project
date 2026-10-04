@@ -230,6 +230,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 	4. Does Ventra accurately communicate periods of very infrequent service?
 
 	Comments, Discussion, and Limitations: A strength of this design is that it makes prediction errors visually prominent. It could reveal whether errors are small and consistent or whether a few observations contain very large discrepancies. It may also make unusual cases, such as a Ventra prediction of 15 minutes followed by a bus arriving only two minutes later, particularly noticeable. A weakness is that circular time is less immediately intuitive than a standard horizontal timeline. If many observations were added, the connecting lines could also overlap and become difficult to interpret. This sketch therefore sacrifices some scalability in order to emphasize the prediction problem. In addition, as noted in previous sketches, this sketch attempts to address up to four tasks, we will need to see if this is feasible or not.
+	Finally, what differentiates this visualization from Sketch 2 is that the visualization employs a  target visualization over a true radial bar chart in that its aims to capture numeric measures within a single category--bus route--rather than categorical data binned and analyzed cross category--. The goal here was to test the supposition that since circular graphs show wide variations, then which is better: using a circular graph for intra or inter categorical--bus lines--comparisons.
 
 	Sketch 6 (Figure 6): Spatial Reliability Map with Stop-Level Service Glyphs
 
@@ -260,7 +261,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 	5. How does the distribution of headway patterns differ across the observed routes?
 	6. Are most observations close to balanced service, or are they concentrated far from the y = x reference line?
 
-	Comments, Discussion, and Limitations: This sketch addresses the abstract tasks of identifying, comparing, and summarizing patterns in bus spacing. Position on the x-axis represents the headway from the previous bus, while position on the y-axis represents the headway to the next bus. The diagonal reference line provides a baseline for balanced spacing, and the distance and direction of a point from this line indicate the degree and type of imbalance. Points can be grouped by route so that the viewer can compare whether some routes have more extreme spacing patterns than others. The main strength of this design is that it makes the relationship between short headways and subsequent long gaps explicit, rather than requiring the viewer to infer that relationship from a sequence of individual observations. Its main weakness is that it removes the actual temporal order of the buses and their geographic locations. It also requires the viewer to understand the meaning of the two axes and the diagonal reference line before interpreting the patterns.
+	Comments, Discussion, and Limitations: This sketch addresses the abstract tasks of identifying, comparing, and summarizing patterns in bus spacing. Position on the x-axis represents the headway from the previous bus, while position on the y-axis represents the headway to the next bus. The diagonal reference line provides a baseline for balanced spacing, and the distance and direction of a point from this line indicate the degree and type of imbalance. Points can be grouped by route so that the viewer can compare whether some routes have more extreme spacing patterns than others. The main strength of this design is that it makes the relationship between short headways and subsequent long gaps explicit, rather than requiring the viewer to infer that relationship from a sequence of individual observations. Its main weakness is that it removes the actual temporal order of the buses and their geographic locations. It also requires the viewer to understand the meaning of the two axes and the diagonal reference line before interpreting the patterns. 
 
 	Sketch 8 (Figure 8): The Interactive Route
 
@@ -303,7 +304,9 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 SECTION SEVEN: SUMMARIZING
 
-	The sketching processes 
+	The sketching processes started with a rough idea. The group knew it wanted to look at spatial data (to answer cross demographic and city wide questions), so a map was in play, distributional data on headways by bus line, so some type of histogram and line graph was warranted--either in the form of probability distribution, or as a classfier--. Finally, the group wanted to also include two very experimental visualizations, ultimately settling on a variation of the Google Maps Directions, and the timeline.
+	But where things became divergent is in the concept of tackling how many abstract tasks should a visualization support. Is more better or does it force the visualization to loose focus? As noted in the previous section, the group tested these suppositions by having one team member draw more complicated visualizations and others work on single or double task visualizations, with the intention of meeting up to discuss which strategies seem to yield the best outcome.
+	
 
 SECTION EIGHT: CONCLUDING COMMENTS AND FUTURE QUESTIONS THE GROUP WILL NEED TO ANSWER
 	This project has been a iterative work in progress. As a group, we really wanted to visualize a major issue affecting the lives of Chicagoans on a daily basis. Bus reliability has been in the news over the past few years, and with over 600,000 daily rides taken on the bus system, it's worth exploring this topic through visual analysis.
