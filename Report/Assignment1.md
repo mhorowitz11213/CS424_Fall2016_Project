@@ -169,6 +169,7 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	1. Compare actual and predicted values
 	2. Compare variation in headways.
+	3. Compare service across differnt routes and different geographic locations.
 
 	Comments, Discussion, and Limitations: At this time, this sketch still depicts a very conceptual idea, but there are still aspects that need to be worked on. How we encode socio-economic information into the map will still need to be worked out. This is important because we really want users to be able to see bus service variation across different socio-economic areas. Over the course of the semester, we anticipate reviewing and revising the conceptual idea behind this sketch to create a refined visualization.
 
@@ -188,7 +189,14 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Main Idea: As noted in this report, the CTA expects buses to hit their either 10 or 30 minute headway target at least 80 percent of the time (being no more than 1 minute early or 5 minutes late). Here, the group decided that they wanted to try a visualization that could support cross comparisons (average wait times across service lines) and a simple yes no for meeting targets. Tree maps are a good conduit for showing variation across a large number of categories, while they are good for also encoding important discrete variables, such as met on time targets or not, in a compact overlay format.[^6] This visualization will utilize marks of squares representing each bus line (or perhaps a subset if it becomes too busy including all lines). The channels on this tree map will be the sizes of the squares with lines with the longest headways having the largest squares and a color scheme in which will depict if a bus met the 80 percent on time threshold or not (multi color may be used to differentiate between the 10 and 30 minute headways categories)
 
-	Motivation: 
+	Motivation: Here, the group wanted to really see if there was a good way to visualize extreme discrepancies in wait times, and to show in an easy to see (color coded yes no) whether buses are meeting their targets. Here, the group also wanted to jettison the idea of looking at probabilities and work simply with raw wait times. Since there are a large number of buses and simple measures (measurement: wait times, category: met target yes or no) a tree graph was seen as the best visual.
+
+	Abstract Task/Questions Addressed:
+
+	1. Identify unusual sequences of buses, looking at average wait times
+	2. Compare service characteristics across lines
+
+	Comments, Discussion, and Limitations: 
 
 --SCRATCH NOTES: map to enable direct comparisons across neighborhoods, socio economic regions, and even bus lines. Map for this is essential because we want referential comparisons.
 	Fig 4: Bus Service Rhythm/Arrival Timeline
