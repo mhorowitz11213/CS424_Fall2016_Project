@@ -262,7 +262,9 @@ SECTION SIX: VISUALIZATION SKETCHES
 
 	Comments, Discussion, and Limitations: This sketch addresses the abstract tasks of identifying, comparing, and summarizing patterns in bus spacing. Position on the x-axis represents the headway from the previous bus, while position on the y-axis represents the headway to the next bus. The diagonal reference line provides a baseline for balanced spacing, and the distance and direction of a point from this line indicate the degree and type of imbalance. Points can be grouped by route so that the viewer can compare whether some routes have more extreme spacing patterns than others. The main strength of this design is that it makes the relationship between short headways and subsequent long gaps explicit, rather than requiring the viewer to infer that relationship from a sequence of individual observations. Its main weakness is that it removes the actual temporal order of the buses and their geographic locations. It also requires the viewer to understand the meaning of the two axes and the diagonal reference line before interpreting the patterns.
 
-	Sketch 8 (Figure 8): 
+	Sketch 8 (Figure 8): The Interactive Route
+
+	Main Idea: Google Maps has long supported giving transit directions from point A to B using the shortest path, only updating for immediate issues like delays happening in the current time. However, he what we propose is a visualization that allows users to find the top three (or so) best routes based on bus reliablity--buses with the lowest headway times--instead of shortest path. This visualization diverges from the others in that this one is designed for the user who simply is interested in planning their own travel, and is unsure of the true fastest route for getting to a destination with the most reliable service. Unlike the other visualization this one is intended for the general communiting audience and not as much for researchers and policy makers. This visualization utilizes marks in the form of To further differentiate this visualization from the others 
 
 
 	Comments on Rough Sketches:
