@@ -36,4 +36,4 @@ SECTION ONE: REFLECTION AND COMMENTS ON ITERATIONS SINCE REPORT ONE
 
 SECTION TWO: PREPARE THE DATA
 
-    This section details the data cleaning process
+    This section details the data cleaning process.
