@@ -53,5 +53,9 @@ SECTION TWO: PREPARE THE DATA
             a. Data--DataPhase2Horowitz
                      DataPhase2Sharma
                      DataPhase2Rai
-        2. Next, each attribute was inspected. To do this a new excel file was created and data from each of the three above files was pasted in, one on top of the other in order to check any missing attributes, change in data types, and column name changes (note, in regards to column name changes, the group plans on reading these Excel files in without headers and then manually adding in column names using Pandas functions).
-        
+        2. Next, each attribute was inspected. To do this a new excel file was created:
+            a. The column names from each of the three excel files were pasted in one on top of another. This ensures that there are no missing attributes and that the attributes in the data set perfectly allign. Note, in regards to column name changes, the group plans on reading these Excel files in without headers and then manually adding in column names using Pandas functions.
+            b. Next, the data from each of the three above files was pasted in, one on top of the other in order to check that there is consistency in data types and to quickly see if any observations are missing data.
+
+        In this step, the following should be noted:
+            a. 
