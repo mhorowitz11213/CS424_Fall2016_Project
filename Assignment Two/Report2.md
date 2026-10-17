@@ -48,4 +48,4 @@ SECTION TWO: PREPARE THE DATA
 
         1. At the start of the visual pre-inspection, the data was organized into multiple files. These were:
 
-            a. 
+            a. Data
