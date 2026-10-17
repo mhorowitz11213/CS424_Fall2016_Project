@@ -50,4 +50,8 @@ SECTION TWO: PREPARE THE DATA
 
         1. At the start of the visual pre-inspection, the data was organized into multiple files. These were:
 
-            a. Data--
+            a. Data--DataPhase2Horowitz
+                     DataPhase2Sharma
+                     DataPhase2Rai
+        2. Next, each attribute was inspected. To do this a new excel file was created and data from each of the three above files was pasted in, one on top of the other in order to check any missing attributes, change in data types, and column name changes (note, in regards to column name changes, the group plans on reading these Excel files in without headers and then manually adding in column names using Pandas functions).
+        
