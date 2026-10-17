@@ -60,4 +60,6 @@ SECTION TWO: PREPARE THE DATA
         In this step, the following should be noted:
             a. The columns were first pasted one on top of the other to be inspected. All columns matched, though some of the exact column names differed:
             -DataPhase2Horowitz used "Observation ID","Stop" and "StopID", while DataPhase2Rai and DataPhase2Sharma used "ID", "Stop-Street", and "Stop-CTA ID", but the attributes themselves were the same and all columns aligned. 
-            b. After pasting the data, 
+            b. After pasting the data, and excluding the Observation ID column--this was an value internal to each group member--, the data was inspected:
+                -First, there appeared to be a quite a few missing values for "Observation Previous (in mins)" in DataPhase2Rai excel sheet. This is not a major issue since this is a calculated field, and as noted earlier in this report, a variable that can easily be calculated from the other data held in this excel file.
+                -Second, 
