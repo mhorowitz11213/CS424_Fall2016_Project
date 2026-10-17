@@ -36,4 +36,16 @@ SECTION ONE: REFLECTION AND COMMENTS ON ITERATIONS SINCE REPORT ONE
 
 SECTION TWO: PREPARE THE DATA
 
-    This section details the data cleaning process.
+    Before even attempting to prepare the data for analysis, visual inspection was conducted on the data collected so far. Visual inspection was done in two stages:
+
+    1. Pre-python inspection. At this point, all data collected has been entered into an Excel Spreadsheet saved with .xlsx extentension. Each team member maintained their own data set, thus necessitating this first step. During this process:
+
+        1. Each column (attribute) was examined to ensure consistency across the differing datasets. The sets will have to be merged. Missing attributes will cause problems.
+        2. Visually check for missing data. Note: missing data will once again be inspected once all files are read into Python, but at this point, a quick visual inspection was done to see if there were any issues before any coding was attempted, and if issues arised, they could be flagged early.
+        3. Attribute types. Prior to reading any data into Python, its important that all attributes are stored as the same type of data. Dates and times are particularly attributes that if stored differently can cause issues. Ensuring that days of the weeks are characters was another that needed to be similar. Before reading the data into Python, attributes will also be visual inspected for these types of issues.
+
+    Below is a comment on the visual pre-inspection:
+
+        1. At the start of the visual pre-inspection, the data was organized into multiple files. These were:
+
+            a. 
