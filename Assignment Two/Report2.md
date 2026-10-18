@@ -71,3 +71,4 @@ SECTION TWO: PREPARE THE DATA
                 -Columns were then checked to make sure they had the same name and data type
                 -Finally all three datasets were combined to form temp_df2, the combined dataset.
             d. Once the combined dataframe temp_df2 was created, each variable was inspected to make sure that there were no missing or incorrect attributes.
+            e. Next, the stops with CTA-Stop ID 0 (the Loop Link stops), were correctly coded by adding in the codes stored in the CTA masterfile (see Secondary Sources folder in GitHub)
