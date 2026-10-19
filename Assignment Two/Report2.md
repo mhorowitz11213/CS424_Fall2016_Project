@@ -75,7 +75,12 @@ SECTION TWO: PREPARE THE DATA--PRIMARY DATA
             f. Finally, the geo coordinates for each stop latitude and logitude were appended. These were checked against Google Maps to ensure correctness.
             g. The data was written out to a CSV file so that it can be used. Note, at this stage all columns were included, though some of these attributes are redunant and can be calculated on the fly.
 
-SECTION THREE: EXPLORE THE DATA AND DISCUSS AND TRANSFORM SECONDARY DATA
+SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
+        After preparing the primary data, cleaning and inspecting data quality, the group then turned to exploring both the data collected and any secondary data needed to answer the domain questions. Census and City of Chicago produced data was inspected to help add demographic data allowing the group to create visualizations that depict differences in socio-economics between the West and North sides of the city. In this section, the group analyzed some interesting patterns found in the primary data we collected, plus interesting features in the secondary data downloaded from the City of Chicago portal.
+
+        Primary Data:
+
+        After cleaning up the data, and producing a finalized dataset on October 18, 2026--note data collection will continue throughout this project, as of now this is the data set the group will use for submission two to ensure consistency--, 
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
