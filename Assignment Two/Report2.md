@@ -34,7 +34,7 @@ SECTION ONE: REFLECTION AND COMMENTS ON ITERATIONS SINCE REPORT ONE
 
         As of now, the general method of collecting data--observing buses and comparing to Ventra app--will continue. However, upon discussing the progress the team was making, it became apparent that redunant variables--including the delta bus times (time elapsed from previous bus arrival) was redundant, as this attribute can be calculated later when creating the visualization. As a result, all attributes will be retained in the final data set, but many of these attributes will be calculated by the computer during the data cleaning process and stored, rather than being computed at the time of observation.
 
-SECTION TWO: PREPARE THE DATA
+SECTION TWO: PREPARE THE DATA--PRIMARY DATA
 
     Before even attempting to prepare the data for analysis, visual inspection was conducted on the data collected so far. Visual inspection was done in two stages:
 
@@ -74,3 +74,9 @@ SECTION TWO: PREPARE THE DATA
             e. Next, the stops with CTA-Stop ID 0 (the Loop Link stops), were correctly coded by adding in the codes stored in the CTA masterfile (see Secondary Sources folder in GitHub). 
             f. Finally, the geo coordinates for each stop latitude and logitude were appended. These were checked against Google Maps to ensure correctness.
             g. The data was written out to a CSV file so that it can be used. Note, at this stage all columns were included, though some of these attributes are redunant and can be calculated on the fly.
+
+SECTION THREE: EXPLORE THE DATA AND DISCUSS AND TRANSFORM SECONDARY DATA
+
+SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
+
+SECTION FIVE: INTERACTION AND MULTIPLE VIEWS
