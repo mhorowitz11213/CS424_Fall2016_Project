@@ -89,9 +89,10 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 <INSERT BAR CHART HERE>
 
-                Here we can see that with the exception of Route 66 Bus (more of which will be collected in the subsequent week), the data looks fairly balanced, with most routes having anywhere from 8-12 observations. As such, provided Route 66 is excluded from statistical analysis, all other lines can be examined for insights.
+                Here we can see that with the exception of Route 66 Bus (more of which will be collected in the subsequent week), the data looks fairly balanced, with most routes having anywhere from 8-12 observations. The inbalance shown with Route 66 is not surprising. This route, along with Route 12 and 65, are amongst the last routes that the group expects to collect more data for. In particular, given construction on the Chicago/Halsted viaduct, re-routes have meant that collecting data for this line will require extra time, and the need to   
+                As such, provided Route 66 is excluded from statistical analysis, all other lines can be examined for insights.
 
-                2. 
+                2. The next area of interest is looking at bus frequencies within lines. Here, the group, turned to the attribute 'Previous Observation (in mins), which calculates the time between buses. The idea here is to see if any buses aren't on average, count, or median, not meeting the 10 minute headway target (all routes examined here are part of the CTA 10 minute target, as discussed in Report One).
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
