@@ -82,7 +82,7 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
         Primary Data:
 
-        After cleaning up the data, and producing a finalized dataset on October 18, 2026--note data collection will continue throughout this project, as of now this is the data set the group will use for submission two to ensure consistency--, exploratory research on the data was conducted.
+        After cleaning up the data, and producing a finalized dataset on October 18, 2026--note data collection will continue throughout this project, as of now this is the data set the group will use for submission two to ensure consistency--, exploratory research on the data was conducted. Below are the steps taken, and subsequently a discussion on findings.
 
                 1. Basic distributions were generated. This was done to ensure that the data is fairly balanced. While the group will collect more data throughout this research, ensuring the data is fairly balanced will allow the group to check for interesting statistical anomalies, like bus bunching, or frequent delays. Such statistical measures will require calculating standard deviations or t-tests. This can only be done if data is fairly balanced. This step was conducted in two ways. First, basic counts by lines were generated, and then second, the frequencies by bus line were plotted into a bar chart to allow the group to see the distribution in a more visual way.
                 
@@ -93,7 +93,11 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 Here we can see that with the exception of Route 66 Bus (more of which will be collected in the subsequent week), the data looks fairly balanced, with most routes having anywhere from 8-12 observations. The inbalance shown with Route 66 is not surprising. This route, along with Route 12 and 65, are amongst the last routes that the group expects to collect more data for. In particular, given construction on the Chicago/Halsted viaduct, re-routes have meant that collecting data for this line will require extra time, and the need to   
                 As such, provided Route 66 is excluded from statistical analysis, all other lines can be examined for insights.
 
-                2. The next area of interest is looking at bus frequencies within lines. Here, the group, turned to the attribute 'Previous Observation (in mins), which calculates the time between buses. The idea here is to see if any buses aren't on average, count, or median, not meeting the 10 minute headway target (all routes examined here are part of the CTA 10 minute target, as discussed in Report One).
+                2. The next area of interest is looking at bus frequencies within lines. Here, the group, turned to the attribute 'Previous Observation (in mins), which calculates the time between buses. The idea here is to see if any buses aren't on average, count, or median, not meeting the 10 minute headway target (all routes examined here are part of the CTA 10 minute target, as discussed in Report One). These were printed out by bus route.
+
+                <INSERT FIGURE HERE>
+
+                3. Next, the mean, standard deviation, and coefficient of variation for wait times per bus line was printed out. The idea here was to see how long the average wait time was (did it conform to CTA headways of 10 minutes), as well as how representative the mean wait time was, by calculating the coefficient of variation
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
