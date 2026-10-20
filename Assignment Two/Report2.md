@@ -75,6 +75,8 @@ SECTION TWO: PREPARE THE DATA--PRIMARY DATA
             f. Finally, the geo coordinates for each stop latitude and logitude were appended. These were checked against Google Maps to ensure correctness.
             g. All N/A were handled, except in the comments section. This is an attribute that the group plans on using to help determine if certain Booleans, like reliability, should be created, and if so, how they should be handled. As of now, having missing attributes in this field is not an issue.
             h. The data was written out to a CSV file so that it can be used. Note, at this stage all columns were included, though some of these attributes are redunant and can be calculated on the fly.
+            The data was comprised of the following attributes:
+                -
 
 SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
@@ -105,9 +107,15 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 5. Actual headways were tested. The delta time difference between the time a bus arrived and when Ventra predicted the arrival was calculated, with the Ventra time captured when the previous bus left or when the observer first arrived at the stop to begin recording data. These delta values were then averaged by bus line, and the calculations were then plotted, where it was noted that negative number correspond to early arrivals, which according to the CTA should be no more than one minute early, five minutes late.
 
-                <INSERT FIGURE>
+                <INSERT FIGURE HERE>
 
-                6. 
+                6. Aggregation into North/South, East/West routes. Since this visualization aims to help explore the differences in reliability between North/South vs East/West lines, especially the idea tha the wealthy north side of the city gets bette service, average headways per route and average delta times between real arrival time and Ventra predicted times per route were then aggregated into a N/S or E/W group, based on the bus line.
+
+                <INSERT FIGURE HERE>
+                <INSERT FIGURE HERE>
+
+        DISCUSSION ABOUT PRIMARY DATA:
+        A few interesting patterns were detected during the exploratory phase of inspecting the primary data. 
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
