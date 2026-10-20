@@ -76,7 +76,25 @@ SECTION TWO: PREPARE THE DATA--PRIMARY DATA
             g. All N/A were handled, except in the comments section. This is an attribute that the group plans on using to help determine if certain Booleans, like reliability, should be created, and if so, how they should be handled. As of now, having missing attributes in this field is not an issue.
             h. The data was written out to a CSV file so that it can be used. Note, at this stage all columns were included, though some of these attributes are redunant and can be calculated on the fly.
             The data was comprised of the following attributes:
-                -
+                -ID (this is just for internal checks)
+                -Date
+                -Day of Week
+                -Route
+                -Stop-Street
+                -Stop-CTA ID
+                -Direction
+                -Ventra Time (calculated when previous bus arrives)
+                -Real Time
+                -Observation Previous (in mins)
+                -Observation Next (in mins), based on Ventra App
+                -Actual Next (in mins)
+                -Comments
+                -Stop_lat
+                -Stop_lon
+
+            The final dataset was comprised of 203 observations with these 15 attributes.
+
+
 
 SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
