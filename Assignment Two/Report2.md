@@ -88,7 +88,7 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 
                 Below is the output for the bar chart:
 
-                <INSERT BAR CHART HERE>
+                <INSERT FIGURE HERE>
 
                 Here we can see that with the exception of Route 66 Bus (more of which will be collected in the subsequent week), the data looks fairly balanced, with most routes having anywhere from 8-12 observations. The inbalance shown with Route 66 is not surprising. This route, along with Route 12 and 65, are amongst the last routes that the group expects to collect more data for. In particular, given construction on the Chicago/Halsted viaduct, re-routes have meant that collecting data for this line will require extra time, and the need to   
                 As such, provided Route 66 is excluded from statistical analysis, all other lines can be examined for insights.
@@ -97,7 +97,13 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 <INSERT FIGURE HERE>
 
-                3. Next, the mean, standard deviation, and coefficient of variation for wait times per bus line was printed out. The idea here was to see how long the average wait time was (did it conform to CTA headways of 10 minutes), as well as how representative the mean wait time was, by calculating the coefficient of variation
+                3. The mean, standard deviation, and coefficient of variation for wait times per bus line was printed out. The idea here was to see how long the average wait time was (did it conform to CTA headways of 10 minutes), as well as how representative the mean wait time was, by calculating the coefficient of variation for all bus lines.
+
+                <INSERT FIGURE HERE>
+
+                4. The group intends to allow users to compute probabilities of bus arriving by line, while using the visualization. Given that bus wait times tend to follow an exponential distribution, each bus lines headways were tested to see if they fit an exponential distribution using a Lilliefors Kolmogorov-Smirnov test. If a distributions p-value exceeded .05 test statistic then it can be said that a bus line follows an exponential distribution, thus estimating its density distribution can be done parametrically--estimating lambda--.
+
+                5. 
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
