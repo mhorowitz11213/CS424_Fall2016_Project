@@ -136,13 +136,15 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 <INSERT FIGURE HERE>
 
         DISCUSSION ABOUT PRIMARY DATA:
-        
+
         This section was conducted in two ways. First, data was explored in an aggregated manner, grouped by line or geographic orientation. Means and standard deviations were first to see if buses had wait times that exceeded CTA requirements. These were conducted first because averages tend to be the most sensitive to data variations, and as such gave a good baseline for exploring the data. Subsequently, the data was explored in a more disaggregated manner. While data points were still grouped by either line or geographic orientation, the data points were not aggregated during this stage, thus allowing means, interquartile ranges and outliers to be detected.
 
         A few interesting patterns were detected during the exploratory phase of inspecting the primary data. Prior to doing this exploratory data, it was assumed that wealthier districts, namely those on the west side would be better served by CTA buses into the downtown. In terms of looking at the aggregated data:
                 -Average times both by bus line, or by N-S vs E-W heading, showed longer wait times. In particular, route 96 had wait times that exceed half an hour on average, and lines 146 and 147 which form the backbone of the lakefronts N-S routes had average wait times of around 15 and 12 minutes respectively. Compare this to Routes 20 and 56, two of the most important E-W bus lines, each of which had average wait times of around 6-8 minutes. And since all lines appeared to have similar coefficients of variation (.7-.8), with only 8 and 96 having slight differences (.4-.5), it can be said that the mean fairly accurately represents the true wait times found by line.
+                -In terms of visualizing these averages and coefficients of deviation, bar charts were used. These work best when trying to visualize a single data point (like mean or coefficients of variance), and then allow for these single points to be compared across all lines of geographic orientation.
         But to confirm these findings, the data was then explored at a disagregated level, to ensure that the mean wait times found above did in fact show meaningful variation.
-                -
+                -Box and whisker plots were run to see if median values, interquartile ranges, and spread of data--along with outliers--really showed meaningful variation between lines and between georgraphic orientations.
+                -Box and whisker plots were used for this section because they efficiently show medians, interquartile ranges (the boundaries of the box), 1.5x the IQR and any outliers, while such a visualization allows for such box plots to be plotted agains one another, allowing for efficient line by line or geographic heading comparisons.
         It really is this second aspect that was most surprised. In order to ensure that using mean and standard deviation did not give misleading information, as these are aggregated statistics, Futhermore, when it came to spread of data, N-S buses had greater variation, perhaps indicating lower reliablity of service, another aspect that also surprised the group. Finally
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
