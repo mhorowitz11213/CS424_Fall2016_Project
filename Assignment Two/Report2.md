@@ -136,7 +136,7 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 <INSERT FIGURE HERE>
 
         DISCUSSION ABOUT PRIMARY DATA:
-        A few interesting patterns were detected during the exploratory phase of inspecting the primary data. 
+        A few interesting patterns were detected during the exploratory phase of inspecting the primary data. Prior to doing this exploratory data, it was assumed that wealthier districts, namely those on the west side would be better served by CTA buses into the downtown. But based on the exploratory work, whether it be calculating average wait times by bus line, or by N-S vs E-W heading, or by doing the same thing but looking at median and Interquartile ranges, buses traveling E-W had lower headtimes and less deviation from Ventra predicted times. 
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
