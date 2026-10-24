@@ -125,7 +125,16 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 2. The next area of interest is looking at bus frequencies within lines. Here, the group, turned to the attribute 'Previous Observation (in mins), which calculates the time between buses. The idea here is to see if any buses aren't on average, count, or median, not meeting the 10 minute headway target (all routes examined here are part of the CTA 10 minute target, as discussed in Report One). These were printed out by bus route.
 
-                <INSERT FIGURE HERE. LOOP THROUGH ALL GRAPHS>
+![Fig_2](Screenshots/Primary_Data_Analysis/Fig2_primary.png)
+![Fig_3](Screenshots/Primary_Data_Analysis/Fig3_primary.png)
+![Fig_4](Screenshots/Primary_Data_Analysis/Fig4_primary.png)
+![Fig_5](Screenshots/Primary_Data_Analysis/Fig5_primary.png)
+![Fig_6](Screenshots/Primary_Data_Analysis/Fig6_primary.png)
+![Fig_7](Screenshots/Primary_Data_Analysis/Fig7_primary.png)
+![Fig_8](Screenshots/Primary_Data_Analysis/Fig8_primary.png)
+![Fig_9](Screenshots/Primary_Data_Analysis/Fig9_primary.png)
+![Fig_10](Screenshots/Primary_Data_Analysis/Fig10_primary.png)
+![Fig_11](Screenshots/Primary_Data_Analysis/Fig11_primary.png)
 
                 Here we can see that almost half of all  bus arrivals for each of the lines observed did not meet CTA headways. In particular:
                         -Four out of eight of route 36's arrivals were outside of CTA guidelines
@@ -134,9 +143,9 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 3. The mean, standard deviation, and coefficient of variation for wait times per bus line was printed out. The idea here was to see how long the average wait time was (did it conform to CTA headways of 10 minutes), as well as how representative the mean wait time was, by calculating the coefficient of variation for all bus lines. In addition to verify the spread found by calculating the coefficient of variation, box and whisker plots for each each lines wait time was produced.
 
-                <INSERT FIGURE HERE>
-                <INSERT FIGURE HERE>
-                <INSERT FIGURE HERE>
+![Fig_12](Screenshots/Primary_Data_Analysis/Fig12_primary.png)
+![Fig_13](Screenshots/Primary_Data_Analysis/Fig13_primary.png)
+![Fig_14](Screenshots/Primary_Data_Analysis/Fig14_primary.png)
 
                 Here again we see that some routes experienced significant deviations from CTA guidelines:
 
@@ -154,7 +163,8 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 5. Actual headways were tested. The delta time difference between the time a bus arrived and when Ventra predicted the arrival was calculated, with the Ventra time captured when the previous bus left or when the observer first arrived at the stop to begin recording data. These delta values were then averaged by bus line, and the calculations were then plotted, where it was noted that negative number correspond to early arrivals, which according to the CTA should be no more than one minute early, five minutes late.
 
-                <INSERT FIGURE HERE>
+![Fig_15](Screenshots/Primary_Data_Analysis/Fig15_primary.png)
+![Fig_16](Screenshots/Primary_Data_Analysis/Fig16_primary.png)
 
                 Here, the bar chart for average by bus line for the delta time between real arrival and Ventra time and the box and whisker plots for each individual delta time aggregated solely by bus line show that:
                         -On average many buses arrive earlier than predicted with the 66 bus arriving early by 3 minutes and the 147 by 2 minutes.
@@ -165,9 +175,10 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 6. Aggregation into North/South, East/West routes. Since this visualization aims to help explore the differences in reliability between North/South vs East/West lines, especially the idea tha the wealthy north side of the city gets better service, average headways per route and average delta times between real arrival time and Ventra predicted times per route were then aggregated into a N/S or E/W group, based on the bus line. To cross check the differences in average headways by geographic heading, similar to line side by side comparison, box and whisker plots were conducted on all wait times that corresponding with north-south lines and then compared to east-west lines.
 
-                <INSERT FIGURE HERE>
-                <INSERT FIGURE HERE>
-                <INSERT FIGURE HERE>
+![Fig_17](Screenshots/Primary_Data_Analysis/Fig17_primary.png)
+![Fig_18](Screenshots/Primary_Data_Analysis/Fig18_primary.png)
+![Fig_19](Screenshots/Primary_Data_Analysis/Fig19_primary.png)
+![Fig_20](Screenshots/Primary_Data_Analysis/Fig20_primary.png)
 
                 Here, box and whisker plots show that the median bus does arrive as predicted by Ventra but North South buses have greater variance and more outliers than East West Buses.
 
@@ -226,16 +237,18 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 Percent Under 18 or Over 65........... .69
                 Per Capita Income.................... -.85
 
+![Fig_21](Screenshots/Secondary_Data_Analysis/Fig21_secondary.png)
+
         As such, the group will use the attributes one by one in the order they are correlated with the target Hardship variable in the visualization process, and will determine which of these attributes makes the strongest visualization. Afterwards, combinations of these attributes will also be used as the group continues to iterate through design encodings.
 
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
-Building on from the previous visualizations in Assignment One, the group decided to implement three first visualizations to see what works and what does not work. The group decided to first implement Figures 1, 10, and 11 from Assignment One, with some modifications, as we felt these were the strongest visualizations and wanted to explore them in greater detail. This section displays each of these visualizations, coded up in using JSON based Vega Lite, and walks through the components.
+        Building on from the previous visualizations in Assignment One, the group decided to implement three first visualizations to see what works and what does not work. The group decided to first implement Figures 1, 10, and 11 from Assignment One, with some modifications, as we felt these were the strongest visualizations and wanted to explore them in greater detail. This section displays each of these visualizations, coded up in using JSON based Vega Lite, and walks through the components.
 
     Figure 1:
 
-![Figure_1](Screenshots/Vega_Lite/Fig_1_complete_view.png)
+![Fig_22](Screenshots/Vega_Lite/Fig_1_complete_view.png)
 
         This visualization supports the following questions and tasks:
             	1. Compare actual and predicted values
@@ -300,7 +313,7 @@ Building on from the previous visualizations in Assignment One, the group decide
 
     Figure 10:
 
-![Figure_2](Screenshots/Vega_Lite/Fig_10_Selection.png)
+![Fig_23](Screenshots/Vega_Lite/Fig_10_Selection.png)
 
         What question or task it supports.
             	1. Compare observed bus reliability across different geographic locations.
@@ -344,8 +357,8 @@ Building on from the previous visualizations in Assignment One, the group decide
 
     Figure 11:
 
-![Figure_3](Screenshots/Vega_Lite/Fig_11_complete_view.png)
-![Figure_4](Screenshots/Vega_Lite/Fig_11_Selection.png)
+![Fig_24](Screenshots/Vega_Lite/Fig_11_complete_view.png)
+![Fig_25](Screenshots/Vega_Lite/Fig_11_Selection.png)
 
         What question or task it supports.
                 1. Identify buses associated with unusually uneven service spacing.
