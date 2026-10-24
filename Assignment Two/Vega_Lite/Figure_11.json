@@ -1,0 +1,311 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Bus headway balance using actual following-bus gaps.",
+  "title": {
+    "text": "Headway Imbalance and Bunching Diagnostic",
+    "subtitle": "Solid = N/W; hollow = S/E; dotted line = equal headways. Values of 999 are excluded."
+  },
+  "width": 650,
+  "height": 560,
+  "params": [
+    {
+      "name": "routeFilter",
+      "value": ["8", "20", "22", "36", "56", "66", "96", "146", "147", "157"],
+      "bind": {
+        "input": "select",
+        "options": [
+          ["8", "20", "22", "36", "56", "66", "96", "146", "147", "157"],
+          ["8"],
+          ["20"],
+          ["22"],
+          ["36"],
+          ["56"],
+          ["66"],
+          ["96"],
+          ["146"],
+          ["147"],
+          ["157"]
+        ],
+        "labels": [
+          "All routes",
+          "Route 8",
+          "Route 20",
+          "Route 22",
+          "Route 36",
+          "Route 56",
+          "Route 66",
+          "Route 96",
+          "Route 146",
+          "Route 147",
+          "Route 157"
+        ],
+        "name": "Route: "
+      }
+    },
+    {
+      "name": "directionFilter",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": ["All", "N", "S", "E", "W"],
+        "labels": ["All directions", "North (N)", "South (S)", "East (E)", "West (W)"],
+        "name": "Direction: "
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {"x": 0, "y": 0},
+          {"x": 60, "y": 60}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "color": "#555555",
+        "strokeDash": [5, 5],
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"domain": [0, 60], "nice": false},
+          "axis": {
+            "title": "Observation Previous (minutes)",
+            "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+            "grid": true
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"domain": [0, 60], "nice": false},
+          "axis": {
+            "title": "Actual Next (minutes)",
+            "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+            "grid": true
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"id":1,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":999,"actualNext":2,"comments":"3 mins early"},
+          {"id":2,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":2,"actualNext":13,"comments":"Bunched behind 13 minutes early"},
+          {"id":3,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":13,"actualNext":10,"comments":"Bus got added to Ventra App"},
+          {"id":4,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":10,"actualNext":8,"comments":"1 minute late"},
+          {"id":5,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":8,"actualNext":999,"comments":"Bus got added to Ventra App, 1 minute early once added to app"},
+          {"id":6,"route":"66","stop":"Grand and Kingsbury","cta":"771","direction":"W","previous":21,"actualNext":0,"comments":"Arrived on time. Previous bus for route arrived over 20 minutes prior"},
+          {"id":7,"route":"66","stop":"Grand and Kingsbury","cta":"771","direction":"W","previous":0,"actualNext":1,"comments":"Bus Bunched, three buses one after another"},
+          {"id":8,"route":"66","stop":"Grand and Kingsbury","cta":"771","direction":"W","previous":1,"actualNext":999,"comments":"Bus Bunched, three buses one after another"},
+          {"id":9,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":999,"actualNext":5,"comments":"Early"},
+          {"id":10,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":999,"actualNext":3,"comments":"On Time. 56 Bus is recorded as N S but travels on diagonal Milwaukee SE and NW"},
+          {"id":11,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":5,"actualNext":6,"comments":""},
+          {"id":12,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":2,"actualNext":6,"comments":""},
+          {"id":13,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":7,"actualNext":2,"comments":""},
+          {"id":14,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":1,"actualNext":1,"comments":"Bunched bus"},
+          {"id":15,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":1,"actualNext":6,"comments":"Bunched bus"},
+          {"id":16,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":16,"actualNext":7,"comments":""},
+          {"id":17,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":10,"actualNext":999,"comments":""},
+          {"id":18,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":7,"actualNext":0,"comments":"Arrived 7 mins late"},
+          {"id":19,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":0,"actualNext":999,"comments":"Bunched bus"},
+          {"id":20,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":999,"actualNext":7,"comments":""},
+          {"id":21,"route":"56","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":999,"actualNext":12,"comments":""},
+          {"id":22,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":4,"actualNext":8,"comments":"headway target met"},
+          {"id":23,"route":"56","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":13,"actualNext":23,"comments":"Exceeded CTA headway"},
+          {"id":24,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":9,"actualNext":7,"comments":""},
+          {"id":25,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":7,"actualNext":13,"comments":""},
+          {"id":26,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":13,"actualNext":3,"comments":""},
+          {"id":27,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":3,"actualNext":999,"comments":""},
+          {"id":28,"route":"56","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":2,"actualNext":999,"comments":"Bus bunched"},
+          {"id":29,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":999,"actualNext":3,"comments":""},
+          {"id":30,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":3,"actualNext":11,"comments":"Exceeded CTA headway"},
+          {"id":31,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":11,"actualNext":9,"comments":""},
+          {"id":32,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":9,"actualNext":14,"comments":"Exceeded CTA headway"},
+          {"id":33,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":14,"actualNext":999,"comments":"Exceeded CTA headway"},
+          {"id":1,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":999,"actualNext":11,"comments":"2 minutes early"},
+          {"id":2,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":14,"actualNext":9,"comments":"1 minute late"},
+          {"id":3,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":10,"actualNext":13,"comments":"1 minute late; normal spacing"},
+          {"id":4,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":13,"actualNext":8,"comments":"1 minute late"},
+          {"id":5,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":8,"actualNext":16,"comments":"On time; slightly longer following gap"},
+          {"id":6,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":999,"actualNext":7,"comments":"1 minute late"},
+          {"id":7,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":8,"actualNext":2,"comments":"Bus arrived 7 minutes earlier than expected; possible bunching"},
+          {"id":8,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":2,"actualNext":9,"comments":"Bus closely followed previous bus"},
+          {"id":9,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":11,"actualNext":12,"comments":"2 minutes late"},
+          {"id":10,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":12,"actualNext":14,"comments":"On time; longer-than-expected following gap"},
+          {"id":11,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":999,"actualNext":2,"comments":"1 minute early; bus arrived shortly after another bus"},
+          {"id":12,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":2,"actualNext":2,"comments":"1 minute early; bus closely followed previous bus; possible bunching"},
+          {"id":13,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":2,"actualNext":2,"comments":"1 minute early; three buses arrived within approximately 4 minutes"},
+          {"id":14,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":2,"actualNext":20,"comments":"1 minute early; large gap after previous group of buses; possible bunching followed by service gap"},
+          {"id":15,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":20,"actualNext":999,"comments":"On time; approximately 20-minute gap after three closely spaced buses"},
+          {"id":16,"route":"96","stop":"Lunt and Sheridan","cta":"12060","direction":"W","previous":999,"actualNext":29,"comments":"1 minute late; first observed morning bus"},
+          {"id":17,"route":"96","stop":"Lunt and Sheridan","cta":"12060","direction":"W","previous":30,"actualNext":31,"comments":"1 minute late; approximately 30-minute spacing"},
+          {"id":18,"route":"96","stop":"Lunt and Sheridan","cta":"12060","direction":"W","previous":30,"actualNext":29,"comments":"On time; approximately 30-minute spacing"},
+          {"id":19,"route":"96","stop":"Lunt and Sheridan","cta":"12060","direction":"W","previous":29,"actualNext":59,"comments":"On time; next bus predicted approximately one hour later"},
+          {"id":20,"route":"96","stop":"Lunt and Sheridan","cta":"12060","direction":"W","previous":59,"actualNext":999,"comments":"On time; approximately one-hour gap from previous bus"},
+          {"id":21,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":999,"actualNext":3,"comments":"On time; first bus in an evening bunching sequence"},
+          {"id":22,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":3,"actualNext":2,"comments":"Arrived earlier than predicted; closely followed previous bus"},
+          {"id":23,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":2,"actualNext":28,"comments":"Arrived shortly after previous bus; followed by a long service gap"},
+          {"id":24,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":28,"actualNext":3,"comments":"Approximately 28-minute service gap after bunching"},
+          {"id":25,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":3,"actualNext":999,"comments":"Arrived earlier than predicted; another closely spaced bus; end of observation window"},
+          {"id":26,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":999,"actualNext":1,"comments":"First observed bus; evening service"},
+          {"id":27,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":1,"actualNext":0,"comments":"Two buses recorded within the same minute; possible bunching"},
+          {"id":28,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":0,"actualNext":26,"comments":"Closely followed previous bus; approximately 26-minute gap afterward"},
+          {"id":29,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":26,"actualNext":26,"comments":"Approximately 26-minute service gap following bunching"},
+          {"id":30,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":26,"actualNext":999,"comments":"Approximately 26-minute gap since previous bus; arrived later than predicted"},
+          {"id":31,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":999,"actualNext":20,"comments":"On time; approximately 20-minute service spacing"},
+          {"id":32,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":20,"actualNext":20,"comments":"On time; approximately 20-minute spacing"},
+          {"id":33,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":20,"actualNext":10,"comments":"On time; next bus arrived sooner than the usual 20-minute interval"},
+          {"id":34,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":10,"actualNext":20,"comments":"Arrived earlier than predicted; approximately 10-minute gap since previous bus"},
+          {"id":35,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":20,"actualNext":999,"comments":"On time; service spacing returned to approximately 20 minutes"},
+          {"id":36,"route":"96","stop":"Lunt and Oakley","cta":"12048","direction":"E","previous":999,"actualNext":29,"comments":"One minute late; approximately 30-minute service spacing"},
+          {"id":37,"route":"96","stop":"Lunt and Oakley","cta":"12048","direction":"E","previous":29,"actualNext":30,"comments":"On time; approximately 30-minute spacing"},
+          {"id":38,"route":"96","stop":"Lunt and Oakley","cta":"12048","direction":"E","previous":30,"actualNext":60,"comments":"On time; next bus arrived approximately one hour later"},
+          {"id":39,"route":"96","stop":"Lunt and Oakley","cta":"12048","direction":"E","previous":60,"actualNext":30,"comments":"On time; approximately one-hour gap since previous bus"},
+          {"id":40,"route":"96","stop":"Lunt and Oakley","cta":"12048","direction":"E","previous":30,"actualNext":999,"comments":"On time; approximately 30-minute spacing; observation near the reported end of service"},
+          {"id":41,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":999,"actualNext":10,"comments":"1 minute late; first observed bus"},
+          {"id":42,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":10,"actualNext":9,"comments":"1 minute late; approximately 10-minute spacing"},
+          {"id":43,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":9,"actualNext":3,"comments":"On time; next bus arrived sooner than predicted"},
+          {"id":44,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":3,"actualNext":4,"comments":"Arrived earlier than predicted; possible bunching"},
+          {"id":45,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":4,"actualNext":999,"comments":"Arrived shortly after previous bus; bunching observed"},
+          {"id":46,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":999,"actualNext":20,"comments":"1 minute late; first observed bus"},
+          {"id":47,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":20,"actualNext":20,"comments":"1 minute late; regular spacing"},
+          {"id":48,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":20,"actualNext":22,"comments":"1 minute late; slightly longer following interval"},
+          {"id":49,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":22,"actualNext":19,"comments":"3 minutes late; service remains relatively regular"},
+          {"id":50,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":19,"actualNext":999,"comments":"2 minutes late; approximately 19-minute interval since previous bus"},
+          {"id":51,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":999,"actualNext":20,"comments":"1 minute late; first observed bus"},
+          {"id":52,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":20,"actualNext":19,"comments":"1 minute late; approximately regular spacing"},
+          {"id":53,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":19,"actualNext":21,"comments":"On time; regular spacing"},
+          {"id":54,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":21,"actualNext":20,"comments":"1 minute late; no substantial bunching observed"},
+          {"id":55,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":20,"actualNext":999,"comments":"1 minute late; approximately 20-minute spacing"},
+          {"id":56,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":999,"actualNext":3,"comments":"1 minute late; first observed bus"},
+          {"id":57,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":3,"actualNext":2,"comments":"Arrived earlier than predicted; closely followed previous bus"},
+          {"id":58,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":2,"actualNext":27,"comments":"Bus bunching observed; followed by a long service gap"},
+          {"id":59,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":27,"actualNext":3,"comments":"Approximately 27-minute service gap; bus arrived later than predicted"},
+          {"id":60,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":3,"actualNext":999,"comments":"Bus closely followed previous bus; another bunching episode"},
+          {"id":1,"route":"157","stop":"Taylor and Halsted","cta":"6701","direction":"E","previous":999,"actualNext":22,"comments":"On time"},
+          {"id":2,"route":"157","stop":"Taylor and Halsted","cta":"6701","direction":"E","previous":12,"actualNext":999,"comments":"Late by +1 min"},
+          {"id":3,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":999,"actualNext":999,"comments":"Late by +1 min"},
+          {"id":4,"route":"157","stop":"Taylor and Halsted","cta":"17277","direction":"W","previous":999,"actualNext":10,"comments":"On time"},
+          {"id":5,"route":"8","stop":"Halsted and Taylor","cta":"14487","direction":"N","previous":999,"actualNext":24,"comments":"Late by +2 min"},
+          {"id":6,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":10,"actualNext":11,"comments":"Late by +2 min"},
+          {"id":7,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":11,"actualNext":11,"comments":"On time"},
+          {"id":8,"route":"157","stop":"Taylor and Halsted","cta":"17277","direction":"W","previous":24,"actualNext":999,"comments":"Late by +4 min"},
+          {"id":9,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":8,"actualNext":999,"comments":"Late by +3 min"}
+        ]
+      },
+      "transform": [
+        {
+          "filter": "datum.previous != 999 && datum.actualNext != 999"
+        },
+        {
+          "filter": "indexof(routeFilter, datum.route) >= 0"
+        },
+        {
+          "filter": "directionFilter === 'All' || datum.direction === directionFilter"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "size": 130,
+        "strokeWidth": 2,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "previous",
+          "type": "quantitative",
+          "scale": {"domain": [0, 60], "nice": false},
+          "axis": {
+            "title": "Observation Previous (in mins)",
+            "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+            "grid": true
+          }
+        },
+        "y": {
+          "field": "actualNext",
+          "type": "quantitative",
+          "scale": {"domain": [0, 60], "nice": false},
+          "axis": {
+            "title": "Actual Next (in Mins)",
+            "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+            "grid": true
+          }
+        },
+        "stroke": {
+          "field": "route",
+          "type": "nominal",
+          "scale": {
+            "domain": ["8", "20", "22", "36", "56", "66", "96", "146", "147", "157"],
+            "range": [
+              "#1f77b4",
+              "#ff7f0e",
+              "#2ca02c",
+              "#d62728",
+              "#9467bd",
+              "#17becf",
+              "#8c564b",
+              "#e377c2",
+              "#7f7f7f",
+              "#bcbd22"
+            ]
+          },
+          "legend": {
+            "title": "Route colors",
+            "orient": "right",
+            "symbolType": "circle"
+          }
+        },
+        "fill": {
+          "condition": {
+            "test": "datum.direction === 'N' || datum.direction === 'W'",
+            "field": "route",
+            "type": "nominal",
+            "scale": {
+              "domain": ["8", "20", "22", "36", "56", "66", "96", "146", "147", "157"],
+              "range": [
+                "#1f77b4",
+                "#ff7f0e",
+                "#2ca02c",
+                "#d62728",
+                "#9467bd",
+                "#17becf",
+                "#8c564b",
+                "#e377c2",
+                "#7f7f7f",
+                "#bcbd22"
+              ]
+            }
+          },
+          "value": "white"
+        },
+        "tooltip": [
+          {"field": "id", "type": "ordinal", "title": "Observation ID"},
+          {"field": "route", "type": "nominal", "title": "Route"},
+          {"field": "direction", "type": "nominal", "title": "Direction"},
+          {"field": "stop", "type": "nominal", "title": "Stop"},
+          {"field": "cta", "type": "nominal", "title": "CTA Stop ID"},
+          {"field": "previous", "type": "quantitative", "title": "Previous gap (min)"},
+          {"field": "actualNext", "type": "quantitative", "title": "Actual next gap (min)"},
+          {"field": "comments", "type": "nominal", "title": "Comments"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "#cccccc"},
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 13,
+      "titleFontWeight": "normal"
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12
+    }
+  }
+}

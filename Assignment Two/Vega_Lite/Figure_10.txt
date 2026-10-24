@@ -1,0 +1,1872 @@
+/*
+ * Interactive Route Reliability Map — annotated reference version
+ *
+ * PURPOSE
+ * Displays Chicago CTA route geometry and observed stop locations. Hover over a
+ * stop to preview its arrival timeline; click a stop to pin it.
+ *
+ * HOW TO USE
+ * This is JavaScript-style source with comments, not strict JSON. Use the original
+ * uncommented JSON in the Vega-Lite Editor's JSON panel.
+ *
+ * DATA NOTES
+ * - City boundary and CTA route geometry are loaded from external URLs.
+ * - Stop coordinates and arrival observations are embedded in datasets.stops.
+ * - The value 999 appears as a sentinel for an unavailable/unobserved gap; it
+ *   should not be interpreted as a literal 999-minute headway.
+ *
+ * REFERENCES
+ * Vega-Lite: https://vega.github.io/vega-lite/docs/
+ * Layering: https://vega.github.io/vega-lite/docs/layer.html
+ * Concatenation: https://vega.github.io/vega-lite/docs/concat.html
+ * Parameters/selections: https://vega.github.io/vega-lite/docs/parameter.html
+ * CTA Bus Routes dataset:
+ * https://data.cityofchicago.org/Transportation/CTA-Bus-Routes/6uva-a5ei/about_data
+ */
+
+const spec =
+{
+  // Vega-Lite v6 schema used to validate this specification.
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  // Title and subtitle describe the map and its hover/click interactions.
+  "title": {
+    "text": "Interactive Route Reliability Map",
+    "subtitle": "Observed real-time vs. Ventra arrival times — hover to preview; click to pin a stop"
+  },
+  // Embedded stop records and nested observations used by both views.
+  // Each stop includes location metadata plus observed/predicted arrival records.
+  "datasets": {
+    "stops": [
+      {
+        "stopId": "R8-S5792",
+        "route": "8",
+        "stopName": "Halsted and Fulton",
+        "ctaStopId": "5792",
+        "direction": "S",
+        "lon": -87.64757776,
+        "lat": 41.88691285,
+        "observations": [
+          {
+            "obs": 1,
+            "date": "9/21/2026",
+            "actual": "2026-09-21T09:41:00",
+            "predicted": "2026-09-21T09:46:00",
+            "observationPrevious": 999,
+            "nextVentra": 15,
+            "actualNext": 2,
+            "comments": "3 mins early",
+            "sourceRow": 0
+          },
+          {
+            "obs": 2,
+            "date": "9/21/2026",
+            "actual": "2026-09-21T09:43:00",
+            "predicted": "2026-09-21T10:00:00",
+            "observationPrevious": 2,
+            "nextVentra": 14,
+            "actualNext": 13,
+            "comments": "Bunched behind 13 minutes early",
+            "sourceRow": 1
+          },
+          {
+            "obs": 3,
+            "date": "9/21/2026",
+            "actual": "2026-09-21T09:56:00",
+            "predicted": "2026-09-21T09:55:00",
+            "observationPrevious": 13,
+            "nextVentra": 11,
+            "actualNext": 10,
+            "comments": "Bus got added to Ventra App",
+            "sourceRow": 2
+          },
+          {
+            "obs": 4,
+            "date": "9/21/2026",
+            "actual": "2026-09-21T10:05:00",
+            "predicted": "2026-09-21T10:06:00",
+            "observationPrevious": 10,
+            "nextVentra": 12,
+            "actualNext": 8,
+            "comments": "1 minute late",
+            "sourceRow": 3
+          },
+          {
+            "obs": 5,
+            "date": "9/21/2026",
+            "actual": "2026-09-21T10:14:00",
+            "predicted": "2026-09-21T10:15:00",
+            "observationPrevious": 8,
+            "nextVentra": 13,
+            "actualNext": 999,
+            "comments": "Bus got added to Ventra App, 1 minute early once added to app",
+            "sourceRow": 4
+          }
+        ]
+      },
+      {
+        "stopId": "R66-S771",
+        "route": "66",
+        "stopName": "Grand and Kingsbury",
+        "ctaStopId": "771",
+        "direction": "W",
+        "lon": -87.63976275,
+        "lat": 41.89158686,
+        "observations": [
+          {
+            "obs": 6,
+            "date": "9/26/2026",
+            "actual": "2026-09-26T17:44:00",
+            "predicted": "2026-09-26T17:44:00",
+            "observationPrevious": 21,
+            "nextVentra": 0,
+            "actualNext": 0,
+            "comments": "Arrived on time. Previous bus for route arrived over 20 minutes prior",
+            "sourceRow": 5
+          },
+          {
+            "obs": 7,
+            "date": "9/26/2026",
+            "actual": "2026-09-26T17:45:00",
+            "predicted": "2026-09-26T17:44:00",
+            "observationPrevious": 0,
+            "nextVentra": 4,
+            "actualNext": 1,
+            "comments": "Bus Bunched, three buses one after another",
+            "sourceRow": 6
+          },
+          {
+            "obs": 8,
+            "date": "9/26/2026",
+            "actual": "2026-09-26T17:46:00",
+            "predicted": "2026-09-26T17:58:00",
+            "observationPrevious": 1,
+            "nextVentra": 10,
+            "actualNext": 999,
+            "comments": "Bus Bunched, three buses one after another",
+            "sourceRow": 7
+          }
+        ]
+      },
+      {
+        "stopId": "R20-S18122",
+        "route": "20",
+        "stopName": "Clark and Washington",
+        "ctaStopId": "18122",
+        "direction": "E",
+        "lon": -87.63020179,
+        "lat": 41.88315492,
+        "observations": [
+          {
+            "obs": 9,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T14:59:00",
+            "predicted": "2026-10-07T15:02:00",
+            "observationPrevious": 999,
+            "nextVentra": 4,
+            "actualNext": 5,
+            "comments": "Early",
+            "sourceRow": 8
+          },
+          {
+            "obs": 11,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:04:00",
+            "predicted": "2026-10-07T15:05:00",
+            "observationPrevious": 5,
+            "nextVentra": 7,
+            "actualNext": 6,
+            "comments": "",
+            "sourceRow": 10
+          },
+          {
+            "obs": 12,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:06:00",
+            "predicted": "2026-10-07T15:12:00",
+            "observationPrevious": 2,
+            "nextVentra": 7,
+            "actualNext": 6,
+            "comments": "",
+            "sourceRow": 11
+          },
+          {
+            "obs": 16,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:22:00",
+            "predicted": "2026-10-07T15:19:00",
+            "observationPrevious": 16,
+            "nextVentra": 5,
+            "actualNext": 7,
+            "comments": "",
+            "sourceRow": 15
+          },
+          {
+            "obs": 18,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:29:00",
+            "predicted": "2026-10-07T15:22:00",
+            "observationPrevious": 7,
+            "nextVentra": 4,
+            "actualNext": 0,
+            "comments": "Arrived 7 mins late",
+            "sourceRow": 17
+          },
+          {
+            "obs": 19,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:29:00",
+            "predicted": "2026-10-07T15:26:00",
+            "observationPrevious": 0,
+            "nextVentra": 11,
+            "actualNext": 999,
+            "comments": "Bunched bus",
+            "sourceRow": 18
+          }
+        ]
+      },
+      {
+        "stopId": "R56-S18122",
+        "route": "56",
+        "stopName": "Clark and Washington",
+        "ctaStopId": "18122",
+        "direction": "E",
+        "lon": -87.63020179,
+        "lat": 41.88315492,
+        "observations": [
+          {
+            "obs": 10,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:03:00",
+            "predicted": "2026-10-07T15:03:00",
+            "observationPrevious": 999,
+            "nextVentra": 3,
+            "actualNext": 3,
+            "comments": "On Time. 56 Bus is recorded as N S but travels on diagonal Milwaukee SE and NW",
+            "sourceRow": 9
+          },
+          {
+            "obs": 13,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:15:00",
+            "predicted": "2026-10-07T15:12:00",
+            "observationPrevious": 7,
+            "nextVentra": 10,
+            "actualNext": 2,
+            "comments": "",
+            "sourceRow": 12
+          },
+          {
+            "obs": 14,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:17:00",
+            "predicted": "2026-10-07T15:22:00",
+            "observationPrevious": 1,
+            "nextVentra": 10,
+            "actualNext": 1,
+            "comments": "Bunched bus",
+            "sourceRow": 13
+          },
+          {
+            "obs": 15,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:18:00",
+            "predicted": "2026-10-07T15:32:00",
+            "observationPrevious": 1,
+            "nextVentra": 5,
+            "actualNext": 6,
+            "comments": "Bunched bus",
+            "sourceRow": 14
+          },
+          {
+            "obs": 17,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:28:00",
+            "predicted": "2026-10-07T15:27:00",
+            "observationPrevious": 10,
+            "nextVentra": 10,
+            "actualNext": 999,
+            "comments": "",
+            "sourceRow": 16
+          }
+        ]
+      },
+      {
+        "stopId": "R20-S18123",
+        "route": "20",
+        "stopName": "La Salle and Madison",
+        "ctaStopId": "18123",
+        "direction": "W",
+        "lon": -87.63265794,
+        "lat": 41.88201942,
+        "observations": [
+          {
+            "obs": 20,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:45:00",
+            "predicted": "2026-10-07T15:42:00",
+            "observationPrevious": 999,
+            "nextVentra": 7,
+            "actualNext": 7,
+            "comments": "",
+            "sourceRow": 19
+          },
+          {
+            "obs": 22,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:49:00",
+            "predicted": "2026-10-07T15:49:00",
+            "observationPrevious": 4,
+            "nextVentra": 10,
+            "actualNext": 8,
+            "comments": "headway target met",
+            "sourceRow": 21
+          },
+          {
+            "obs": 24,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:58:00",
+            "predicted": "2026-10-07T15:59:00",
+            "observationPrevious": 9,
+            "nextVentra": 4,
+            "actualNext": 7,
+            "comments": "",
+            "sourceRow": 23
+          },
+          {
+            "obs": 25,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T16:05:00",
+            "predicted": "2026-10-07T16:02:00",
+            "observationPrevious": 7,
+            "nextVentra": 7,
+            "actualNext": 13,
+            "comments": "",
+            "sourceRow": 24
+          },
+          {
+            "obs": 26,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T16:15:00",
+            "predicted": "2026-10-07T16:09:00",
+            "observationPrevious": 13,
+            "nextVentra": 4,
+            "actualNext": 3,
+            "comments": "",
+            "sourceRow": 25
+          },
+          {
+            "obs": 27,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T16:18:00",
+            "predicted": "2026-10-07T16:19:00",
+            "observationPrevious": 3,
+            "nextVentra": 5,
+            "actualNext": 999,
+            "comments": "",
+            "sourceRow": 26
+          }
+        ]
+      },
+      {
+        "stopId": "R56-S18123",
+        "route": "56",
+        "stopName": "La Salle and Madison",
+        "ctaStopId": "18123",
+        "direction": "W",
+        "lon": -87.63265794,
+        "lat": 41.88201942,
+        "observations": [
+          {
+            "obs": 21,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:45:00",
+            "predicted": "2026-10-07T15:44:00",
+            "observationPrevious": 999,
+            "nextVentra": 11,
+            "actualNext": 12,
+            "comments": "",
+            "sourceRow": 20
+          },
+          {
+            "obs": 23,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T15:57:00",
+            "predicted": "2026-10-07T15:56:00",
+            "observationPrevious": 13,
+            "nextVentra": 20,
+            "actualNext": 23,
+            "comments": "Exceeded CTA headway",
+            "sourceRow": 22
+          },
+          {
+            "obs": 28,
+            "date": "10/7/2026",
+            "actual": "2026-10-07T16:20:00",
+            "predicted": "2026-10-07T16:17:00",
+            "observationPrevious": 2,
+            "nextVentra": 20,
+            "actualNext": 999,
+            "comments": "Bus bunched",
+            "sourceRow": 27
+          }
+        ]
+      },
+      {
+        "stopId": "R8-S15356",
+        "route": "8",
+        "stopName": "Lake and Halsted",
+        "ctaStopId": "15356",
+        "direction": "N",
+        "lon": -87.64741702,
+        "lat": 41.88582677,
+        "observations": [
+          {
+            "obs": 29,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T11:11:00",
+            "predicted": "2026-10-09T11:11:00",
+            "observationPrevious": 999,
+            "nextVentra": 2,
+            "actualNext": 3,
+            "comments": "",
+            "sourceRow": 28
+          },
+          {
+            "obs": 30,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T11:15:00",
+            "predicted": "2026-10-09T11:13:00",
+            "observationPrevious": 3,
+            "nextVentra": 11,
+            "actualNext": 11,
+            "comments": "Exceeded CTA headway",
+            "sourceRow": 29
+          },
+          {
+            "obs": 31,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T11:26:00",
+            "predicted": "2026-10-09T11:26:00",
+            "observationPrevious": 11,
+            "nextVentra": 9,
+            "actualNext": 9,
+            "comments": "",
+            "sourceRow": 30
+          },
+          {
+            "obs": 32,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T11:35:00",
+            "predicted": "2026-10-09T11:35:00",
+            "observationPrevious": 9,
+            "nextVentra": 10,
+            "actualNext": 14,
+            "comments": "Exceeded CTA headway",
+            "sourceRow": 31
+          },
+          {
+            "obs": 33,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T11:49:00",
+            "predicted": "2026-10-09T11:45:00",
+            "observationPrevious": 14,
+            "nextVentra": 5,
+            "actualNext": 999,
+            "comments": "Exceeded CTA headway",
+            "sourceRow": 32
+          }
+        ]
+      },
+      {
+        "stopId": "R147-S1033",
+        "route": "147",
+        "stopName": "Sheridan and Granville",
+        "ctaStopId": "1033",
+        "direction": "S",
+        "lon": -87.65560377,
+        "lat": 41.99442687,
+        "observations": [
+          {
+            "obs": 1,
+            "date": "9/28/2026",
+            "actual": "2026-09-28T08:40:00",
+            "predicted": "2026-09-28T08:42:00",
+            "observationPrevious": 999,
+            "nextVentra": 12,
+            "actualNext": 11,
+            "comments": "2 minutes early",
+            "sourceRow": 33
+          },
+          {
+            "obs": 2,
+            "date": "9/28/2026",
+            "actual": "2026-09-28T08:54:00",
+            "predicted": "2026-09-28T08:53:00",
+            "observationPrevious": 14,
+            "nextVentra": 10,
+            "actualNext": 9,
+            "comments": "1 minute late",
+            "sourceRow": 34
+          },
+          {
+            "obs": 3,
+            "date": "9/28/2026",
+            "actual": "2026-09-28T09:04:00",
+            "predicted": "2026-09-28T09:03:00",
+            "observationPrevious": 10,
+            "nextVentra": 12,
+            "actualNext": 13,
+            "comments": "1 minute late; normal spacing",
+            "sourceRow": 35
+          },
+          {
+            "obs": 4,
+            "date": "9/28/2026",
+            "actual": "2026-09-28T09:17:00",
+            "predicted": "2026-09-28T09:16:00",
+            "observationPrevious": 13,
+            "nextVentra": 9,
+            "actualNext": 8,
+            "comments": "1 minute late",
+            "sourceRow": 36
+          },
+          {
+            "obs": 5,
+            "date": "9/28/2026",
+            "actual": "2026-09-28T09:25:00",
+            "predicted": "2026-09-28T09:25:00",
+            "observationPrevious": 8,
+            "nextVentra": 15,
+            "actualNext": 16,
+            "comments": "On time; slightly longer following gap",
+            "sourceRow": 37
+          }
+        ]
+      },
+      {
+        "stopId": "R22-S1956",
+        "route": "22",
+        "stopName": "Clark and Devon",
+        "ctaStopId": "1956",
+        "direction": "N",
+        "lon": -87.67039663,
+        "lat": 41.99792858,
+        "observations": [
+          {
+            "obs": 6,
+            "date": "9/23/2026",
+            "actual": "2026-09-23T17:45:00",
+            "predicted": "2026-09-23T17:44:00",
+            "observationPrevious": 999,
+            "nextVentra": 8,
+            "actualNext": 7,
+            "comments": "1 minute late",
+            "sourceRow": 38
+          },
+          {
+            "obs": 7,
+            "date": "9/23/2026",
+            "actual": "2026-09-23T17:53:00",
+            "predicted": "2026-09-23T17:52:00",
+            "observationPrevious": 8,
+            "nextVentra": 9,
+            "actualNext": 2,
+            "comments": "Bus arrived 7 minutes earlier than expected; possible bunching",
+            "sourceRow": 39
+          },
+          {
+            "obs": 8,
+            "date": "9/23/2026",
+            "actual": "2026-09-23T17:55:00",
+            "predicted": "2026-09-23T17:55:00",
+            "observationPrevious": 2,
+            "nextVentra": 11,
+            "actualNext": 9,
+            "comments": "Bus closely followed previous bus",
+            "sourceRow": 40
+          },
+          {
+            "obs": 9,
+            "date": "9/23/2026",
+            "actual": "2026-09-23T18:06:00",
+            "predicted": "2026-09-23T18:04:00",
+            "observationPrevious": 11,
+            "nextVentra": 8,
+            "actualNext": 12,
+            "comments": "2 minutes late",
+            "sourceRow": 41
+          },
+          {
+            "obs": 10,
+            "date": "9/23/2026",
+            "actual": "2026-09-23T18:18:00",
+            "predicted": "2026-09-23T18:18:00",
+            "observationPrevious": 12,
+            "nextVentra": 10,
+            "actualNext": 14,
+            "comments": "On time; longer-than-expected following gap",
+            "sourceRow": 42
+          }
+        ]
+      },
+      {
+        "stopId": "R157-S6700",
+        "route": "157",
+        "stopName": "900 W Taylor",
+        "ctaStopId": "6700",
+        "direction": "E",
+        "lon": -87.64875975,
+        "lat": 41.86949185,
+        "observations": [
+          {
+            "obs": 11,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T12:07:00",
+            "predicted": "2026-09-29T12:08:00",
+            "observationPrevious": 999,
+            "nextVentra": 15,
+            "actualNext": 2,
+            "comments": "1 minute early; bus arrived shortly after another bus",
+            "sourceRow": 43
+          },
+          {
+            "obs": 12,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T12:09:00",
+            "predicted": "2026-09-29T12:10:00",
+            "observationPrevious": 2,
+            "nextVentra": 14,
+            "actualNext": 2,
+            "comments": "1 minute early; bus closely followed previous bus; possible bunching",
+            "sourceRow": 44
+          },
+          {
+            "obs": 13,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T12:11:00",
+            "predicted": "2026-09-29T12:12:00",
+            "observationPrevious": 2,
+            "nextVentra": 13,
+            "actualNext": 2,
+            "comments": "1 minute early; three buses arrived within approximately 4 minutes",
+            "sourceRow": 45
+          },
+          {
+            "obs": 14,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T12:13:00",
+            "predicted": "2026-09-29T12:14:00",
+            "observationPrevious": 2,
+            "nextVentra": 12,
+            "actualNext": 20,
+            "comments": "1 minute early; large gap after previous group of buses; possible bunching followed by service gap",
+            "sourceRow": 46
+          },
+          {
+            "obs": 15,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T12:33:00",
+            "predicted": "2026-09-29T12:33:00",
+            "observationPrevious": 20,
+            "nextVentra": 15,
+            "actualNext": 999,
+            "comments": "On time; approximately 20-minute gap after three closely spaced buses",
+            "sourceRow": 47
+          }
+        ]
+      },
+      {
+        "stopId": "R96-S12060",
+        "route": "96",
+        "stopName": "Lunt and Sheridan",
+        "ctaStopId": "12060",
+        "direction": "W",
+        "lon": -87.66239317,
+        "lat": 42.00922928,
+        "observations": [
+          {
+            "obs": 16,
+            "date": "10/1/2026",
+            "actual": "2026-10-01T05:03:00",
+            "predicted": "2026-10-01T05:02:00",
+            "observationPrevious": 999,
+            "nextVentra": 30,
+            "actualNext": 29,
+            "comments": "1 minute late; first observed morning bus",
+            "sourceRow": 48
+          },
+          {
+            "obs": 17,
+            "date": "10/1/2026",
+            "actual": "2026-10-01T05:33:00",
+            "predicted": "2026-10-01T05:32:00",
+            "observationPrevious": 30,
+            "nextVentra": 30,
+            "actualNext": 31,
+            "comments": "1 minute late; approximately 30-minute spacing",
+            "sourceRow": 49
+          },
+          {
+            "obs": 18,
+            "date": "10/1/2026",
+            "actual": "2026-10-01T06:03:00",
+            "predicted": "2026-10-01T06:03:00",
+            "observationPrevious": 30,
+            "nextVentra": 30,
+            "actualNext": 29,
+            "comments": "On time; approximately 30-minute spacing",
+            "sourceRow": 50
+          },
+          {
+            "obs": 19,
+            "date": "10/1/2026",
+            "actual": "2026-10-01T06:32:00",
+            "predicted": "2026-10-01T06:32:00",
+            "observationPrevious": 29,
+            "nextVentra": 60,
+            "actualNext": 59,
+            "comments": "On time; next bus predicted approximately one hour later",
+            "sourceRow": 51
+          },
+          {
+            "obs": 20,
+            "date": "10/1/2026",
+            "actual": "2026-10-01T07:31:00",
+            "predicted": "2026-10-01T07:31:00",
+            "observationPrevious": 59,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "On time; approximately one-hour gap from previous bus",
+            "sourceRow": 52
+          }
+        ]
+      },
+      {
+        "stopId": "R147-S1119",
+        "route": "147",
+        "stopName": "Michigan and Randolph",
+        "ctaStopId": "1119",
+        "direction": "N",
+        "lon": -87.6243233,
+        "lat": 41.88469579,
+        "observations": [
+          {
+            "obs": 21,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T17:28:00",
+            "predicted": "2026-10-12T17:28:00",
+            "observationPrevious": 999,
+            "nextVentra": 12,
+            "actualNext": 3,
+            "comments": "On time; first bus in an evening bunching sequence",
+            "sourceRow": 53
+          },
+          {
+            "obs": 22,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T17:31:00",
+            "predicted": "2026-10-12T17:40:00",
+            "observationPrevious": 3,
+            "nextVentra": 10,
+            "actualNext": 2,
+            "comments": "Arrived earlier than predicted; closely followed previous bus",
+            "sourceRow": 54
+          },
+          {
+            "obs": 23,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T17:33:00",
+            "predicted": "2026-10-12T17:41:00",
+            "observationPrevious": 2,
+            "nextVentra": 12,
+            "actualNext": 28,
+            "comments": "Arrived shortly after previous bus; followed by a long service gap",
+            "sourceRow": 55
+          },
+          {
+            "obs": 24,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T18:01:00",
+            "predicted": "2026-10-12T18:01:00",
+            "observationPrevious": 28,
+            "nextVentra": 10,
+            "actualNext": 3,
+            "comments": "Approximately 28-minute service gap after bunching",
+            "sourceRow": 56
+          },
+          {
+            "obs": 25,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T18:04:00",
+            "predicted": "2026-10-12T18:11:00",
+            "observationPrevious": 3,
+            "nextVentra": 12,
+            "actualNext": 999,
+            "comments": "Arrived earlier than predicted; another closely spaced bus; end of observation window",
+            "sourceRow": 57
+          }
+        ]
+      },
+      {
+        "stopId": "R22-S1805",
+        "route": "22",
+        "stopName": "Clark and Berwyn",
+        "ctaStopId": "1805",
+        "direction": "S",
+        "lon": -87.66840677,
+        "lat": 41.97807287,
+        "observations": [
+          {
+            "obs": 26,
+            "date": "10/10/2026",
+            "actual": "2026-10-10T18:02:00",
+            "predicted": "2026-10-10T18:02:00",
+            "observationPrevious": 999,
+            "nextVentra": 10,
+            "actualNext": 1,
+            "comments": "First observed bus; evening service",
+            "sourceRow": 58
+          },
+          {
+            "obs": 27,
+            "date": "10/10/2026",
+            "actual": "2026-10-10T18:03:00",
+            "predicted": "2026-10-10T18:12:00",
+            "observationPrevious": 1,
+            "nextVentra": 12,
+            "actualNext": 0,
+            "comments": "Two buses recorded within the same minute; possible bunching",
+            "sourceRow": 59
+          },
+          {
+            "obs": 28,
+            "date": "10/10/2026",
+            "actual": "2026-10-10T18:03:00",
+            "predicted": "2026-10-10T18:15:00",
+            "observationPrevious": 0,
+            "nextVentra": 10,
+            "actualNext": 26,
+            "comments": "Closely followed previous bus; approximately 26-minute gap afterward",
+            "sourceRow": 60
+          },
+          {
+            "obs": 29,
+            "date": "10/10/2026",
+            "actual": "2026-10-10T18:29:00",
+            "predicted": "2026-10-10T18:29:00",
+            "observationPrevious": 26,
+            "nextVentra": 12,
+            "actualNext": 26,
+            "comments": "Approximately 26-minute service gap following bunching",
+            "sourceRow": 61
+          },
+          {
+            "obs": 30,
+            "date": "10/10/2026",
+            "actual": "2026-10-10T18:55:00",
+            "predicted": "2026-10-10T18:41:00",
+            "observationPrevious": 26,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "Approximately 26-minute gap since previous bus; arrived later than predicted",
+            "sourceRow": 62
+          }
+        ]
+      },
+      {
+        "stopId": "R157-S1103",
+        "route": "157",
+        "stopName": "Michigan and Hubbard (Wrigley Building)",
+        "ctaStopId": "1103",
+        "direction": "W",
+        "lon": -87.62424975,
+        "lat": 41.88990186,
+        "observations": [
+          {
+            "obs": 31,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T08:42:00",
+            "predicted": "2026-10-09T08:42:00",
+            "observationPrevious": 999,
+            "nextVentra": 20,
+            "actualNext": 20,
+            "comments": "On time; approximately 20-minute service spacing",
+            "sourceRow": 63
+          },
+          {
+            "obs": 32,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T09:02:00",
+            "predicted": "2026-10-09T09:02:00",
+            "observationPrevious": 20,
+            "nextVentra": 20,
+            "actualNext": 20,
+            "comments": "On time; approximately 20-minute spacing",
+            "sourceRow": 64
+          },
+          {
+            "obs": 33,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T09:22:00",
+            "predicted": "2026-10-09T09:22:00",
+            "observationPrevious": 20,
+            "nextVentra": 20,
+            "actualNext": 10,
+            "comments": "On time; next bus arrived sooner than the usual 20-minute interval",
+            "sourceRow": 65
+          },
+          {
+            "obs": 34,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T09:32:00",
+            "predicted": "2026-10-09T09:42:00",
+            "observationPrevious": 10,
+            "nextVentra": 20,
+            "actualNext": 20,
+            "comments": "Arrived earlier than predicted; approximately 10-minute gap since previous bus",
+            "sourceRow": 66
+          },
+          {
+            "obs": 35,
+            "date": "10/9/2026",
+            "actual": "2026-10-09T09:52:00",
+            "predicted": "2026-10-09T09:52:00",
+            "observationPrevious": 20,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "On time; service spacing returned to approximately 20 minutes",
+            "sourceRow": 67
+          }
+        ]
+      },
+      {
+        "stopId": "R96-S12048",
+        "route": "96",
+        "stopName": "Lunt and Oakley",
+        "ctaStopId": "12048",
+        "direction": "E",
+        "lon": -87.68811219,
+        "lat": 42.00861,
+        "observations": [
+          {
+            "obs": 36,
+            "date": "10/8/2026",
+            "actual": "2026-10-08T15:03:00",
+            "predicted": "2026-10-08T15:02:00",
+            "observationPrevious": 999,
+            "nextVentra": 30,
+            "actualNext": 29,
+            "comments": "One minute late; approximately 30-minute service spacing",
+            "sourceRow": 68
+          },
+          {
+            "obs": 37,
+            "date": "10/8/2026",
+            "actual": "2026-10-08T15:32:00",
+            "predicted": "2026-10-08T15:32:00",
+            "observationPrevious": 29,
+            "nextVentra": 30,
+            "actualNext": 30,
+            "comments": "On time; approximately 30-minute spacing",
+            "sourceRow": 69
+          },
+          {
+            "obs": 38,
+            "date": "10/8/2026",
+            "actual": "2026-10-08T16:02:00",
+            "predicted": "2026-10-08T16:02:00",
+            "observationPrevious": 30,
+            "nextVentra": 60,
+            "actualNext": 60,
+            "comments": "On time; next bus arrived approximately one hour later",
+            "sourceRow": 70
+          },
+          {
+            "obs": 39,
+            "date": "10/8/2026",
+            "actual": "2026-10-08T17:02:00",
+            "predicted": "2026-10-08T17:02:00",
+            "observationPrevious": 60,
+            "nextVentra": 30,
+            "actualNext": 30,
+            "comments": "On time; approximately one-hour gap since previous bus",
+            "sourceRow": 71
+          },
+          {
+            "obs": 40,
+            "date": "10/8/2026",
+            "actual": "2026-10-08T17:32:00",
+            "predicted": "2026-10-08T17:32:00",
+            "observationPrevious": 30,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "On time; approximately 30-minute spacing; observation near the reported end of service",
+            "sourceRow": 72
+          }
+        ]
+      },
+      {
+        "stopId": "R36-S16194",
+        "route": "36",
+        "stopName": "Broadway and Wilson (Red/Purple Lines)",
+        "ctaStopId": "16194",
+        "direction": "N",
+        "lon": -87.65748119,
+        "lat": 41.96559911,
+        "observations": [
+          {
+            "obs": 41,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T08:01:00",
+            "predicted": "2026-10-13T08:00:00",
+            "observationPrevious": 999,
+            "nextVentra": 10,
+            "actualNext": 10,
+            "comments": "1 minute late; first observed bus",
+            "sourceRow": 73
+          },
+          {
+            "obs": 42,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T08:11:00",
+            "predicted": "2026-10-13T08:10:00",
+            "observationPrevious": 10,
+            "nextVentra": 10,
+            "actualNext": 9,
+            "comments": "1 minute late; approximately 10-minute spacing",
+            "sourceRow": 74
+          },
+          {
+            "obs": 43,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T08:20:00",
+            "predicted": "2026-10-13T08:20:00",
+            "observationPrevious": 9,
+            "nextVentra": 10,
+            "actualNext": 3,
+            "comments": "On time; next bus arrived sooner than predicted",
+            "sourceRow": 75
+          },
+          {
+            "obs": 44,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T08:23:00",
+            "predicted": "2026-10-13T08:30:00",
+            "observationPrevious": 3,
+            "nextVentra": 10,
+            "actualNext": 4,
+            "comments": "Arrived earlier than predicted; possible bunching",
+            "sourceRow": 76
+          },
+          {
+            "obs": 45,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T08:27:00",
+            "predicted": "2026-10-13T08:40:00",
+            "observationPrevious": 4,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "Arrived shortly after previous bus; bunching observed",
+            "sourceRow": 77
+          }
+        ]
+      },
+      {
+        "stopId": "R146-S4847",
+        "route": "146",
+        "stopName": "Foster and Marine Drive",
+        "ctaStopId": "4847",
+        "direction": "N",
+        "lon": -87.65258023,
+        "lat": 41.9765076,
+        "observations": [
+          {
+            "obs": 46,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T12:01:00",
+            "predicted": "2026-10-13T12:00:00",
+            "observationPrevious": 999,
+            "nextVentra": 20,
+            "actualNext": 20,
+            "comments": "1 minute late; first observed bus",
+            "sourceRow": 78
+          },
+          {
+            "obs": 47,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T12:21:00",
+            "predicted": "2026-10-13T12:20:00",
+            "observationPrevious": 20,
+            "nextVentra": 20,
+            "actualNext": 20,
+            "comments": "1 minute late; regular spacing",
+            "sourceRow": 79
+          },
+          {
+            "obs": 48,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T12:41:00",
+            "predicted": "2026-10-13T12:40:00",
+            "observationPrevious": 20,
+            "nextVentra": 20,
+            "actualNext": 22,
+            "comments": "1 minute late; slightly longer following interval",
+            "sourceRow": 80
+          },
+          {
+            "obs": 49,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T13:03:00",
+            "predicted": "2026-10-13T13:00:00",
+            "observationPrevious": 22,
+            "nextVentra": 20,
+            "actualNext": 19,
+            "comments": "3 minutes late; service remains relatively regular",
+            "sourceRow": 81
+          },
+          {
+            "obs": 50,
+            "date": "10/13/2026",
+            "actual": "2026-10-13T13:22:00",
+            "predicted": "2026-10-13T13:20:00",
+            "observationPrevious": 19,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "2 minutes late; approximately 19-minute interval since previous bus",
+            "sourceRow": 82
+          }
+        ]
+      },
+      {
+        "stopId": "R36-S14444",
+        "route": "36",
+        "stopName": "Broadway and Granville",
+        "ctaStopId": "14444",
+        "direction": "S",
+        "lon": -87.66051595,
+        "lat": 41.99438838,
+        "observations": [
+          {
+            "obs": 51,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T17:01:00",
+            "predicted": "2026-10-12T17:00:00",
+            "observationPrevious": 999,
+            "nextVentra": 20,
+            "actualNext": 20,
+            "comments": "1 minute late; first observed bus",
+            "sourceRow": 83
+          },
+          {
+            "obs": 52,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T17:21:00",
+            "predicted": "2026-10-12T17:20:00",
+            "observationPrevious": 20,
+            "nextVentra": 20,
+            "actualNext": 19,
+            "comments": "1 minute late; approximately regular spacing",
+            "sourceRow": 84
+          },
+          {
+            "obs": 53,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T17:40:00",
+            "predicted": "2026-10-12T17:40:00",
+            "observationPrevious": 19,
+            "nextVentra": 20,
+            "actualNext": 21,
+            "comments": "On time; regular spacing",
+            "sourceRow": 85
+          },
+          {
+            "obs": 54,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T18:01:00",
+            "predicted": "2026-10-12T18:00:00",
+            "observationPrevious": 21,
+            "nextVentra": 20,
+            "actualNext": 20,
+            "comments": "1 minute late; no substantial bunching observed",
+            "sourceRow": 86
+          },
+          {
+            "obs": 55,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T18:21:00",
+            "predicted": "2026-10-12T18:20:00",
+            "observationPrevious": 20,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "1 minute late; approximately 20-minute spacing",
+            "sourceRow": 87
+          }
+        ]
+      },
+      {
+        "stopId": "R146-S14668",
+        "route": "146",
+        "stopName": "Berwyn and Broadway (Red Line)",
+        "ctaStopId": "14668",
+        "direction": "S",
+        "lon": -87.65930987,
+        "lat": 41.9781011,
+        "observations": [
+          {
+            "obs": 56,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T20:01:00",
+            "predicted": "2026-10-12T20:00:00",
+            "observationPrevious": 999,
+            "nextVentra": 12,
+            "actualNext": 3,
+            "comments": "1 minute late; first observed bus",
+            "sourceRow": 88
+          },
+          {
+            "obs": 57,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T20:04:00",
+            "predicted": "2026-10-12T20:12:00",
+            "observationPrevious": 3,
+            "nextVentra": 10,
+            "actualNext": 2,
+            "comments": "Arrived earlier than predicted; closely followed previous bus",
+            "sourceRow": 89
+          },
+          {
+            "obs": 58,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T20:06:00",
+            "predicted": "2026-10-12T20:22:00",
+            "observationPrevious": 2,
+            "nextVentra": 12,
+            "actualNext": 27,
+            "comments": "Bus bunching observed; followed by a long service gap",
+            "sourceRow": 90
+          },
+          {
+            "obs": 59,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T20:33:00",
+            "predicted": "2026-10-12T20:18:00",
+            "observationPrevious": 27,
+            "nextVentra": 12,
+            "actualNext": 3,
+            "comments": "Approximately 27-minute service gap; bus arrived later than predicted",
+            "sourceRow": 91
+          },
+          {
+            "obs": 60,
+            "date": "10/12/2026",
+            "actual": "2026-10-12T20:36:00",
+            "predicted": "2026-10-12T20:45:00",
+            "observationPrevious": 3,
+            "nextVentra": 999,
+            "actualNext": 999,
+            "comments": "Bus closely followed previous bus; another bunching episode",
+            "sourceRow": 92
+          }
+        ]
+      },
+      {
+        "stopId": "R157-S6701",
+        "route": "157",
+        "stopName": "Taylor and Halsted",
+        "ctaStopId": "6701",
+        "direction": "E",
+        "lon": -87.64737175,
+        "lat": 41.86951485,
+        "observations": [
+          {
+            "obs": 1,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:10:00",
+            "predicted": "2026-09-29T13:10:00",
+            "observationPrevious": 999,
+            "nextVentra": 16,
+            "actualNext": 22,
+            "comments": "On time",
+            "sourceRow": 93
+          },
+          {
+            "obs": 2,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:32:00",
+            "predicted": "2026-09-29T13:31:00",
+            "observationPrevious": 12,
+            "nextVentra": 14,
+            "actualNext": 999,
+            "comments": "Late by +1 min",
+            "sourceRow": 94
+          }
+        ]
+      },
+      {
+        "stopId": "R8-S4640",
+        "route": "8",
+        "stopName": "Halsted and Taylor",
+        "ctaStopId": "4640",
+        "direction": "S",
+        "lon": -87.64713076,
+        "lat": 41.86985885,
+        "observations": [
+          {
+            "obs": 3,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:14:00",
+            "predicted": "2026-09-29T13:13:00",
+            "observationPrevious": 999,
+            "nextVentra": 6,
+            "actualNext": 999,
+            "comments": "Late by +1 min",
+            "sourceRow": 95
+          },
+          {
+            "obs": 6,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:24:00",
+            "predicted": "2026-09-29T13:22:00",
+            "observationPrevious": 10,
+            "nextVentra": 6,
+            "actualNext": 11,
+            "comments": "Late by +2 min",
+            "sourceRow": 98
+          },
+          {
+            "obs": 7,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:35:00",
+            "predicted": "2026-09-29T13:31:00",
+            "observationPrevious": 11,
+            "nextVentra": 5,
+            "actualNext": 11,
+            "comments": "On time",
+            "sourceRow": 99
+          },
+          {
+            "obs": 9,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:43:00",
+            "predicted": "2026-09-29T13:40:00",
+            "observationPrevious": 8,
+            "nextVentra": 4,
+            "actualNext": 999,
+            "comments": "Late by +3 min",
+            "sourceRow": 101
+          }
+        ]
+      },
+      {
+        "stopId": "R157-S17277",
+        "route": "157",
+        "stopName": "Taylor and Halsted",
+        "ctaStopId": "17277",
+        "direction": "W",
+        "lon": -87.64762079,
+        "lat": 41.86969006,
+        "observations": [
+          {
+            "obs": 4,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:19:00",
+            "predicted": "2026-09-29T13:19:00",
+            "observationPrevious": 999,
+            "nextVentra": 22,
+            "actualNext": 10,
+            "comments": "On time",
+            "sourceRow": 96
+          },
+          {
+            "obs": 8,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:43:00",
+            "predicted": "2026-09-29T13:43:00",
+            "observationPrevious": 24,
+            "nextVentra": 17,
+            "actualNext": 999,
+            "comments": "Late by +4 min",
+            "sourceRow": 100
+          }
+        ]
+      },
+      {
+        "stopId": "R8-S14487",
+        "route": "8",
+        "stopName": "Halsted and Taylor",
+        "ctaStopId": "14487",
+        "direction": "N",
+        "lon": -87.64682433,
+        "lat": 41.87010519,
+        "observations": [
+          {
+            "obs": 5,
+            "date": "9/29/2026",
+            "actual": "2026-09-29T13:23:00",
+            "predicted": "2026-09-29T13:21:00",
+            "observationPrevious": 999,
+            "nextVentra": 16,
+            "actualNext": 24,
+            "comments": "Late by +2 min",
+            "sourceRow": 97
+          }
+        ]
+      }
+    ]
+  },
+  // Vertically stack the map first and the selected stop timeline underneath.
+  "vconcat": [
+    {
+      "width": 720,
+      "height": 390,
+      // Geographic projection and viewport settings for the Chicago map.
+      "projection": {
+        "type": "mercator",
+        "center": [
+          -87.65,
+          41.88
+        ],
+        "scale": 50000,
+        "translate": [
+          360,
+          195
+        ]
+      },
+      // Map layers: city boundary, CTA route geometry, and interactive stop points.
+      "layer": [
+        {
+          "data": {
+            // External GeoJSON layer for the City of Chicago boundary.
+          "url": "https://services5.arcgis.com/cuQhNeNcUrgLmYGD/ArcGIS/rest/services/Chicago_City_Boundary/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson"
+          },
+          "mark": {
+            "type": "geoshape",
+            "filled": true,
+            "fill": "#f1f5f9",
+            "stroke": "#334155",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "tooltip": {
+              "value": "City of Chicago"
+            }
+          }
+        },
+        {
+          "data": {
+            // External CTA route geometry, limited to the routes represented in the map legend.
+          "url": "https://data.cityofchicago.org/resource/6uva-a5ei.geojson?$limit=500&$where=route%20in%20(%278%27%2C%2720%27%2C%2722%27%2C%2736%27%2C%2756%27%2C%2766%27%2C%2796%27%2C%27146%27%2C%27147%27%2C%27157%27)",
+            "format": {
+              "type": "json",
+              "property": "features"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "filled": false,
+            "strokeWidth": 2,
+            "opacity": 0.9
+          },
+          "encoding": {
+            "stroke": {
+              "field": "properties.route",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "8",
+                  "20",
+                  "22",
+                  "36",
+                  "56",
+                  "66",
+                  "96",
+                  "146",
+                  "147",
+                  "157"
+                ],
+                "range": [
+                  "#2563eb",
+                  "#ea580c",
+                  "#16a34a",
+                  "#9333ea",
+                  "#0891b2",
+                  "#dc2626",
+                  "#ca8a04",
+                  "#db2777",
+                  "#475569",
+                  "#65a30d"
+                ]
+              },
+              "legend": {
+                "title": "CTA Route"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "properties.route",
+                "type": "nominal",
+                "title": "Route"
+              },
+              {
+                "field": "properties.name",
+                "type": "nominal",
+                "title": "Route name"
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "name": "stops"
+          },
+          // Interaction parameters: hover previews; click pins a selected stop.
+        "params": [
+            {
+              // Temporary hover selection; it clears when the pointer leaves a stop.
+            "name": "hoverStop",
+              "select": {
+                "type": "point",
+                "fields": [
+                  "stopId"
+                ],
+                "on": "pointerover",
+                "clear": "pointerout"
+              }
+            },
+            {
+              // Persistent click selection; clear:false keeps the clicked stop pinned.
+            "name": "selectedStop",
+              "select": {
+                "type": "point",
+                "fields": [
+                  "stopId"
+                ],
+                "on": "click",
+                "clear": false
+              }
+            }
+          ],
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 240,
+            "stroke": "white",
+            "strokeWidth": 2,
+            "opacity": 1,
+            "cursor": "pointer",
+            "clip": true
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "tooltip": [
+              {
+                "field": "route",
+                "type": "nominal",
+                "title": "Route"
+              },
+              {
+                "field": "stopId",
+                "type": "nominal",
+                "title": "Stop ID"
+              },
+              {
+                "field": "ctaStopId",
+                "type": "nominal",
+                "title": "CTA Stop ID"
+              },
+              {
+                "field": "stopName",
+                "type": "nominal",
+                "title": "Intersection"
+              },
+              {
+                "field": "direction",
+                "type": "nominal",
+                "title": "Direction"
+              }
+            ],
+            "fill": {
+              "field": "route",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "8",
+                  "20",
+                  "22",
+                  "36",
+                  "56",
+                  "66",
+                  "96",
+                  "146",
+                  "147",
+                  "157"
+                ],
+                "range": [
+                  "#2563eb",
+                  "#ea580c",
+                  "#16a34a",
+                  "#9333ea",
+                  "#0891b2",
+                  "#dc2626",
+                  "#ca8a04",
+                  "#db2777",
+                  "#475569",
+                  "#65a30d"
+                ]
+              },
+              "legend": {
+                "title": "CTA Route"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      // Timeline displays actual and predicted arrivals for the active stop.
+      // If there is no hover/click selection, the filter defaults to stop R8-S5792.
+      "title": "Arrival Timeline — Actual vs. Predicted",
+      "width": 720,
+      "height": 150,
+      "data": {
+        "name": "stops"
+      },
+      // Flatten nested observations to one row per event, derive its number,
+      // then filter rows to the hovered stop, clicked stop, or default stop.
+      "transform": [
+        {
+          // Turn nested observations into individual records.
+          "flatten": [
+            "observations"
+          ],
+          "as": [
+            "observation"
+          ]
+        },
+        {
+          "calculate": "datum.observation.obs",
+          "as": "observationNumber"
+        },
+        {
+          "filter": "length(data('hoverStop_store')) > 0 ? datum.stopId === data('hoverStop_store')[0].values[0] : length(data('selectedStop_store')) > 0 ? datum.stopId === data('selectedStop_store')[0].values[0] : datum.stopId === 'R8-S5792'"
+        }
+      ],
+      // The rule connects actual to predicted time; filled points are actual,
+      // and hollow points are predicted arrivals.
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "stroke": "#64748b",
+            "strokeWidth": 2,
+            "opacity": 0.8,
+            "clip": true
+          },
+          "encoding": {
+            "x": {
+              "field": "observation.actual",
+              "type": "temporal",
+              "axis": {
+                "title": "Arrival time",
+                "format": "%H:%M",
+                "grid": true
+              },
+              "scale": {}
+            },
+            "x2": {
+              "field": "observation.predicted"
+            },
+            "y": {
+              "datum": "Actual arrival",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Actual arrival",
+                  "Predicted arrival"
+                ]
+              },
+              "axis": {
+                "title": null,
+                "labelFontSize": 12
+              }
+            },
+            "y2": {
+              "datum": "Predicted arrival"
+            },
+            "tooltip": [
+              {
+                "field": "route",
+                "type": "nominal",
+                "title": "Route"
+              },
+              {
+                "field": "stopName",
+                "type": "nominal",
+                "title": "Stop"
+              },
+              {
+                "field": "observationNumber",
+                "type": "ordinal",
+                "title": "Observation"
+              },
+              {
+                "field": "observation.actual",
+                "type": "temporal",
+                "title": "Actual",
+                "format": "%H:%M"
+              },
+              {
+                "field": "observation.predicted",
+                "type": "temporal",
+                "title": "Predicted",
+                "format": "%H:%M"
+              },
+              {
+                "field": "observation.comments",
+                "type": "nominal",
+                "title": "Comments"
+              },
+              {
+                "field": "observation.observationPrevious",
+                "type": "quantitative",
+                "title": "Previous gap (min)"
+              },
+              {
+                "field": "observation.nextVentra",
+                "type": "quantitative",
+                "title": "Next gap in Ventra (min)"
+              },
+              {
+                "field": "observation.actualNext",
+                "type": "quantitative",
+                "title": "Actual next gap (min)"
+              },
+              {
+                "field": "observation.date",
+                "type": "nominal",
+                "title": "Observation date"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "color": "black",
+            "size": 100,
+            "clip": true
+          },
+          "encoding": {
+            "x": {
+              "field": "observation.actual",
+              "type": "temporal",
+              "scale": {}
+            },
+            "y": {
+              "datum": "Actual arrival",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Actual arrival",
+                  "Predicted arrival"
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "observationNumber",
+                "type": "ordinal",
+                "title": "Observation"
+              },
+              {
+                "field": "observation.actual",
+                "type": "temporal",
+                "title": "Actual arrival",
+                "format": "%H:%M"
+              },
+              {
+                "field": "observation.comments",
+                "type": "nominal",
+                "title": "Comments"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": false,
+            "color": "black",
+            "stroke": "black",
+            "strokeWidth": 2,
+            "size": 120,
+            "clip": true
+          },
+          "encoding": {
+            "x": {
+              "field": "observation.predicted",
+              "type": "temporal",
+              "scale": {}
+            },
+            "y": {
+              "datum": "Predicted arrival",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Actual arrival",
+                  "Predicted arrival"
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "observationNumber",
+                "type": "ordinal",
+                "title": "Observation"
+              },
+              {
+                "field": "observation.predicted",
+                "type": "temporal",
+                "title": "Predicted arrival",
+                "format": "%H:%M"
+              },
+              {
+                "field": "observation.comments",
+                "type": "nominal",
+                "title": "Comments"
+              }
+            ]
+          }
+        }
+      ],
+      "name": "timelineView"
+    }
+  ],
+  // Keep color scales independent where separate layers encode different fields.
+  "resolve": {
+    "scale": {
+      "color": "independent"
+    }
+  },
+  // Shared styling defaults for panel borders and axis label/title sizes.
+  "config": {
+    "view": {
+      "stroke": "#d1d5db"
+    },
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
+    }
+  }
+};
+
+// Optional CommonJS export if this spec is used in a Node.js project.
+// module.exports = spec;

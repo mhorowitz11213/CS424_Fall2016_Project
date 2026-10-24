@@ -1,0 +1,103 @@
+,ID,Date,Day of Week,Route,Stop-Street,Stop-CTA ID,Direction,Ventra Time (Calculated when previous bus arrives),Real Time,Observation Previous (in mins),"Observation Next (in Mins), Based on Ventra App",Actual Next (in Mins),Comments,stop_lat,stop_lon
+0,1,2026-09-21,M,8,Halsted and Fulton,5792,S,09:46:00,09:41:00,999,15,2,3 mins early,41.88691285,-87.64757776
+1,2,2026-09-21,M,8,Halsted and Fulton,5792,S,10:00:00,09:43:00,2,14,13,Bunched behind 13 minutes early,41.88691285,-87.64757776
+2,3,2026-09-21,M,8,Halsted and Fulton,5792,S,09:55:00,09:56:00,13,11,10,Bus got added to Ventra App,41.88691285,-87.64757776
+3,4,2026-09-21,M,8,Halsted and Fulton,5792,S,10:06:00,10:05:00,10,12,8,1 minute late,41.88691285,-87.64757776
+4,5,2026-09-21,M,8,Halsted and Fulton,5792,S,10:15:00,10:14:00,8,13,999,"Bus got added to Ventra App, 1 minute early once added to app",41.88691285,-87.64757776
+5,6,2026-09-26,S,66,Grand and Kingsbury,771,W,17:44:00,17:44:00,21,0,0,Arrived on time. Previous bus for route arrived over 20 minutes prior,41.89158686,-87.63976275
+6,7,2026-09-26,S,66,Grand and Kingsbury,771,W,17:44:00,17:45:00,0,4,1,"Bus Bunched, three buses one after another",41.89158686,-87.63976275
+7,8,2026-09-26,S,66,Grand and Kingsbury,771,W,17:58:00,17:46:00,1,10,999,"Bus Bunched, three buses one after another",41.89158686,-87.63976275
+8,9,2026-10-07,W,20,Clark and Washington,18122,E,15:02:00,14:59:00,999,4,5,Early,41.88315492,-87.63020179
+9,10,2026-10-07,W,56,Clark and Washington,18122,E,15:03:00,15:03:00,999,3,3,On Time. 56 Bus is recorded as N S but travels on diagonal Milwaukee SE and NW,41.88315492,-87.63020179
+10,11,2026-10-07,W,20,Clark and Washington,18122,E,15:05:00,15:04:00,5,7,6,,41.88315492,-87.63020179
+11,12,2026-10-07,W,20,Clark and Washington,18122,E,15:12:00,15:06:00,2,7,6,,41.88315492,-87.63020179
+12,13,2026-10-07,W,56,Clark and Washington,18122,E,15:12:00,15:15:00,7,10,2,,41.88315492,-87.63020179
+13,14,2026-10-07,W,56,Clark and Washington,18122,E,15:22:00,15:17:00,1,10,1,Bunched bus,41.88315492,-87.63020179
+14,15,2026-10-07,W,56,Clark and Washington,18122,E,15:32:00,15:18:00,1,5,6,Bunched bus,41.88315492,-87.63020179
+15,16,2026-10-07,W,20,Clark and Washington,18122,E,15:19:00,15:22:00,16,5,7,,41.88315492,-87.63020179
+16,17,2026-10-07,W,56,Clark and Washington,18122,E,15:27:00,15:28:00,10,10,999,,41.88315492,-87.63020179
+17,18,2026-10-07,W,20,Clark and Washington,18122,E,15:22:00,15:29:00,7,4,0,Arrived 7 mins late,41.88315492,-87.63020179
+18,19,2026-10-07,W,20,Clark and Washington,18122,E,15:26:00,15:29:00,0,11,999,Bunched bus,41.88315492,-87.63020179
+19,20,2026-10-07,W,20,La Salle and Madison,18123,W,15:42:00,15:45:00,999,7,7,,41.88201942,-87.63265794
+20,21,2026-10-07,W,56,La Salle and Madison,18123,W,15:44:00,15:45:00,999,11,12,,41.88201942,-87.63265794
+21,22,2026-10-07,W,20,La Salle and Madison,18123,W,15:49:00,15:49:00,4,10,8,headway target met,41.88201942,-87.63265794
+22,23,2026-10-07,W,56,La Salle and Madison,18123,W,15:56:00,15:57:00,13,20,23,Exceeded CTA headway,41.88201942,-87.63265794
+23,24,2026-10-07,W,20,La Salle and Madison,18123,W,15:59:00,15:58:00,9,4,7,,41.88201942,-87.63265794
+24,25,2026-10-07,W,20,La Salle and Madison,18123,W,16:02:00,16:05:00,7,7,13,,41.88201942,-87.63265794
+25,26,2026-10-07,W,20,La Salle and Madison,18123,W,16:09:00,16:15:00,13,4,3,,41.88201942,-87.63265794
+26,27,2026-10-07,W,20,La Salle and Madison,18123,W,16:19:00,16:18:00,3,5,999,,41.88201942,-87.63265794
+27,28,2026-10-07,W,56,La Salle and Madison,18123,W,16:17:00,16:20:00,2,20,999,Bus bunched,41.88201942,-87.63265794
+28,29,2026-10-09,F,8,Lake and Halsted,15356,N,11:11:00,11:11:00,999,2,3,,41.88582677,-87.64741702
+29,30,2026-10-09,F,8,Lake and Halsted,15356,N,11:13:00,11:15:00,3,11,11,Exceeded CTA headway,41.88582677,-87.64741702
+30,31,2026-10-09,F,8,Lake and Halsted,15356,N,11:26:00,11:26:00,11,9,9,,41.88582677,-87.64741702
+31,32,2026-10-09,F,8,Lake and Halsted,15356,N,11:35:00,11:35:00,9,10,14,Exceeded CTA headway,41.88582677,-87.64741702
+32,33,2026-10-09,F,8,Lake and Halsted,15356,N,11:45:00,11:49:00,14,5,999,Exceeded CTA headway,41.88582677,-87.64741702
+33,1,2026-09-28,M,147,Sheridan and Granville,1033,S,08:42:00,08:40:00,999,12,11,2 minutes early,41.99442687,-87.65560377
+34,2,2026-09-28,M,147,Sheridan and Granville,1033,S,08:53:00,08:54:00,14,10,9,1 minute late,41.99442687,-87.65560377
+35,3,2026-09-28,M,147,Sheridan and Granville,1033,S,09:03:00,09:04:00,10,12,13,1 minute late; normal spacing,41.99442687,-87.65560377
+36,4,2026-09-28,M,147,Sheridan and Granville,1033,S,09:16:00,09:17:00,13,9,8,1 minute late,41.99442687,-87.65560377
+37,5,2026-09-28,M,147,Sheridan and Granville,1033,S,09:25:00,09:25:00,8,15,16,On time; slightly longer following gap,41.99442687,-87.65560377
+38,6,2026-09-23,W,22,Clark and Devon,1956,N,17:44:00,17:45:00,999,8,7,1 minute late,41.99792858,-87.67039663
+39,7,2026-09-23,W,22,Clark and Devon,1956,N,17:52:00,17:53:00,8,9,2,Bus arrived 7 minutes earlier than expected; possible bunching,41.99792858,-87.67039663
+40,8,2026-09-23,W,22,Clark and Devon,1956,N,17:55:00,17:55:00,2,11,9,Bus closely followed previous bus,41.99792858,-87.67039663
+41,9,2026-09-23,W,22,Clark and Devon,1956,N,18:04:00,18:06:00,11,8,12,2 minutes late,41.99792858,-87.67039663
+42,10,2026-09-23,W,22,Clark and Devon,1956,N,18:18:00,18:18:00,12,10,14,On time; longer-than-expected following gap,41.99792858,-87.67039663
+43,11,2026-09-29,T,157,900 W Taylor,6700,E,12:08:00,12:07:00,999,15,2,1 minute early; bus arrived shortly after another bus,41.86949185,-87.64875975
+44,12,2026-09-29,T,157,900 W Taylor,6700,E,12:10:00,12:09:00,2,14,2,1 minute early; bus closely followed previous bus; possible bunching,41.86949185,-87.64875975
+45,13,2026-09-29,T,157,900 W Taylor,6700,E,12:12:00,12:11:00,2,13,2,1 minute early; three buses arrived within approximately 4 minutes,41.86949185,-87.64875975
+46,14,2026-09-29,T,157,900 W Taylor,6700,E,12:14:00,12:13:00,2,12,20,1 minute early; large gap after previous group of buses; possible bunching followed by service gap,41.86949185,-87.64875975
+47,15,2026-09-29,T,157,900 W Taylor,6700,E,12:33:00,12:33:00,20,15,999,On time; approximately 20-minute gap after three closely spaced buses,41.86949185,-87.64875975
+48,16,2026-10-01,R,96,Lunt and Sheridan,12060,W,05:02:00,05:03:00,999,30,29,1 minute late; first observed morning bus,42.00922928,-87.66239317
+49,17,2026-10-01,R,96,Lunt and Sheridan,12060,W,05:32:00,05:33:00,30,30,31,1 minute late; approximately 30-minute spacing,42.00922928,-87.66239317
+50,18,2026-10-01,R,96,Lunt and Sheridan,12060,W,06:03:00,06:03:00,30,30,29,On time; approximately 30-minute spacing,42.00922928,-87.66239317
+51,19,2026-10-01,R,96,Lunt and Sheridan,12060,W,06:32:00,06:32:00,29,60,59,On time; next bus predicted approximately one hour later,42.00922928,-87.66239317
+52,20,2026-10-01,R,96,Lunt and Sheridan,12060,W,07:31:00,07:31:00,59,999,999,On time; approximately one-hour gap from previous bus,42.00922928,-87.66239317
+53,21,2026-10-12,M,147,Michigan and Randolph,1119,N,17:28:00,17:28:00,999,12,3,On time; first bus in an evening bunching sequence,41.88469579,-87.6243233
+54,22,2026-10-12,M,147,Michigan and Randolph,1119,N,17:40:00,17:31:00,3,10,2,Arrived earlier than predicted; closely followed previous bus,41.88469579,-87.6243233
+55,23,2026-10-12,M,147,Michigan and Randolph,1119,N,17:41:00,17:33:00,2,12,28,Arrived shortly after previous bus; followed by a long service gap,41.88469579,-87.6243233
+56,24,2026-10-12,M,147,Michigan and Randolph,1119,N,18:01:00,18:01:00,28,10,3,Approximately 28-minute service gap after bunching,41.88469579,-87.6243233
+57,25,2026-10-12,M,147,Michigan and Randolph,1119,N,18:11:00,18:04:00,3,12,999,Arrived earlier than predicted; another closely spaced bus; end of observation window,41.88469579,-87.6243233
+58,26,2026-10-10,S,22,Clark and Berwyn,1805,S,18:02:00,18:02:00,999,10,1,First observed bus; evening service,41.97807287,-87.66840677
+59,27,2026-10-10,S,22,Clark and Berwyn,1805,S,18:12:00,18:03:00,1,12,0,Two buses recorded within the same minute; possible bunching,41.97807287,-87.66840677
+60,28,2026-10-10,S,22,Clark and Berwyn,1805,S,18:15:00,18:03:00,0,10,26,Closely followed previous bus; approximately 26-minute gap afterward,41.97807287,-87.66840677
+61,29,2026-10-10,S,22,Clark and Berwyn,1805,S,18:29:00,18:29:00,26,12,26,Approximately 26-minute service gap following bunching,41.97807287,-87.66840677
+62,30,2026-10-10,S,22,Clark and Berwyn,1805,S,18:41:00,18:55:00,26,999,999,Approximately 26-minute gap since previous bus; arrived later than predicted,41.97807287,-87.66840677
+63,31,2026-10-09,F,157,Michigan and Hubbard (Wrigley Building),1103,W,08:42:00,08:42:00,999,20,20,On time; approximately 20-minute service spacing,41.88990186,-87.62424975
+64,32,2026-10-09,F,157,Michigan and Hubbard (Wrigley Building),1103,W,09:02:00,09:02:00,20,20,20,On time; approximately 20-minute spacing,41.88990186,-87.62424975
+65,33,2026-10-09,F,157,Michigan and Hubbard (Wrigley Building),1103,W,09:22:00,09:22:00,20,20,10,On time; next bus arrived sooner than the usual 20-minute interval,41.88990186,-87.62424975
+66,34,2026-10-09,F,157,Michigan and Hubbard (Wrigley Building),1103,W,09:42:00,09:32:00,10,20,20,Arrived earlier than predicted; approximately 10-minute gap since previous bus,41.88990186,-87.62424975
+67,35,2026-10-09,F,157,Michigan and Hubbard (Wrigley Building),1103,W,09:52:00,09:52:00,20,999,999,On time; service spacing returned to approximately 20 minutes,41.88990186,-87.62424975
+68,36,2026-10-08,R,96,Lunt and Oakley,12048,E,15:02:00,15:03:00,999,30,29,One minute late; approximately 30-minute service spacing,42.00861,-87.68811219
+69,37,2026-10-08,R,96,Lunt and Oakley,12048,E,15:32:00,15:32:00,29,30,30,On time; approximately 30-minute spacing,42.00861,-87.68811219
+70,38,2026-10-08,R,96,Lunt and Oakley,12048,E,16:02:00,16:02:00,30,60,60,On time; next bus arrived approximately one hour later,42.00861,-87.68811219
+71,39,2026-10-08,R,96,Lunt and Oakley,12048,E,17:02:00,17:02:00,60,30,30,On time; approximately one-hour gap since previous bus,42.00861,-87.68811219
+72,40,2026-10-08,R,96,Lunt and Oakley,12048,E,17:32:00,17:32:00,30,999,999,On time; approximately 30-minute spacing; observation near the reported end of service,42.00861,-87.68811219
+73,41,2026-10-13,W,36,Broadway and Wilson (Red/Purple Lines),16194,N,08:00:00,08:01:00,999,10,10,1 minute late; first observed bus,41.96559911,-87.65748119
+74,42,2026-10-13,T,36,Broadway and Wilson (Red/Purple Lines),16194,N,08:10:00,08:11:00,10,10,9,1 minute late; approximately 10-minute spacing,41.96559911,-87.65748119
+75,43,2026-10-13,T,36,Broadway and Wilson (Red/Purple Lines),16194,N,08:20:00,08:20:00,9,10,3,On time; next bus arrived sooner than predicted,41.96559911,-87.65748119
+76,44,2026-10-13,T,36,Broadway and Wilson (Red/Purple Lines),16194,N,08:30:00,08:23:00,3,10,4,Arrived earlier than predicted; possible bunching,41.96559911,-87.65748119
+77,45,2026-10-13,T,36,Broadway and Wilson (Red/Purple Lines),16194,N,08:40:00,08:27:00,4,999,999,Arrived shortly after previous bus; bunching observed,41.96559911,-87.65748119
+78,46,2026-10-13,T,146,Foster and Marine Drive,4847,N,12:00:00,12:01:00,999,20,20,1 minute late; first observed bus,41.9765076,-87.65258023
+79,47,2026-10-13,T,146,Foster and Marine Drive,4847,N,12:20:00,12:21:00,20,20,20,1 minute late; regular spacing,41.9765076,-87.65258023
+80,48,2026-10-13,T,146,Foster and Marine Drive,4847,N,12:40:00,12:41:00,20,20,22,1 minute late; slightly longer following interval,41.9765076,-87.65258023
+81,49,2026-10-13,T,146,Foster and Marine Drive,4847,N,13:00:00,13:03:00,22,20,19,3 minutes late; service remains relatively regular,41.9765076,-87.65258023
+82,50,2026-10-13,T,146,Foster and Marine Drive,4847,N,13:20:00,13:22:00,19,999,999,2 minutes late; approximately 19-minute interval since previous bus,41.9765076,-87.65258023
+83,51,2026-10-12,W,36,Broadway and Granville,14444,S,17:00:00,17:01:00,999,20,20,1 minute late; first observed bus,41.99438838,-87.66051595
+84,52,2026-10-12,W,36,Broadway and Granville,14444,S,17:20:00,17:21:00,20,20,19,1 minute late; approximately regular spacing,41.99438838,-87.66051595
+85,53,2026-10-12,W,36,Broadway and Granville,14444,S,17:40:00,17:40:00,19,20,21,On time; regular spacing,41.99438838,-87.66051595
+86,54,2026-10-12,W,36,Broadway and Granville,14444,S,18:00:00,18:01:00,21,20,20,1 minute late; no substantial bunching observed,41.99438838,-87.66051595
+87,55,2026-10-12,W,36,Broadway and Granville,14444,S,18:20:00,18:21:00,20,999,999,1 minute late; approximately 20-minute spacing,41.99438838,-87.66051595
+88,56,2026-10-12,W,146,Berwyn and Broadway (Red Line),14668,S,20:00:00,20:01:00,999,12,3,1 minute late; first observed bus,41.9781011,-87.65930987
+89,57,2026-10-12,W,146,Berwyn and Broadway (Red Line),14668,S,20:12:00,20:04:00,3,10,2,Arrived earlier than predicted; closely followed previous bus,41.9781011,-87.65930987
+90,58,2026-10-12,W,146,Berwyn and Broadway (Red Line),14668,S,20:22:00,20:06:00,2,12,27,Bus bunching observed; followed by a long service gap,41.9781011,-87.65930987
+91,59,2026-10-12,W,146,Berwyn and Broadway (Red Line),14668,S,20:18:00,20:33:00,27,12,3,Approximately 27-minute service gap; bus arrived later than predicted,41.9781011,-87.65930987
+92,60,2026-10-12,W,146,Berwyn and Broadway (Red Line),14668,S,20:45:00,20:36:00,3,999,999,Bus closely followed previous bus; another bunching episode,41.9781011,-87.65930987
+93,1,2026-09-29,T,157,Taylor and Halsted,6701,E,13:10:00,13:10:00,999,16,22,On time,41.86951485,-87.64737175
+94,2,2026-09-29,T,157,Taylor and Halsted,6701,E,13:31:00,13:32:00,12,14,999,Late by +1 min,41.86951485,-87.64737175
+95,3,2026-09-29,T,8,Halsted and Taylor,4640,S,13:13:00,13:14:00,999,6,999,Late by +1 min,41.86985885,-87.64713076
+96,4,2026-09-29,T,157,Taylor and Halsted,17277,W,13:19:00,13:19:00,999,22,10,On time,41.86969006,-87.64762079
+97,5,2026-09-29,T,8,Halsted and Taylor,14487,N,13:21:00,13:23:00,999,16,24,Late by +2 min,41.87010519,-87.64682433
+98,6,2026-09-29,T,8,Halsted and Taylor,4640,S,13:22:00,13:24:00,10,6,11,Late by +2 min,41.86985885,-87.64713076
+99,7,2026-09-29,T,8,Halsted and Taylor,4640,S,13:31:00,13:35:00,11,5,11,On time,41.86985885,-87.64713076
+100,8,2026-09-29,T,157,Taylor and Halsted,17277,W,13:43:00,13:43:00,24,17,999,Late by +4 min,41.86969006,-87.64762079
+101,9,2026-09-29,T,8,Halsted and Taylor,4640,S,13:40:00,13:43:00,8,4,999,Late by +3 min,41.86985885,-87.64713076

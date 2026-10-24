@@ -1,0 +1,151 @@
+HEADWAY IMBALANCE AND BUNCHING DIAGNOSTIC — ANNOTATED VEGA-LITE V6 REFERENCE
+
+Purpose
+-------
+This visualization compares the observed gap before a bus with the observed gap after it at the same stop. Each point represents one observation. It is designed to help identify bunching (a short following gap after a short previous gap) and service gaps (a long following gap after a short or long previous gap).
+
+IMPORTANT FILE NOTE
+-------------------
+This is an annotated companion/reference document explaining the submitted Vega-Lite specification. The original complete JSON specification is the code in the chat message. This TXT reference is not itself a complete replacement for that JSON, so paste the original JSON (not these notes) into the Vega-Lite Editor to render the visualization.
+
+1. SCHEMA, DESCRIPTION, AND TITLE
+---------------------------------
+The $schema field points to Vega-Lite v6. The description summarizes the purpose of the chart. The title and subtitle explain the visual encoding:
+- The diagonal dotted line represents equal previous and next headways (x = y).
+- Solid points represent northbound (N) and westbound (W) observations.
+- Hollow points represent southbound (S) and eastbound (E) observations.
+- Records with 999 are excluded because 999 is a sentinel for a missing/unknown gap, not a real 999-minute interval.
+
+2. CHART SIZE
+-------------
+"width": 650 and "height": 560 set the plotting dimensions. The chart uses a square-ish plotting area so the equality line is easy to compare against the points.
+
+3. ROUTE FILTER PARAMETER
+-------------------------
+The parameter named routeFilter starts with all ten routes selected: 8, 20, 22, 36, 56, 66, 96, 146, 147, and 157. Its select input gives the user an All routes option and one option for each individual route. The filter later checks whether the record's route appears in the selected routeFilter array:
+
+    indexof(routeFilter, datum.route) >= 0
+
+This lets the chart show either the whole dataset or a single route at a time.
+
+4. DIRECTION FILTER PARAMETER
+-----------------------------
+The directionFilter parameter defaults to "All" and offers All, N, S, E, and W. The transform keeps a row if All is selected or the row's direction matches the selected direction:
+
+    directionFilter === 'All' || datum.direction === directionFilter
+
+Direction filtering is independent of route filtering, so the two controls can be combined.
+
+5. DIAGONAL EQUALITY REFERENCE LINE
+----------------------------------
+The first layer contains only two points: (0, 0) and (60, 60). A line joins them, with a gray color and dashed/dotted stroke. Because the x- and y-axes share the same [0, 60] domain, the line represents y = x.
+
+Interpretation:
+- Points ON the line: the previous and following bus gaps were equal.
+- Points ABOVE the line: the following gap was longer than the previous gap.
+- Points BELOW the line: the following gap was shorter than the previous gap.
+
+The reference line uses the same 0–60 scale as the point layer so both can be interpreted directly.
+
+6. EMBEDDED OBSERVATION DATA
+----------------------------
+The second layer embeds the observations in data.values. Each record contains:
+- id: observation identifier (IDs repeat across different stops/routes, so this is not necessarily globally unique).
+- route: CTA route number stored as a string.
+- stop: human-readable stop/intersection name.
+- cta: CTA stop identifier.
+- direction: N, S, E, or W as recorded for the observation.
+- previous: the observed gap before the current bus, in minutes.
+- actualNext: the observed gap after the current bus, in minutes.
+- comments: contextual notes recorded during observation.
+
+The observations include multiple stops and route/direction combinations. Interpret each point in its context; route number alone does not identify a unique stop or observation window.
+
+7. DATA CLEANING AND INTERACTIVE FILTERS
+----------------------------------------
+The transform array applies three filters in sequence:
+
+A. Remove missing-gap sentinels:
+
+    datum.previous != 999 && datum.actualNext != 999
+
+This removes rows where either gap is unavailable. Do not interpret 999 as a real interval.
+
+B. Apply the selected route(s):
+
+    indexof(routeFilter, datum.route) >= 0
+
+C. Apply the direction control, unless it is set to All:
+
+    directionFilter === 'All' || datum.direction === directionFilter
+
+Because the filters happen before the point marks are drawn, excluded rows do not appear in the scatterplot.
+
+8. POINT MARKS
+---------------
+The point mark uses size 130, strokeWidth 2, and opacity 0.9. Each observation is plotted by its previous gap on x and actualNext gap on y. Both quantitative scales run from 0 to 60 minutes and disable automatic domain expansion (nice: false). Axis ticks are placed every five minutes.
+
+The chart labels are currently written as "Observation Previous (in mins)" and "Actual Next (in Mins)". More natural alternatives, if you choose to revise the labels, are "Previous bus gap (minutes)" and "Following bus gap (minutes)".
+
+9. ROUTE COLOR ENCODING
+-----------------------
+The stroke channel maps each route to a fixed color. Keeping the domain and range explicit makes a route's color consistent across filter selections. The legend titled "Route colors" is placed on the right.
+
+The fill channel uses the same route-color scale only for N and W directions:
+
+    datum.direction === 'N' || datum.direction === 'W'
+
+Those points are filled with their route color. All other directions use white fill, leaving the colored outline visible. This creates the solid-versus-hollow distinction described in the subtitle.
+
+10. TOOLTIP
+-----------
+Hovering over a point shows its observation ID, route, direction, stop, CTA stop ID, previous gap, following gap, and comments. The comments are particularly important because the same numerical pattern can arise in different contexts.
+
+11. VISUAL CONFIGURATION
+------------------------
+The config section sets a light gray outline around the view, axis label/title font sizes, normal-weight axis titles, and legend typography. These are presentation settings and do not change the underlying data or filtering.
+
+HOW TO READ COMMON PATTERNS
+---------------------------
+- Lower-left near the origin: a short gap before and after the bus; potentially a bunching pattern when multiple observations show this sequence.
+- Low x and high y: a bus arrived soon after the previous bus, followed by a long gap — a common signature of bunching followed by a service gap.
+- High x and low y: a long gap before the bus followed by a short gap afterward; service spacing may have shifted abruptly.
+- Near the diagonal: similar previous and following gaps, indicating relatively stable spacing for that observation.
+- Far from the diagonal: a substantial change in headway from one observed gap to the next.
+
+These are diagnostic patterns, not proof of causation. A scatterplot of observed gaps does not by itself establish why a bus was delayed or bunched.
+
+CHECKS / LIMITATIONS TO KEEP IN MIND
+------------------------------------
+1. The code uses 999 as a missing-value sentinel. If a real interval could ever equal 999 minutes, that convention would be ambiguous; in this dataset it is explicitly treated as missing.
+2. The axes end at 60 minutes. Observations with valid gaps greater than 60 would be outside the displayed domain; consider increasing the domain if such values are added later.
+3. Observation IDs repeat in different route/stop groups. Tooltips should be read with route and stop context, not ID alone.
+4. Direction is encoded using the values present in the records. The code comments in the data note that route 56 may travel diagonally while its recorded direction is N/S in some contexts; treat the direction field as the observed label rather than a perfect geographic bearing.
+5. The chart shows a selected sample of observations, not necessarily all service for each route or the whole CTA network. Avoid generalizing beyond the observation windows represented.
+6. The subtitle says "Solid = N/W; hollow = S/E". This corresponds to the conditional fill logic in the specification.
+
+HOW TO USE IN VEGA-LITE EDITOR
+------------------------------
+1. Open https://vega.github.io/editor/.
+2. Select Vega-Lite and ensure the schema is v6.
+3. Paste the original JSON specification from the chat message into the editor's specification pane.
+4. Run the visualization.
+5. Use Route and Direction dropdowns to filter the observations.
+6. Hover a point to inspect the stop, gap values, and observation notes.
+
+DOCUMENTATION
+-------------
+Vega-Lite documentation:
+https://vega.github.io/vega-lite/docs/
+
+Parameters and bound inputs:
+https://vega.github.io/vega-lite/docs/parameter.html
+
+Point marks:
+https://vega.github.io/vega-lite/docs/point.html
+
+Transform filters:
+https://vega.github.io/vega-lite/docs/filter.html
+
+Encoding channels:
+https://vega.github.io/vega-lite/docs/encoding.html
