@@ -157,6 +157,9 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
         DISCUSSION ABOUT SECONDARY DATA:
 
+        Given that census informations plays such a large roll in exploring north side differences compared to west side differences, the team turned towards the City of Chicago data portal to look for relevant census data sets.
+        
+
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
     Figure 10:
