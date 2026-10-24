@@ -207,7 +207,7 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
     Figure 1:
 
-![Figure_1](Assignment%20Two/Screenshots/Vega_Lite/Fig_1_complete_view.png)
+![Figure_1](Screenshots/Vega_Lite/Fig_1_complete_view.png)
 
         What question or task it supports.
             	1. Compare actual and predicted values
@@ -265,7 +265,7 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
     Figure 10:
 
-![Figure_2](Assignment%20Two/Screenshots/Vega_Lite/Fig_10_Selection.png)
+![Figure_2](Screenshots/Vega_Lite/Fig_10_Selection.png)
 
         What question or task it supports.
             	1. Compare observed bus reliability across different geographic locations.
@@ -309,8 +309,8 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
     Figure 11:
 
-![Figure_3](Assignment%20Two/Screenshots/Vega_Lite/Fig_11_complete_view.png)
-![Figure_4](Assignment%20Two/Screenshots/Vega_Lite/Fig_11_Selection.png)
+![Figure_3](Screenshots/Vega_Lite/Fig_11_complete_view.png)
+![Figure_4](Screenshots/Vega_Lite/Fig_11_Selection.png)
 
         What question or task it supports.
                 1. Identify buses associated with unusually uneven service spacing.
