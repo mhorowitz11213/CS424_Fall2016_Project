@@ -34,6 +34,16 @@ SECTION ONE: REFLECTION AND COMMENTS ON ITERATIONS SINCE REPORT ONE
 
         As of now, the general method of collecting data--observing buses and comparing to Ventra app--will continue. However, upon discussing the progress the team was making, it became apparent that redunant variables--including the delta bus times (time elapsed from previous bus arrival) was redundant, as this attribute can be calculated later when creating the visualization. As a result, all attributes will be retained in the final data set, but many of these attributes will be calculated by the computer during the data cleaning process and stored, rather than being computed at the time of observation.
 
+    Additional New Domain Questions:
+
+    In addition to the previous domain questions, the following questions have been augmented to the research:
+
+        Question 1 -- Given that poverty is concentrated on the South and West Sides of the City and wealth is concentrated in the north side, do north side residents get better bus service into the Loop than those living on the West Side? (Due to the formulation of CTA routes, adding South side comparisions is difficult as there are few direct bus lines from the Loop to the South side due to CTA Red and Green lines along with Metra District line trains).
+
+        Question 2 -- Which of the routes examined sees buses most likely arrive as scheduled?
+
+        Question 3 -- What is the probability a bus will arrive in a given time?
+
 SECTION TWO: PREPARE THE DATA--PRIMARY DATA
 
     Before even attempting to prepare the data for analysis, visual inspection was conducted on the data collected so far. Visual inspection was done in two stages:
@@ -158,7 +168,40 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
         DISCUSSION ABOUT SECONDARY DATA:
 
         Given that census informations plays such a large roll in exploring north side differences compared to west side differences, the team turned towards the City of Chicago data portal to look for relevant census data sets.
+
+        For this project, the group will use the most recent ACS collected data provided by the City of Chicago--and is the file currently in use by city authorities--.
+        This dataset: "Census Data - Selected socioeconomic indicators in Chicago, 2008 – 2012 (Updated August 31, 2026)" is comprised of:
+        -77 records (one for each Community Area in Chicago)
+        -9 Attributes:
+                Community Area Number.................Integer
+                Community Area Name...................Text
+                Percent of Housing Crowded............Float
+                Percent of Households Below Poverty...Float
+                Percent 16+ Unemployed................Float
+                Percent Aged 25+ No HS Diploma........Float
+                Percent Under 18 or Over 65...........Float
+                Per Capita Income.....................Integer
+                Hardship Index........................Integer
         
+        A brief examination of the data was conducted. As this is the data used by the City for official policy formulation, no transformations were done on the data, so as to ensure that any findings that should arise from integrating this data into the group's collected bus data would follow the same guiding principles that guide any other public policy research conducted by the city.
+
+        The first step in analyzing this data was to find the community areas with the lowest and highest hardship index. Since the domain questions for this project all center around the very idea that neighborhood wealth and vitality--which tend to be found on the north side--and the converse tend to be found on the south and west sides, cross checking this using the census data was conducted. This was cross checked by sorting on the hardship index--an index created by taking a composite of all the other numeric attributes in the dataset, normalized and scaled to 1-100 and then aggregated.
+                In Python, the CSV file was read in and the hardship index was examined. The top 10 community areas for hardship were all on the south or west sides. The community areas with the lowest hardship were found either in the greater downtown area or on the north side, confirming the suppositions this report was based on when formulating the domain questions.
+
+        Next, the group looked at the hardship index attribute. Since the domain questions for this project all center around the very idea that neighborhood wealth and vitality--which tend to be found on the north side--and the opposite found on south and west sides-- which of the six attributes that are used to create the hardship index are most important. These attributes will be included in the final visualization.
+
+        For this section, a covariance matrix on those six attributes and the target hardship index variable was produced. All of the input variables, with the exception of "Percent of Housing Crowded" and "Percent Under 18 or Over 65" produced a correlation greater than .79 (either positive or negative), with "Per Capital Income" producing the greatest correlation of -.85. Below is the output:
+
+        
+                Percent of Housing Crowded............ .65
+                Percent of Households Below Poverty... .8
+                Percent 16+ Unemployed................ .79
+                Percent Aged 25+ No HS Diploma........ .8
+                Percent Under 18 or Over 65........... .69
+                Per Capita Income.................... -.85
+
+        As such, the group will use the attributes one by one in the order they are correlated with the target Hardship variable in the visualization process, and will determine which of these attributes makes the strongest visualization. Afterwards, combinations of these attributes will also be used as the group continues to iterate through design encodings.
+
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
