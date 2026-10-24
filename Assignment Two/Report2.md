@@ -118,7 +118,7 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 
                 Below is the output for the bar chart:
 
-![Fig_1](Assignment%20Two/Screenshots/Primary_Data_Analysis/Fig1_primary.png)
+![Fig_1](Screenshots/Primary_Data_Analysis/Fig1_primary.png)
 
                 Here we can see that with the exception of Route 66 Bus (more of which will be collected in the subsequent week), the data looks fairly balanced, with most routes having anywhere from 8-12 observations. The inbalance shown with Route 66 is not surprising. This route, along with Route 12 and 65, are amongst the last routes that the group expects to collect more data for. In particular, given construction on the Chicago/Halsted viaduct, re-routes have meant that collecting data for this line will require extra time, and the need to   
                 As such, provided Route 66 is excluded from statistical analysis, all other lines can be examined for insights.
