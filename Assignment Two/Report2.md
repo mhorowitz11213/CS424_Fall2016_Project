@@ -125,7 +125,12 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
                 2. The next area of interest is looking at bus frequencies within lines. Here, the group, turned to the attribute 'Previous Observation (in mins), which calculates the time between buses. The idea here is to see if any buses aren't on average, count, or median, not meeting the 10 minute headway target (all routes examined here are part of the CTA 10 minute target, as discussed in Report One). These were printed out by bus route.
 
-                <INSERT FIGURE HERE>
+                <INSERT FIGURE HERE. LOOP THROUGH ALL GRAPHS>
+
+                Here we can see that almost half of all  bus arrivals for each of the lines observed did not meet CTA headways. In particular:
+                        -Four out of eight of route 36's arrivals were outside of CTA guidelines
+                        -Five of the eight observations for route 147 exceeded its headways
+                        -Six of the 10 for Route 157 also exceeded headways
 
                 3. The mean, standard deviation, and coefficient of variation for wait times per bus line was printed out. The idea here was to see how long the average wait time was (did it conform to CTA headways of 10 minutes), as well as how representative the mean wait time was, by calculating the coefficient of variation for all bus lines. In addition to verify the spread found by calculating the coefficient of variation, box and whisker plots for each each lines wait time was produced.
 
@@ -133,17 +138,38 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 <INSERT FIGURE HERE>
                 <INSERT FIGURE HERE>
 
-                4. The group intends to allow users to compute probabilities of bus arriving by line, while using the visualization. Given that bus wait times tend to follow an exponential distribution, each bus lines headways were tested to see if they fit an exponential distribution using a Lilliefors Kolmogorov-Smirnov test. If a distributions p-value exceeded .05 test statistic then it can be said that a bus line follows an exponential distribution, thus estimating its density distribution can be done parametrically--estimating lambda--.
+                Here again we see that some routes experienced significant deviations from CTA guidelines:
+
+                        -In terms of average times between buses:
+                                -Route 36 was 13.25 minutes
+                                -Route 96 was 12.92 minutes
+                                -Route 147 was 12.92 minutes
+                                -Route 157 was 13.2 minutes
+                        -Standard deviations and coefficients of variations in time were fairly uniform for all lines, though there was some variation ranging from .4-.8, with most coefficients of variation around the .5-.6 ratio.
+                        -Looking at the box and whisker plots, only Bus 96 showed serious levels of deviation (with two outliers), though Route 8 did have two outliers as well. Almost all routes showed similar interquartile range dispersions (number of minutes between the 25th and 75 percentile), though median and IQR times varied significantly across routes, with Route 56 and Route 20 having the shortest median wait times of around 7-8 minutes and Route 96 having the longest at almost half and hour.
+
+                
+
+                4. The group intends to allow users to compute probabilities of bus arriving by line, while using the visualization. Given that bus wait times tend to follow an exponential distribution, each bus lines headways were tested to see if they fit an exponential distribution using a Lilliefors Kolmogorov-Smirnov test. If a distributions p-value exceeded .05 test statistic then it can be said that a bus line follows an exponential distribution, thus estimating its density distribution can be done parametrically--estimating lambda--. See next section for a discussion.
 
                 5. Actual headways were tested. The delta time difference between the time a bus arrived and when Ventra predicted the arrival was calculated, with the Ventra time captured when the previous bus left or when the observer first arrived at the stop to begin recording data. These delta values were then averaged by bus line, and the calculations were then plotted, where it was noted that negative number correspond to early arrivals, which according to the CTA should be no more than one minute early, five minutes late.
 
                 <INSERT FIGURE HERE>
+
+                Here, the bar chart for average by bus line for the delta time between real arrival and Ventra time and the box and whisker plots for each individual delta time aggregated solely by bus line show that:
+                        -On average many buses arrive earlier than predicted with the 66 bus arriving early by 3 minutes and the 147 by 2 minutes.
+                        -On average, only 20 bus appears to arrive later than predicted.
+                        -The median values for these lines show that unlike the average, the median bus line's arrivals come in around the time expected, per the Ventra real time. Though bus lines 146, 20, and 66 had greater dispersion of times than the other lines.
+                        -Finally, it is important to note that as a result of conducting these visualizations:
+                                -The median bus per line, does arrived as predicted by Ventra within the CTA guidelines of no earlier than 1 minute no later than 5.
 
                 6. Aggregation into North/South, East/West routes. Since this visualization aims to help explore the differences in reliability between North/South vs East/West lines, especially the idea tha the wealthy north side of the city gets better service, average headways per route and average delta times between real arrival time and Ventra predicted times per route were then aggregated into a N/S or E/W group, based on the bus line. To cross check the differences in average headways by geographic heading, similar to line side by side comparison, box and whisker plots were conducted on all wait times that corresponding with north-south lines and then compared to east-west lines.
 
                 <INSERT FIGURE HERE>
                 <INSERT FIGURE HERE>
                 <INSERT FIGURE HERE>
+
+                Here, box and whisker plots show that the median bus does arrive as predicted by Ventra but North South buses have greater variance and more outliers than East West Buses.
 
         DISCUSSION ABOUT PRIMARY DATA:
 
@@ -205,15 +231,18 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
+Building on from the previous visualizations in Assignment One, the group decided to implement three first visualizations to see what works and what does not work. The group decided to first implement Figures 1, 10, and 11 from Assignment One, with some modifications, as we felt these were the strongest visualizations and wanted to explore them in greater detail. This section displays each of these visualizations, coded up in using JSON based Vega Lite, and walks through the components.
+
     Figure 1:
 
 ![Figure_1](Screenshots/Vega_Lite/Fig_1_complete_view.png)
 
-        What question or task it supports.
+        This visualization supports the following questions and tasks:
             	1. Compare actual and predicted values
 	        2. Compare variation in headways.
 	        3. Compare service across differnt routes and different geographic locations.
-        Which data attributes it uses.
+
+        It supports these questions by utilizing a the following set of attributes:
                 1. Route
                 2. Stop location (latitude and longitude)
                 3. Stop ID and CTA stop ID
@@ -226,7 +255,10 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 10. Observation Previous
                 11. Actual Next
                 12. Observation Next
-        The main marks and visual channels.
+                13. Latitude
+                14. Longitude
+
+        To create this visualization, we encoded the following marks and visual channels, mapping each observation the following marks and encoding their values with the following channels:
                 1. City boundary: Filled geographic shape with a light background and dark outline.
                 2. Bus routes: Geographic route lines displayed using geoshape marks.
                 3. Route color: Different colors distinguish the ten CTA routes.
@@ -241,17 +273,19 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 12. Vertical position: Number of observations or expected count, depending on the chart layer.
                 13. Color: Route identity distinguishes observations and model curves.
                 14. Route selection: Two dropdown menus allow users to select routes for comparison across the map and quantitative views.
+
         Why you tried this approach.
                 The visualization was designed to combine geographic context with quantitative comparisons of bus reliability. The map allows users to understand where the selected routes operate and where the observed stops are located, while the two lower charts provide a more detailed comparison of predicted and observed headway distributions. The exponential model adds a reference for examining the distribution of predicted intervals. By linking the views through route-selection dropdowns, the design aims to let users move between the geographic distribution of service and the statistical patterns that may indicate bunching or long gaps.
+
         What worked and what did not.
-                What worked:
-                - The map provides geographic context for the selected routes and their observed stops.
-                - Using distinct colors makes it easier to distinguish routes and compare their spatial coverage.
+                This visualization had many components that worked. In particular:
+                - The map provides geographic context for the selected routes and their observed stops. This was done to convey geographic and spatial understanding allowing for North and West sides to be compared. The group felt that including tis enabled easy comparison of the different Chicago regions.
+                - Using distinct colors makes it easier to distinguish routes and compare their spatial coverage. Such channels were very effective and will be used throughout.
                 - The route dropdowns provide a straightforward way to focus on two routes rather than examining every route simultaneously.
                 - The two lower charts allow users to compare predicted and observed headway distributions.
                 - The exponential model offers an additional reference for interpreting predicted headway patterns.
                 - Tooltips provide additional stop and route information without requiring permanent labels on the map.
-                What did not work:
+                However, there were aspects of this visualization that did not work:
                 - Showing many routes simultaneously can create visual clutter, particularly where route lines overlap or stops are close together.
                 - Fading unselected routes reduces clutter but does not remove the underlying visual complexity.
                 - The map shows where routes and stops are located, but it does not directly communicate the magnitude of a service gap.
@@ -260,8 +294,9 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 - The visualization relies on multiple external geographic data sources and embedded observations, which can introduce technical and data-consistency issues.
                 - The dataset contains sentinel values such as 999 for some headways. These values need to be handled carefully so that missing or unavailable intervals are not mistaken for real service gaps.
                 - The map and lower charts provide complementary information, but the relationship between an individual stop on the map and a specific observation in the charts is not directly explored through a stop-level selection interaction.
-        Whether you decided to keep, modify, combine, or abandon it.
-                We decided to modify and retain the visualization as a combined geographic and quantitative view of bus reliability. The map is useful for identifying route coverage and locating observed stops, while the lower charts help compare predicted and observed headway patterns. Keeping these views together provides a broader understanding of service reliability than either the map or the charts could provide independently. We would retain the two-route dropdowns and route highlighting because they help users focus on a manageable subset of the data. However, we would improve the chart labels and explanation of the exponential model, ensure that sentinel values are excluded or clearly identified, and consider adding a more detailed timeline view to show the sequence of individual bus arrivals. This would make it easier to connect statistical patterns to specific instances of bunching and long service gaps. We would also retain the geographic map as a complementary view rather than relying on it alone to communicate reliability.
+        All of these are issues the group will continue to think about and decide how to mitigate.
+
+        At this point we decided to modify and retain the visualization as a combined geographic and quantitative view of bus reliability. The map is useful for identifying route coverage and locating observed stops, while the lower charts help compare predicted and observed headway patterns. Keeping these views together provides a broader understanding of service reliability than either the map or the charts could provide independently. We would retain the two-route dropdowns and route highlighting because they help users focus on a manageable subset of the data. However, we would improve the chart labels and explanation of the exponential model, ensure that sentinel values are excluded or clearly identified, and consider adding a more detailed timeline view to show the sequence of individual bus arrivals. This would make it easier to connect statistical patterns to specific instances of bunching and long service gaps. We would also retain the geographic map as a complementary view rather than relying on it alone to communicate reliability.
 
     Figure 10:
 
