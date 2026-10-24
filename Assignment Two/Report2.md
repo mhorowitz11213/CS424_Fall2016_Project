@@ -60,9 +60,9 @@ SECTION TWO: PREPARE THE DATA--PRIMARY DATA
 
         1. At the start of the visual pre-inspection, the data was organized into multiple files. These were:
 
-            a. Data--DataPhase2Horowitz
-                     DataPhase2Sharma
-                     DataPhase2Rai
+            a. Data--DataPhase2Horowitz.xlsx
+                     DataPhase2Sharma.xlsx
+                     DataPhase2Rai.xlsx
         2. Next, each attribute was inspected. To do this a new excel file was created:
             a. The column names from each of the three excel files were pasted in one on top of another. This ensures that there are no missing attributes and that the attributes in the data set perfectly align. Note, in regards to column name changes, the group plans on reading these Excel files in without headers and then manually adding in column names using Pandas functions.
             b. Next, the data from each of the three above files was pasted in, one on top of the other in order to check that there is consistency in data types and to quickly see if any observations are missing data.
@@ -84,7 +84,7 @@ SECTION TWO: PREPARE THE DATA--PRIMARY DATA
             e. Next, the stops with CTA-Stop ID 0 (the Loop Link stops), were correctly coded by adding in the codes stored in the CTA masterfile (see Secondary Sources folder in GitHub). 
             f. Finally, the geo coordinates for each stop latitude and logitude were appended. These were checked against Google Maps to ensure correctness.
             g. All N/A were handled, except in the comments section. This is an attribute that the group plans on using to help determine if certain Booleans, like reliability, should be created, and if so, how they should be handled. As of now, having missing attributes in this field is not an issue.
-            h. The data was written out to a CSV file so that it can be used. Note, at this stage all columns were included, though some of these attributes are redunant and can be calculated on the fly.
+            h. The data was written out to a CSV file so that it can be used called Cleaned-Data-10-18-26.csv. Note, at this stage all columns were included, though some of these attributes are redunant and can be calculated on the fly.
             The data was comprised of the following attributes:
                 -ID (this is just for internal checks)
                 -Date
