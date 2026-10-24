@@ -118,7 +118,7 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
                 
                 Below is the output for the bar chart:
 
-                <INSERT FIGURE HERE>
+![Fig_1](Assignment%20Two/Screenshots/Primary_Data_Analysis/Fig1_primary.png)
 
                 Here we can see that with the exception of Route 66 Bus (more of which will be collected in the subsequent week), the data looks fairly balanced, with most routes having anywhere from 8-12 observations. The inbalance shown with Route 66 is not surprising. This route, along with Route 12 and 65, are amongst the last routes that the group expects to collect more data for. In particular, given construction on the Chicago/Halsted viaduct, re-routes have meant that collecting data for this line will require extra time, and the need to   
                 As such, provided Route 66 is excluded from statistical analysis, all other lines can be examined for insights.
@@ -206,6 +206,9 @@ SECTION THREE: EXPLORE THE DATA AND DISCUSS SECONDARY DATA
 SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
     Figure 1:
+
+![Figure_1](Assignment%20Two/Screenshots/Vega_Lite/Fig_1_complete_view.png)
+
         What question or task it supports.
             	1. Compare actual and predicted values
 	        2. Compare variation in headways.
@@ -261,6 +264,9 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 We decided to modify and retain the visualization as a combined geographic and quantitative view of bus reliability. The map is useful for identifying route coverage and locating observed stops, while the lower charts help compare predicted and observed headway patterns. Keeping these views together provides a broader understanding of service reliability than either the map or the charts could provide independently. We would retain the two-route dropdowns and route highlighting because they help users focus on a manageable subset of the data. However, we would improve the chart labels and explanation of the exponential model, ensure that sentinel values are excluded or clearly identified, and consider adding a more detailed timeline view to show the sequence of individual bus arrivals. This would make it easier to connect statistical patterns to specific instances of bunching and long service gaps. We would also retain the geographic map as a complementary view rather than relying on it alone to communicate reliability.
 
     Figure 10:
+
+![Figure_2](Assignment%20Two/Screenshots/Vega_Lite/Fig_10_Selection.png)
+
         What question or task it supports.
             	1. Compare observed bus reliability across different geographic locations.
 	            2. Identify locations with unusual bunching or long service gaps.
@@ -302,6 +308,10 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 We decided to modify and retain the map-based visualization as a complementary view of bus reliability. It is useful for understanding the geographic distribution of routes and identifying where further investigation may be needed. However, rather than relying on the map alone, we would combine it with a quantitative visualization that makes headway deviations easier to compare. This allows the map to provide spatial context while another view communicates the underlying data more precisely. We abandoned the zooming and panning functionality in favor of a static map to reduce complexity and improve usability, while still allowing users to explore the data through other linked visualizations. We also abandoned the strict one-hour window in favor of a more flexible time range to allow users to explore longer-term patterns in bus reliability.
 
     Figure 11:
+
+![Figure_3](Assignment%20Two/Screenshots/Vega_Lite/Fig_11_complete_view.png)
+![Figure_4](Assignment%20Two/Screenshots/Vega_Lite/Fig_11_Selection.png)
+
         What question or task it supports.
                 1. Identify buses associated with unusually uneven service spacing.
                 2. Compare headway patterns across routes.
