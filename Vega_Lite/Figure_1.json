@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "title": {
     "text": "Chicago Bus Reliability: Compare Two Routes",
     "subtitle": "Choose two routes from the dropdowns. The map and both lower views update to compare the selected routes."

@@ -1,0 +1,657 @@
+================================================================================
+COMMENTARY FOR: Combined_Chicago_Bus_Reliability_demographics.json
+(Vega-Lite v6 specification) and Chicago_Bus_Reliability_side_controls.html
+================================================================================
+
+Vega-Lite specs are strict JSON, so they cannot hold comments. This file is the
+comment layer: it walks through the spec in file order and explains every
+property. Locations are given as JSON paths, e.g. vconcat[0].layer[2] means
+"the third entry of the layer array inside the first entry of vconcat".
+Items marked [ADDED] are the pieces added in this conversation. Items marked
+[NOTE] flag things worth checking. Source numbers like [S3] point to the
+reference list at the bottom.
+
+CONTENTS
+  1. Architecture overview
+  2. Top-level properties
+  3. params (interactive controls)
+  4. vconcat[0]  - map (city outline, community-area choropleth, routes, stops)
+  5. vconcat[1]  - headway histograms (predicted + exponential model, observed)
+  6. vconcat[2]  - scatter diagnostic and target-by-stop bar chart
+  7. Remaining top-level blocks: spacing, config, datasets, resolve
+  8. The HTML wrapper (side control panel)
+  9. Known issues and suggested fixes
+ 10. Sources
+
+--------------------------------------------------------------------------------
+1. ARCHITECTURE OVERVIEW
+--------------------------------------------------------------------------------
+The dashboard stacks three rows with vconcat (vertical concatenation) [S2]:
+
+  Row 1: one map (layer = city outline + community-area choropleth + bus route
+         lines + observed stops).
+  Row 2: two histograms side by side (hconcat): predicted headways with a fitted
+         exponential curve, and observed headways.
+  Row 3: a scatter plot (previous headway vs next actual headway, with a y = x
+         reference line) and a stacked bar chart of 10-minute-target results.
+
+Two route selectors (routeA, routeB) filter nearly every view to the two routes
+being compared. A checkbox and a dropdown control the demographic choropleth.
+
+Terminology: "headway" is the time gap between consecutive buses on a route at
+a stop [S9]. "Bunching" is when buses meant to be spaced apart arrive together,
+which leaves a long gap behind them [S10]. In the data, the value 999 is a
+sentinel meaning "no previous/next bus recorded" (first or last observation of a
+sequence), and the views exclude it.
+
+--------------------------------------------------------------------------------
+2. TOP-LEVEL PROPERTIES
+--------------------------------------------------------------------------------
+"$schema": "https://vega.github.io/schema/vega-lite/v6.json"
+    Declares the Vega-Lite major version (6) and lets editors validate and
+    autocomplete the spec. Required for the Vega editor to pick the right
+    compiler version [S2].
+
+"title": { "text": "Chicago Bus Reliability: Compare Two Routes",
+           "subtitle": "Choose two routes above; use the direction legend in
+           the scatterplot to show one or more directions." }
+    Title block for the whole composed chart. "text" is the headline;
+    "subtitle" is smaller text beneath. [NOTE] The subtitle mentions a
+    clickable direction legend, but no selection is wired to it (see section 9).
+    Also, "above" refers to the controls, which are now in the side panel when
+    the HTML wrapper is used.
+
+--------------------------------------------------------------------------------
+3. params  (interactive controls)
+--------------------------------------------------------------------------------
+In Vega-Lite, a "param" is a named variable. When it has a "bind", it renders as
+an HTML input and its current value can be read in expressions (filters,
+calculate, tests) by name [S3][S4].
+
+params[0]  routeA
+    "name": "routeA"          Variable name used in expressions such as
+                              datum.route === routeA.
+    "value": "8"              Initial value (CTA route 8, Halsted).
+    "bind": { "input": "select", "options": [ "8","20","22","36","56","66",
+              "96","146","147","157" ] }
+                              Renders a dropdown listing the ten routes in the
+                              dataset. Values are strings because route is
+                              stored as a string everywhere in the spec.
+    "element": "#controls"    [ADDED] Tells Vega-Embed to place this widget in
+                              the HTML element with id "controls" instead of
+                              below the chart [S5]. Only works when the spec is
+                              embedded in your own page (see section 8).
+
+params[1]  routeB
+    Same structure as routeA; initial value "20". Gives the second route being
+    compared.
+
+params[2]  showDemographics
+    "name": "showDemographics"   Boolean variable read by the choropleth layer.
+    "value": false               Starts hidden.
+    "bind": { "input": "checkbox",
+              "name": "Show demographic overlay " }
+                                 A checkbox; "name" is the visible label.
+
+params[3]  demographicMeasure
+    "name": "demographicMeasure" Holds which demographic column is mapped.
+    "value": "poverty"           Default measure.
+    "bind": { "input": "select",
+              "name": "Demographic measure: ",
+              "options": [ "crowding","poverty","unemployment","noDiploma",
+                           "ageDependency","income","hardship" ],
+              "labels":  [ "Housing crowding (%)",
+                           "Households below poverty (%)",
+                           "Unemployment (%)",
+                           "Adults without high school diploma (%)",
+                           "Age dependency (%)",
+                           "Per-capita income ($)",
+                           "Hardship index" ] }
+    "options" are the internal values and must match the keys in the embedded
+    demographic table (section 4, layer 1). "labels" are the human-readable text
+    shown in the dropdown, in the same order.
+
+params[4..7]  showNorth, showSouth, showEast, showWest
+    Four checkbox params, each "value": true, labeled "Show N direction " etc.
+    [NOTE] These names appear only in their own definitions. No transform or
+    encoding reads them, so toggling them currently changes nothing. Section 9
+    shows how to wire them in.
+
+--------------------------------------------------------------------------------
+4. vconcat[0]  -  THE MAP
+--------------------------------------------------------------------------------
+"width": 720, "height": 500
+    Pixel size of the map's plotting area.
+
+"title": { "text": "Chicago CTA Bus Routes",
+           "subtitle": "City boundary and observed stops; selected routes are
+           highlighted" }
+    Title for the map row only.
+
+"projection": { "type": "mercator", "center": [-87.65, 41.88],
+                "scale": 50000, "translate": [360, 195] }
+    How longitude/latitude become pixels for every geoshape and for the
+    longitude/latitude encodings [S2]. "mercator" is the standard web-map
+    projection. "center" is the lon/lat placed at the "translate" pixel
+    position. "scale" is the zoom (larger = more zoomed in). "translate"
+    [360, 195] puts the center horizontally mid-chart (720/2) and a bit above
+    the vertical middle (500/2 = 250), shifting the city upward in the frame.
+    All layers in this row share this projection.
+
+"layer": [ ... ]
+    Layers draw in order, first at the bottom. Final order is: city outline,
+    community-area choropleth [ADDED], route lines, stops.
+
+--- layer[0]: city outline -----------------------------------------------------
+"data": { "url": "https://services5.arcgis.com/.../Chicago_City_Boundary/
+                  FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326
+                  &f=geojson" }
+    Loads the city boundary from an ArcGIS REST query. where=1=1 selects every
+    feature; outFields=* returns all attributes; outSR=4326 requests WGS84
+    longitude/latitude, which is what Vega-Lite projections expect; f=geojson
+    asks for GeoJSON output [S6]. No "format" is given because Vega-Lite
+    recognizes a GeoJSON FeatureCollection and uses it directly.
+"mark": { "type": "geoshape", "filled": true, "fill": "#f1f5f9",
+          "stroke": "#334155", "strokeWidth": 2 }
+    geoshape draws polygons from GeoJSON geometry [S2]. Light grey-blue fill,
+    dark slate outline 2 px wide.
+"encoding": { "tooltip": { "value": "City of Chicago" } }
+    A constant tooltip: hovering anywhere on the city shows that text.
+
+--- layer[1]: community-area choropleth  [ADDED] --------------------------------
+"data": { "url": "https://data.cityofchicago.org/resource/igwz-8jzy.geojson
+                  ?$limit=100",
+          "format": { "type": "json", "property": "features" } }
+    Community-area polygons from the Chicago Data Portal [S7]. $limit=100 is a
+    Socrata (SoQL) query parameter; there are 77 community areas, so 100 is
+    enough. "format.property": "features" makes Vega-Lite treat the array of
+    GeoJSON features as the rows of the dataset, so each polygon becomes one
+    datum with its attributes under datum.properties.
+"transform": [
+    { "filter": "showDemographics" }
+        Keeps all rows when the checkbox is on and drops all rows when off, which
+        hides the layer.
+    { "calculate": "toNumber(datum.properties.area_numbe)", "as": "areaNum" }
+        Socrata returns the community-area number as text in the property
+        "area_numbe" (the portal truncates the field name). toNumber converts it
+        so it can match the numeric key in the demographic table. [NOTE] If
+        polygons render grey or empty, check this property name in the
+        loaded data.
+    { "lookup": "areaNum",
+      "from": { "data": { "values": [ ...77 rows... ] }, "key": "area" },
+      "as": "demo" }
+        A join [S2]. For every polygon, finds the row in the inline table whose
+        "area" equals areaNum and stores that whole row as the object "demo".
+        Joining on the number, not the name, avoids spelling mismatches such as
+        "Humboldt park" and "Washington Height" in the source table.
+    { "calculate": "datum.demo[demographicMeasure]", "as": "measureValue" }
+        Uses the dropdown's current value as a key into the joined row, so
+        measureValue is whichever column is selected (for example demo.poverty).
+        This is what makes one layer serve all seven measures.
+]
+"mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.8,
+          "opacity": 0.8 }
+    White boundaries between areas; 80% opacity so the base map and routes show
+    through.
+"encoding": {
+    "color": { "field": "measureValue", "type": "quantitative",
+               "scale": { "scheme": "yelloworangered" },
+               "legend": { "title": "Selected measure",
+                           "orient": "bottom-right" } }
+        Fill color encodes the selected value on a sequential yellow-orange-red
+        scheme (ColorBrewer YlOrRd [S11]). Sequential schemes suit ordered,
+        one-directional quantities. The color domain rescales to whichever
+        measure is selected, so colors are not comparable across measures.
+        [NOTE] Per-capita income is "good when high", the others are "bad when
+        high", so dark red means opposite things for income.
+    "tooltip": [
+        { "field": "demo.name", "type": "nominal", "title": "Community area" },
+        { "field": "measureValue", "type": "quantitative",
+          "title": "Selected measure" },
+        { "field": "demo.poverty", "type": "quantitative",
+          "title": "Below poverty (%)" },
+        { "field": "demo.income", "type": "quantitative",
+          "title": "Per-capita income ($)", "format": ",.0f" },
+        { "field": "demo.hardship", "type": "quantitative",
+          "title": "Hardship index" } ]
+        Hover text: area name, the mapped value, and three fixed indicators.
+        ",.0f" is a d3 number format: thousands separators, zero decimals.
+}
+
+Embedded demographic table (the "values" array in the lookup)
+    77 objects, one per community area. Keys:
+      area           Community area number (1-77), the join key
+      name           Community area name
+      crowding       Percent of housing crowded
+      poverty        Percent of households below poverty
+      unemployment   Percent aged 16+ unemployed
+      noDiploma      Percent aged 25+ without high school diploma
+      ageDependency  Percent aged under 18 or over 64
+      income         Per-capita income in dollars
+      hardship       Hardship index (1-100)
+    The values match the "Census Data - Selected socioeconomic indicators in
+    Chicago, 2008-2012" table from the City of Chicago [S8], as supplied by you.
+    The citywide "CHICAGO" summary row is omitted because it has no polygon.
+    The hardship index is a composite of six of these indicators [S12].
+
+--- layer[2]: bus route lines --------------------------------------------------
+"data": { "url": "https://data.cityofchicago.org/resource/6uva-a5ei.geojson
+                  ?$limit=500&$where=route in ('8','20','22','36','56','66',
+                  '96','146','147','157')",
+          "format": { "type": "json", "property": "features" } }
+    CTA route geometry from the Chicago Data Portal [S7]. $where is a SoQL
+    filter that keeps only the ten routes in the study (URL-encoded in the file);
+    $limit=500 caps the number of returned features. "property": "features" is
+    explained under layer[1].
+"mark": { "type": "geoshape", "filled": false, "strokeWidth": 2,
+          "opacity": 0.9 }
+    "filled": false draws the lines only, with no polygon fill, which is right
+    for linear route shapes.
+"encoding": {
+    "stroke": { "field": "properties.route", "type": "nominal",
+                "scale": { "domain": [ ten routes ], "range": [ ten colors ] },
+                "legend": { "title": "CTA Route" } }
+        Line color by route. Explicit domain/range pin each route to a fixed
+        color (8 blue #2563eb, 20 orange #ea580c, 22 green #16a34a, 36 purple
+        #9333ea, 56 cyan #0891b2, 66 red #dc2626, 96 gold #ca8a04, 146 pink
+        #db2777, 147 slate #475569, 157 lime #65a30d) so colors stay stable when
+        the selection changes. Legend titled "CTA Route".
+    "opacity": { "condition": { "test": "datum.properties.route === routeA ||
+                                          datum.properties.route === routeB",
+                                "value": 1 },
+                 "value": 0.18 }
+        Highlighting: the two selected routes are fully opaque, all others
+        fade to 18%. The test is a JavaScript-style expression that can read
+        the params routeA and routeB [S3].
+    "tooltip": [ { "field": "properties.route", "title": "Route" },
+                 { "field": "properties.name", "title": "Route name" } ]
+        Route number and name on hover. The "properties." prefix is needed
+        because GeoJSON attributes live under that key.
+}
+
+--- layer[3]: observed stops ---------------------------------------------------
+"data": { "name": "stops" }
+    Refers to the named dataset defined once under top-level "datasets"
+    (section 7), so the large stop list is not repeated here.
+"mark": { "type": "point", "filled": true, "size": 150, "stroke": "white",
+          "strokeWidth": 1.5, "opacity": 1, "cursor": "pointer",
+          "clip": true }
+    Filled circles, 150 square pixels in area, with a white ring for contrast.
+    "cursor": "pointer" shows a hand on hover. "clip": true cuts off anything
+    outside the plot area. The mark-level opacity of 1 is overridden by the
+    opacity encoding below.
+"encoding": {
+    "longitude": { "field": "lon", "type": "quantitative" }
+    "latitude":  { "field": "lat", "type": "quantitative" }
+        Position stops through the shared projection instead of x/y [S2].
+    "fill": { "field": "route", "type": "nominal",
+              "scale": { same ten routes and the same ten map colors },
+              "legend": { "title": "Stop route" } }
+        Stop color by route, matching the line colors above.
+    "opacity": { "condition": { "test": "datum.route === routeA ||
+                                         datum.route === routeB", "value": 1 },
+                 "value": 0.3 }
+        Selected routes' stops are opaque; others fade to 30%.
+    "tooltip": [ route, stopId, ctaStopId, stopName ("Intersection"),
+                 direction ]
+        Five hover fields, each with a readable title.
+}
+
+--------------------------------------------------------------------------------
+5. vconcat[1]  -  HEADWAY HISTOGRAMS
+--------------------------------------------------------------------------------
+"hconcat": [ chart A, chart B ], "spacing": 28
+    Places the two charts side by side with 28 px between them.
+
+--- Chart A (vconcat[1].hconcat[0]): predicted headways + exponential model ----
+"width": 360, "height": 250
+"title": "Predicted headways + exponential model"
+"subtitle": "Predicted intervals (5-minute bins) with route-specific
+             exponential fit"
+"layer": [ bars, line ]
+
+  layer[0]: histogram bars
+    "data": { "values": [ ...102 rows... ] }
+        Inline observation table. Fields per row: route, stopId, stopName, lon,
+        lat, direction, obs, date, actual, predicted, previousHeadway,
+        predictedHeadway, observedHeadway, comments. predictedHeadway is the
+        app-predicted gap to the next bus; observedHeadway is the gap that
+        actually occurred. (These come from the "nextVentra" and "actualNext"
+        fields in the stops dataset.)
+    "transform": [
+        { "filter": "datum.route === routeA || datum.route === routeB" },
+            Keep only the two selected routes.
+        { "filter": "isValid(datum.predictedHeadway) &&
+                     datum.predictedHeadway >= 0 &&
+                     datum.predictedHeadway < 999 &&
+                     datum.predictedHeadway <= 60" } ]
+            Drops missing values and the 999 sentinel, and caps at 60 minutes
+            so the x-axis stays readable. (The "< 999" is redundant given
+            "<= 60" but harmless.)
+    "mark": { "type": "bar", "opacity": 0.48 }
+        Semi-transparent bars so two routes can overlap legibly.
+    "encoding": {
+        "x": { "field": "predictedHeadway", "type": "quantitative",
+               "bin": { "step": 5 },
+               "axis": { "title": "Predicted headway (minutes)" } }
+            Bin into 5-minute intervals [S2].
+        "y": { "aggregate": "count", "type": "quantitative",
+               "axis": { "title": "Observations / expected count" } }
+            Number of observations per bin. The axis title is shared with the
+            line layer, which plots expected counts.
+        "color": { "field": "route", "type": "nominal",
+                   "scale": { domain: ten routes, range: ten chart colors },
+                   "legend": { "title": "Route" } }
+            Bar color by route. The chart palette (e.g. 8 = #1f77b4, 20 =
+            #ff7f0e) is the classic Tableau/D3 category10 set and differs from
+            the map palette. [NOTE] See section 9.
+        "tooltip": [ route, count ] }
+
+  layer[1]: exponential fit line
+    "data": { "values": [ ...130 rows... ] }
+        Precomputed curve points per route. Fields: route, minutes (bin left
+        edge, 0 to 60 step 5), expectedCount, meanPredictedHeadway, n.
+        Checked against the data: expectedCount = n * 5 * (1/mean) *
+        exp(-minutes/mean). That is the exponential probability density,
+        evaluated at the bin's left edge and multiplied by bin width (5) and
+        sample size n. The exponential is the headway distribution expected if
+        buses arrived at random (a Poisson process); real, well-controlled
+        service has less spread, and bunched service has more short gaps [S9].
+        [NOTE] Using the left-edge density slightly overstates the expected count
+        in each bin compared with integrating over the bin
+        (n * (exp(-a/mean) - exp(-b/mean))).
+    "transform": [ { "filter": "datum.route === routeA ||
+                                datum.route === routeB" } ]
+    "mark": { "type": "line", "strokeWidth": 2.5, "point": false }
+    "encoding": {
+        "x": minutes (quantitative), title "Predicted headway (minutes)"
+        "y": expectedCount (quantitative)
+        "color": { field route, same palette, "legend": null }
+            No second legend, since the bars already provide one.
+        "detail": { "field": "route" }
+            Draws one line per route even without a color-based grouping.
+        "order": { "field": "minutes" }
+            Connects points left-to-right.
+        "tooltip": [ route, minutes, "Mean predicted headway" (format .1f),
+                     "Exponential expected count" (format .2f) ] }
+
+--- Chart B (vconcat[1].hconcat[1]): observed headway comparison ---------------
+"width": 360, "height": 250
+"title": "Observed headway comparison"
+"subtitle": "Actual intervals binned in 5-minute intervals"
+"data": { "values": [ ...102 rows, same schema as Chart A... ] }
+"transform": same two filters as Chart A, but applied to observedHeadway.
+"mark": { "type": "bar", "opacity": 0.58, "binSpacing": 1 }
+    "binSpacing": 1 leaves a 1 px gap between bars.
+"encoding":
+    x: observedHeadway, binned in steps of 5, title "Observed headway (minutes)"
+    y: count, title "Number of observations"
+    color: route, same chart palette, legend "Route"
+    tooltip: route, count
+Comparing A with B shows how predicted spacing differs from what riders got.
+
+--------------------------------------------------------------------------------
+6. vconcat[2]  -  SCATTER DIAGNOSTIC AND TARGET BAR CHART
+--------------------------------------------------------------------------------
+"hconcat": [ scatter, stacked bar ]
+
+--- Scatter (vconcat[2].hconcat[0]) --------------------------------------------
+"width": 430, "height": 280
+"title": "Headway Imbalance and Bunching Diagnostic"
+"subtitle": "Select direction(s) from the legend. Solid points = N/W; hollow
+             points = S/E. Values of 999 are excluded."
+    [NOTE] "Select from the legend" is not currently implemented (section 9).
+    The solid/hollow rule is implemented by the fill condition below.
+"layer": [ reference line, points ]
+
+  layer[0]: y = x reference line
+    "data": { "values": [ {"x":0,"y":0}, {"x":60,"y":60} ] }
+        Two points define the diagonal.
+    "mark": { "type": "line", "color": "#555555", "strokeDash": [5, 5],
+              "strokeWidth": 2 }
+        Dashed grey line.
+    "encoding": x and y, both quantitative, scale domain [0, 60] with
+        "nice": false (use exactly 0-60, no rounding), grid on, and axis
+        "values" at 0, 5, ..., 60. Titles: "Previous headway (minutes)" and
+        "Actual next headway (minutes)".
+    Reading the plot: points near the line mean the gap after a bus equals the
+    gap before it (even spacing). Points far above the line mean a long gap
+    follows a short one, the signature of bunching [S10].
+
+  layer[1]: observation points
+    "data": { "values": [ ...102 rows... ] }
+        Fields: id, route, stop, cta, direction, previous, actualNext,
+        comments. "previous" is the gap before the bus; "actualNext" the gap
+        after it.
+    "transform": [
+        { "filter": "datum.route === routeA || datum.route === routeB" },
+        { "filter": "datum.previous != 999 && datum.actualNext != 999" } ]
+        Selected routes only; removes sentinel values.
+    "mark": { "type": "point", "size": 130, "strokeWidth": 2, "opacity": 0.9 }
+    "encoding": {
+        "x": previous, "y": actualNext   Same scales/axes as the line layer.
+        "stroke": { field route, chart palette,
+                    "legend": { "title": "Route", "orient": "right",
+                                "symbolType": "circle" } }
+            Outline color by route.
+        "fill": { "condition": [ { "test": "datum.direction === 'N' ||
+                                             datum.direction === 'W'",
+                                   "field": "route", "type": "nominal",
+                                   "scale": { chart palette } } ],
+                  "value": "white" }
+            Points heading N or W are filled with the route color; S and E are
+            filled white (hollow look). This encodes direction without a second
+            color.
+        "shape": { "field": "direction", "type": "nominal",
+                   "scale": { "domain": ["N","S","E","W"],
+                              "range": ["circle","circle","circle","circle"] },
+                   "legend": { "title": "Direction - click to filter",
+                               "orient": "right" } }
+            All four directions use the same circle shape, so shape does not
+            actually distinguish them. It exists mainly to generate the
+            direction legend. [NOTE] The legend title promises click-to-filter,
+            but there is no selection param attached.
+        "tooltip": [ id ("Observation ID"), route, direction, stop,
+                     cta ("CTA Stop ID"), previous ("Previous gap (min)"),
+                     actualNext ("Actual next gap (min)"), comments ] }
+
+--- Stacked bar (vconcat[2].hconcat[1]) ----------------------------------------
+"width": 620, "height": 300
+"title": "10-Minute Headway Target by Stop"
+"subtitle": "Stacked bars show buses meeting vs. missing both target conditions,
+             split by direction"
+"data": { "name": "stops" }
+    The nested stops dataset (each stop holds an "observations" array).
+"transform": [
+    { "flatten": ["observations"], "as": ["bus"] }
+        Turns each stop's array of observations into one row per observation,
+        each stored as the object "bus" [S2]. Stop-level fields (route,
+        stopName, direction) repeat on every row.
+    { "filter": "datum.route === routeA || datum.route === routeB" }
+    { "calculate": "(toDate(datum.bus.actual) - toDate(datum.bus.predicted))
+                    / 60000", "as": "delayMinutes" }
+        Actual minus predicted arrival, converted from milliseconds to minutes.
+        Positive = late, negative = early.
+    { "calculate": "datum.bus.observationPrevious === 10 &&
+                    datum.delayMinutes >= -1 && datum.delayMinutes <= 5 ?
+                    'Met target' : 'Missed target'", "as": "targetStatus" } ]
+        Classifies each bus. It "meets target" only if BOTH hold: the previous
+        gap was exactly 10 minutes AND the bus arrived between 1 minute early
+        and 5 minutes late relative to prediction. [NOTE] Exact equality to 10
+        is strict: a 9- or 11-minute previous gap counts as "Missed target".
+        The thresholds (10, -1, 5) are study-specific choices, not CTA
+        standards.
+"mark": { "type": "bar", "tooltip": true }
+    "tooltip": true on the mark adds a default tooltip; it is superseded by the
+    explicit tooltip encoding below.
+"encoding": {
+    "x": { "field": "stopName", "type": "nominal", "title": "Bus stop",
+           "sort": "ascending",
+           "axis": { "labelAngle": -45, "labelLimit": 130 } }
+        One group of bars per stop, alphabetical, labels tilted 45 degrees and
+        truncated at 130 px.
+    "xOffset": { "field": "direction", "type": "nominal",
+                 "title": "Direction" }
+        Places each direction's bar side by side within the stop's slot [S2].
+    "y": { "aggregate": "count", "type": "quantitative",
+           "title": "Number of buses", "stack": "zero" }
+        Count of buses; "stack": "zero" stacks Met/Missed from a zero baseline.
+    "color": { "field": "targetStatus", "type": "nominal",
+               "title": "Headway target",
+               "scale": { "domain": ["Met target","Missed target"],
+                          "range": ["#16a34a","#dc2626"] } }
+        Green for met, red for missed, pinned so colors do not swap.
+    "tooltip": [ route, stopName ("Stop"), direction,
+                 targetStatus ("Status"), count ("Number of buses") ] }
+
+--------------------------------------------------------------------------------
+7. REMAINING TOP-LEVEL BLOCKS
+--------------------------------------------------------------------------------
+"spacing": 24
+    Gap in pixels between the three vconcat rows.
+
+"config": {
+    "font": "Arial"                     Default font for all text.
+    "axis": { "labelFontSize": 10, "titleFontSize": 11,
+              "gridColor": "#e8e8e8" }  Small axis text; very light grid lines.
+    "title": { "fontSize": 14, "anchor": "start" }
+                                        Titles 14 px, left-aligned.
+    "legend": { "labelFontSize": 10, "titleFontSize": 11 }
+    "view": { "stroke": "#d0d0d0" } }   Light grey frame around each plot.
+    Config sets defaults for every chart in the composition [S2].
+
+"datasets": { "stops": [ ...23 stop objects... ] }
+    Named data reusable across layers [S2]. Each stop has: stopId (route plus
+    CTA stop number, e.g. "R8-S5792"), route, stopName, ctaStopId, direction
+    (N/S/E/W), lon, lat, and "observations", an array of timed bus arrivals with:
+      obs                 Observation sequence number
+      date                Observation date
+      actual              Actual arrival time (ISO 8601 text)
+      predicted           Arrival time predicted by the app
+      observationPrevious Gap since previous bus, minutes (999 = none)
+      nextVentra          App-predicted gap to next bus, minutes
+      actualNext          Actual gap to next bus, minutes (999 = none)
+      comments            Free-text field notes
+      sourceRow           Row index in the original spreadsheet
+    There are 102 observations in total across the 23 stops; the inline
+    "values" arrays in sections 5 and 6 are the same observations in a flat
+    form. "Ventra" is the CTA's fare/arrival-prediction app.
+
+"resolve": { "scale": { "color": "independent", "stroke": "independent",
+                        "fill": "independent" } }
+    By default, concatenated charts share color scales and merge legends.
+    "independent" gives every sub-chart its own color, stroke and fill scales
+    and legends [S2]. Needed here because the choropleth uses a quantitative
+    color scale while the bar charts use nominal ones.
+
+--------------------------------------------------------------------------------
+8. THE HTML WRAPPER (Chicago_Bus_Reliability_side_controls.html)
+--------------------------------------------------------------------------------
+<script src=".../vega@6">, ".../vega-lite@6", ".../vega-embed@7">
+    Load the Vega runtime, the Vega-Lite compiler, and Vega-Embed, which turns a
+    spec into a page element and renders bound params [S5]. They use major-version
+    tags; pin exact versions for reproducibility.
+<aside id="controls"> and <div id="chart">
+    Two columns in a flex row. Every param's "element": "#controls" sends its
+    widget into the aside.
+CSS
+    .layout {display:flex; gap:24px; align-items:flex-start}  side by side
+    #controls {position:sticky; top:16px; flex:0 0 250px; ...}  fixed 250 px
+        panel that stays in view while scrolling
+    #controls .vega-bind {display:flex; flex-direction:column}  label above
+        each input
+    #chart {flex:1; min-width:0; overflow-x:auto}  chart takes remaining width
+        and scrolls horizontally if too wide
+const spec = {...};  vegaEmbed('#chart', spec, {actions:false});
+    The spec inlined as a JS object; embeds it and hides the export menu.
+    This works only in your own HTML. The Vega editor ignores "element".
+
+--------------------------------------------------------------------------------
+9. KNOWN ISSUES AND SUGGESTED FIXES
+--------------------------------------------------------------------------------
+(a) Direction checkboxes do nothing.
+    showNorth/South/East/West are defined but never used. To apply them to the
+    scatter points, add this transform to vconcat[2].hconcat[0].layer[1]:
+      { "filter": "(datum.direction === 'N' && showNorth) ||
+                   (datum.direction === 'S' && showSouth) ||
+                   (datum.direction === 'E' && showEast)  ||
+                   (datum.direction === 'W' && showWest)" }
+    The same filter, applied to the stops layer (vconcat[0].layer[3]) and to the
+    stacked bar chart after its flatten step, would apply direction filtering
+    across the dashboard.
+
+(b) Legend text promises interactivity that is not present.
+    Either bind a legend selection ("params": [{"name":"dirSel","select":
+    {"type":"point","fields":["direction"]},"bind":"legend"}] plus a filter on
+    dirSel) or change the subtitle and legend title to match the checkboxes.
+
+(c) Two route palettes. The map uses one set of route colors (blue #2563eb for
+    route 8) and the charts another (blue #1f77b4 for route 8). The hues are
+    similar for some routes and quite different for others (e.g. 36 is purple on
+    the map and red in the charts). Using one palette would make route
+    identification easier across views.
+
+(d) Choropleth readability. Income reads backwards under the shared scheme (see
+    layer[1]). Options: reverse its scale, or use a diverging/different scheme
+    for it. Also consider a log or quantile scale for income, which is skewed.
+
+(e) Exponential curve uses left-edge density (section 5). Integrating over each
+    bin would give slightly smaller expected counts.
+
+(f) Small samples. Each route has only a few observations (102 total across ten
+    routes), so histograms and the fitted exponential are descriptive of this
+    sample, not statistically strong estimates.
+
+(g) The choropleth's property name and the demographic source table were not
+    tested against live data in the environment used to prepare this file; they
+    should be confirmed when you first open the dashboard.
+
+--------------------------------------------------------------------------------
+10. SOURCES
+--------------------------------------------------------------------------------
+[S1]  Satyanarayan, A., Moritz, D., Wongsuphasawat, K., & Heer, J. (2017).
+      Vega-Lite: A grammar of interactive graphics. IEEE Transactions on
+      Visualization and Computer Graphics, 23(1), 341-350.
+[S2]  Vega-Lite documentation (marks, geoshape, projection, encoding, transforms
+      including lookup, calculate, filter, flatten, bin, aggregate; stack,
+      xOffset, scale, legend, resolve, config, concat). https://vega.github.io/
+      vega-lite/docs/
+[S3]  Vega-Lite documentation, Parameters. https://vega.github.io/vega-lite/
+      docs/parameter.html  and Expressions (Vega expression language),
+      https://vega.github.io/vega/docs/expressions/
+[S4]  Vega-Lite documentation, Input element binding.
+      https://vega.github.io/vega-lite/docs/bind.html
+[S5]  Vega-Embed documentation and repository (embedding specs in HTML; the
+      "element" option on param bindings). https://github.com/vega/vega-embed
+[S6]  Esri, ArcGIS REST API documentation, Query (Feature Service/Layer)
+      (parameters where, outFields, outSR, f). https://developers.arcgis.com/
+      rest/services-reference/
+      Data layer: City of Chicago boundary feature service referenced in the
+      spec URL (services5.arcgis.com ... Chicago_City_Boundary).
+[S7]  City of Chicago Data Portal (Socrata). Datasets referenced by ID in the
+      spec URLs: igwz-8jzy (community area boundaries) and 6uva-a5ei (CTA bus
+      routes). Confirm current titles at https://data.cityofchicago.org.
+      Query syntax: Socrata Open Data API / SoQL ($limit, $where),
+      https://dev.socrata.com/docs/queries/
+[S8]  City of Chicago Data Portal. Census Data - Selected socioeconomic
+      indicators in Chicago, 2008-2012 (dataset ID kn9c-c2s2). The columns in
+      your table match this dataset's columns; confirm at
+      https://data.cityofchicago.org.
+[S9]  Kittelson & Associates, Parsons Brinckerhoff, KFH Group, et al. (2013).
+      Transit Capacity and Quality of Service Manual, 3rd ed. (TCRP Report 165).
+      Transportation Research Board. (Headway, service reliability, and
+      headway-adherence concepts.)
+[S10] Newell, G. F., & Potts, R. B. (1964). Maintaining a bus schedule.
+      Proceedings of the 2nd Australian Road Research Board Conference, 2,
+      388-393. (Classic analysis of bus bunching.)
+[S11] Harrower, M., & Brewer, C. A. (2003). ColorBrewer.org: An online tool for
+      selecting colour schemes for maps. The Cartographic Journal, 40(1), 27-37.
+      Scheme: YlOrRd, https://colorbrewer2.org
+[S12] Nathan, R. P., & Adams, C. (1976). Understanding central city hardship.
+      Political Science Quarterly, 91(1), 47-62. (Origin of the hardship index
+      used in the Chicago indicators table.)
+
+Note: URLs and dataset IDs were taken from the spec itself or from standard
+documentation locations. Page titles on the portals can change, so verify them
+before citing in a paper.
+================================================================================
