@@ -19,45 +19,46 @@ The Assignment Two folder contains all the information needed to run the Assignm
     3. DataPhase2Rai.xlsx
     4. DataPhase2Sharma.xlsx
 
-        -The above three datasets contain data collected by the three members of the team, including the data collected during Assignment One, plus subsequent collections up until 10/18/2026
+        -The above three datasets contain data collected by the three members of the team, including the data collected during Assignment One, plus subsequent collections up until 10/18/2026. To see just the data collected during Assignment One, Go to: Data -> Pilot Data -- Excel ->
+        Inside this folder you will find the Data used in Assignment One. 
 
-    3. Exploratory Data Folder--containing:
-        1. CS_424_Exploratory_Research_on_Primary_Data.ipynb--this Jupyter notebook file was used to do exploratory analysis on the data collected by the team members.
+3. Exploratory Data Folder--containing:
+   1. CS_424_Exploratory_Research_on_Primary_Data.ipynb--this Jupyter notebook file was used to do exploratory analysis on the data collected by the team members.
         To run this file you will need: CleanedData-10-18-26.csv
         The Jupyter notedbook file is optimized to run in Google Colab. To run this file, load it into the Colab enviroment and then upload the file: CleanedData-10-18-26.csv into the console.
 
-        2. CS_424_Secondary_Data_Explore.ipynb--this Jupyter notebook file was used to do exploratory analysis on the secondary census data used to augment bus information in the visualizations.
+   2. CS_424_Secondary_Data_Explore.ipynb--this Jupyter notebook file was used to do exploratory analysis on the secondary census data used to augment bus information in the visualizations.
         To run this file you will need: Census_Data_-_Selected_socioeconomic_indicators_in_Chicago,_2008_–_2012_20261023.csv
          The Jupyter notedbook file is optimized to run in Google Colab. To run this file, load it into the Colab enviroment and then upload the file: Census_Data_-_Selected_socioeconomic_indicators_in_Chicago,_2008_–_2012_20261023.csv into the console.
 
-    4. Screenshots Folder--containing:
-        1. Primary_Data_Analysis: Figures 1-10. PNG files that are all of the figures generated in the above CS_424_Exploratory_Research_on_Primary_Data.ipynb file that were placed into the report.
-        2. Secondary_Data_Analysis: Figure 21: The figure generated from CS_424_Secondary_Data_Explore.ipynb and placed into the report
-        3. Vega_Lite: The Screenshots of the Visualizations created in PNG format
+4. Screenshots Folder--containing:
+   1. Primary_Data_Analysis: Figures 1-10. PNG files that are all of the figures generated in the above CS_424_Exploratory_Research_on_Primary_Data.ipynb file that were placed into the report.
+   2. Secondary_Data_Analysis: Figure 21: The figure generated from CS_424_Secondary_Data_Explore.ipynb and placed into the report
+   3. Vega_Lite: The Screenshots of the Visualizations created in PNG format
             -Figure 1
             -Figure 10
             -Figure 11
             are the first three iterations of the Assignment
             -Final Vis is the screenshot of the final visualization that will be used in Assignment Three
 
-    5. Secondary Data Folder-- containing:
-        1. Census_Data_-_Selected_socioeconomic_indicators_in_Chicago,_2008_–_2012_20261023.csv this is Census Data supplied by the City of Chicago
-        2. mdb-389-202609160157.zip a zip file from the Mobility Database of infomration supplied from the CTA
+5. Secondary Data Folder-- containing:
+   1. Census_Data_-_Selected_socioeconomic_indicators_in_Chicago,_2008_–_2012_20261023.csv this is Census Data supplied by the City of Chicago
+   2. mdb-389-202609160157.zip a zip file from the Mobility Database of infomration supplied from the CTA
         -note stops.txt file is located inside this zip folder
-        3. Sources.md a markdown file that gives the websites to the secondary data was aquired.
+   3. Sources.md a markdown file that gives the websites to the secondary data was aquired.
 
-    6. Vega Lite Folder-- containing:
-        1. Figure_1.json --this is the Vega Lite code for Figure 1 from our visualization sketches
-        2. Figure_10.json --this is the Vega Lite code for Figure 10 from our visualization sketches
-        3. Figure_11.json --this is the Vega Lite code for Figure 11 from our visualization sketches
-        4. Final_vis.json --this is the Vega Lite code for the final visualization that will be used in Assignment Three
-        5. Figure_1.txt --a text file containing the comments and citations for Figure_1.json
-        6. Figure_10.txt --a text file containing the comments and citations for Figure_10.json
-        7. Figure_11.txt --a text file containing the comments and citations for Figure_11.json
-        8. Final_vis.txt --a text file containing the comments and citations for Final_vis.json
-        9. Final_vis.html --this is the HTML version of the final visualization that will be used in Assignment Three
+6. Vega Lite Folder-- containing:
+   1. Figure_1.json --this is the Vega Lite code for Figure 1 from our visualization sketches
+   2. Figure_10.json --this is the Vega Lite code for Figure 10 from our visualization sketches
+   3. Figure_11.json --this is the Vega Lite code for Figure 11 from our visualization sketches
+   4. Final_vis.json --this is the Vega Lite code for the final visualization that will be used in Assignment Three
+   5. Figure_1.txt --a text file containing the comments and citations for Figure_1.json
+   6. Figure_10.txt --a text file containing the comments and citations for Figure_10.json
+   7. Figure_11.txt --a text file containing the comments and citations for Figure_11.json
+   8. Final_vis.txt --a text file containing the comments and citations for Final_vis.json
+   9. Final_vis.html --this is the HTML version of the final visualization that will be used in Assignment Three
 
-    7. Report2.md --this is the report
+7. Report2.md --this is the report
 
     In terms of flow the group suggests that in order:
     1. DataPreparationandExplorations.xlsx is examined first
