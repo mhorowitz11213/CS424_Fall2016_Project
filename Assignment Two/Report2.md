@@ -287,10 +287,10 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 13. Color: Route identity distinguishes observations and model curves.
                 14. Route selection: Two dropdown menus allow users to select routes for comparison across the map and quantitative views.
 
-        Why you tried this approach.
+        Reasons for trying this Approach:
                 The visualization was designed to combine geographic context with quantitative comparisons of bus reliability. The map allows users to understand where the selected routes operate and where the observed stops are located, while the two lower charts provide a more detailed comparison of predicted and observed headway distributions. The exponential model adds a reference for examining the distribution of predicted intervals. By linking the views through route-selection dropdowns, the design aims to let users move between the geographic distribution of service and the statistical patterns that may indicate bunching or long gaps.
 
-        What worked and what did not.
+        What worked and what did not:
                 This visualization had many components that worked. In particular:
                 - The map provides geographic context for the selected routes and their observed stops. This was done to convey geographic and spatial understanding allowing for North and West sides to be compared. The group felt that including tis enabled easy comparison of the different Chicago regions.
                 - Using distinct colors makes it easier to distinguish routes and compare their spatial coverage. Such channels were very effective and will be used throughout.
@@ -315,12 +315,13 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
 
 ![Fig_23](Screenshots/Vega_Lite/Fig_10_Selection.png)
 
-        What question or task it supports.
+        This visualization supports the following questions and tasks:
             	1. Compare observed bus reliability across different geographic locations.
-	            2. Identify locations with unusual bunching or long service gaps.
-	            3. Compare predicted and actual bus arrivals at selected locations.
-	            4. Locate routes or stops where service patterns warrant further investigation.
-        Which data attributes it uses.
+	        2. Identify locations with unusual bunching or long service gaps.
+	        3. Compare predicted and actual bus arrivals at selected locations.
+	        4. Locate routes or stops where service patterns warrant further investigation.
+
+        It supports these questions by utilizing a the following set of attributes:
                 1. Route
                 2. Stop location and CTA stop ID
                 3. Direction
@@ -330,7 +331,8 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 7. Observation Previous
                 8. Observation Next
                 9. Actual Next
-        The main marks and visual channels.
+
+        To create this visualization, we encoded the following marks and visual channels, mapping each observation the following marks and encoding their values with the following channels:
                 1. Map: route lines and stop points
                 2. Map position: geographic location
                 3. Timeline points: individual bus arrivals
@@ -339,9 +341,11 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 6. Secondary predicted marks: Ventra arrival predictions
                 7. Distance between predicted and actual marks: prediction error
                 8. Selection/highlighting: selected route or stop
-        Why you tried this approach.
+
+        Reasons for trying this Approach:
                 The map-based visualization was chosen to provide geographic context for bus reliability across Chicago. By displaying bus routes spatially, the visualization allows users to identify where delays and irregular headways occur and whether certain areas experience more reliability issues than others. This approach supports targeted analysis by connecting bus performance data to real-world locations.
-        What worked and what did not.
+
+        What worked and what did not:
                 What worked:
                 - The map provided a familiar geographic reference, making it easier to understand where bus routes operate across the city.
                 - Displaying multiple routes together helped users compare their geographic coverage and identify areas of potential interest.
@@ -352,28 +356,31 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 - Technical issues with rendering the map and displaying the route data made it difficult to achieve the intended visualization reliably.
                 - Design decisions regarding keeping the map static versus allowing for zooming and panning affected the usability of the visualization.
                 - Design decisions regarding keeping the rectangular view at the bottom confined to a strict one hour window limited the ability to see longer-term patterns in bus reliability.
-        Whether you decided to keep, modify, combine, or abandon it.
-                We decided to modify and retain the map-based visualization as a complementary view of bus reliability. It is useful for understanding the geographic distribution of routes and identifying where further investigation may be needed. However, rather than relying on the map alone, we would combine it with a quantitative visualization that makes headway deviations easier to compare. This allows the map to provide spatial context while another view communicates the underlying data more precisely. We abandoned the zooming and panning functionality in favor of a static map to reduce complexity and improve usability, while still allowing users to explore the data through other linked visualizations. We also abandoned the strict one-hour window in favor of a more flexible time range to allow users to explore longer-term patterns in bus reliability.
+
+        
+        We regrouped after creating this visualization, and as entirety, we decided to modify and retain the map-based visualization as a complementary view of bus reliability. It is useful for understanding the geographic distribution of routes and identifying where further investigation may be needed. However, rather than relying on the map alone, we would combine it with a quantitative visualization that makes headway deviations easier to compare. This allows the map to provide spatial context while another view communicates the underlying data more precisely. We abandoned the zooming and panning functionality in favor of a static map to reduce complexity and improve usability, while still allowing users to explore the data through other linked visualizations. We also abandoned the strict one-hour window in favor of a more flexible time range to allow users to explore longer-term patterns in bus reliability.
 
     Figure 11:
 
 ![Fig_24](Screenshots/Vega_Lite/Fig_11_complete_view.png)
 ![Fig_25](Screenshots/Vega_Lite/Fig_11_Selection.png)
 
-        What question or task it supports.
+        This visualization supports the following questions and tasks:
                 1. Identify buses associated with unusually uneven service spacing.
                 2. Compare headway patterns across routes.
                 3. Determine whether short headways are followed by long service gaps.
                 4. Determine whether long gaps are followed by closely spaced buses.
                 5. Identify routes with the strongest evidence of bunching.
-        Which data attributes it uses.
+
+        It supports these questions by utilizing a the following set of attributes:
                 1. Observation Previous
                 2. Actual Next
                 3. Route
                 4. Stop
                 5. Direction
                 6. Date
-        The main marks and visual channels.
+
+        To create this visualization, we encoded the following marks and visual channels, mapping each observation the following marks and encoding their values with the following channels:
                 1. Point: individual bus observation
                 2. X-position: actual headway from previous bus
                 3. Y-position: actual headway to next bus
@@ -381,9 +388,11 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 5. Distance from diagonal: degree of headway imbalance
                 6. Position above/below diagonal: direction of the imbalance
                 7. Grouping/selection: route
-        Why you tried this approach.
+
+        Reasons for trying this Approach:
                 The scatterplot was chosen to compare the previous bus headway with the actual time until the next bus arrived. Each point represents an observation, with the previous headway on the x-axis and the actual next headway on the y-axis. A reference line representing \(y=x\) provides a baseline for comparison: points near the line indicate similar consecutive headways, while points above or below it indicate differences between the two intervals. Color distinguishes bus routes, and filled versus hollow points distinguish travel directions.
                 This approach provides a direct way to examine headway balance, compare observations across routes, and identify unusually large differences.
+
         What worked and what did not.
                 What worked:
                 - The scatterplot made it easier to compare previous and actual next headways quantitatively.
@@ -396,8 +405,8 @@ SECTION FOUR: IMPLEMENT VISUALIZATION ALTERNATIVES
                 - Distinguishing several routes through color could become challenging as the number of categories increased.
                 - The scatterplot did not show where the observations occurred geographically, so it could not independently explain the locations of reliability issues.
                 - The visualization required appropriate filtering and legend or dropdown controls to make comparisons between individual routes and directions manageable.
-        Whether you decided to keep, modify, combine, or abandon it.
-                We decided to retain and refine the scatterplot because it provides a clearer quantitative comparison of consecutive bus headways than the map alone. The reference line helps users interpret differences, while route colors and direction markers provide additional context. We would improve the visualization by refining the filtering controls and reducing visual clutter when many observations overlap. We would also combine it with the map-based visualization so that users can first identify geographic patterns and then use the scatterplot to investigate the magnitude and distribution of headway differences.
+        
+        It became clear that many aspects of this visualization worked quite well at conveying bus reliablility. As such, we decided to retain and refine the scatterplot because it provides a clearer quantitative comparison of consecutive bus headways than the map alone. The reference line helps users interpret differences, while route colors and direction markers provide additional context. We would improve the visualization by refining the filtering controls and reducing visual clutter when many observations overlap. We would also combine it with the map-based visualization so that users can first identify geographic patterns and then use the scatterplot to investigate the magnitude and distribution of headway differences.
 
 SECTION FIVE: INTERACTION AND MULTIPLE VIEWS
 
@@ -442,3 +451,5 @@ SECTION EIGHT: REFERENCES
         Ross, S. M. (2014). Introduction to Probability Models (11th ed.). Academic Press.
 
         Shneiderman, B. (1996). The eyes have it: A task by data type taxonomy for information visualizations. Proceedings of the IEEE Symposium on Visual Languages, 336–343.
+
+        Wapole, R. E., Myers, R. H., Myers, S. L., Ye, K (2017), Probability and Statistics for Engineers and Scientists, Ninth Edition: Pearson.
