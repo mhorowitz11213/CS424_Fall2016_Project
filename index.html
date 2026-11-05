@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Headway Visualization Evaluation</title>
+
+  <!-- Versions match the "$schema": ".../vega-lite/v6.json" used in both specs -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 35px auto;
+      padding: 0 20px;
+      color: #222;
+      line-height: 1.6;
+      background: #fafafa;
+    }
+
+    h1, h2, h3 { color: #26364a; }
+
+    .panel {
+      background: white;
+      padding: 25px;
+      margin: 20px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .hidden { display: none; }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+      font: inherit;
+    }
+
+    textarea { min-height: 75px; }
+
+    button {
+      background: #26364a;
+      color: white;
+      border: 0;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 20px;
+    }
+
+    button:hover { background: #405875; }
+
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    .chart {
+      width: 100%;
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+
+    .instruction {
+      background: #eef3f8;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+
+    .rating-options {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .rating-options label {
+      font-weight: normal;
+      margin: 0;
+    }
+
+    .rating-options input {
+      width: auto;
+      margin-right: 5px;
+    }
+
+    .progress {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .error {
+      color: #a22;
+      margin-top: 10px;
+    }
+
+    /* Dropdowns that Vega-Embed adds for the interactive chart */
+    .vega-bindings { margin: 8px 0; font-size: 14px; }
+    .vega-bind { display: inline-block; margin-right: 18px; }
+    .vega-bind select { width: auto; margin: 0 0 0 6px; padding: 4px 8px; }
+  </style>
+</head>
+
+<body>
+
+  <h1>Headway Visualization Evaluation</h1>
+
+  <section id="welcome" class="panel">
+    <h2>Welcome</h2>
+
+    <p>
+      Thank you for participating in this study. This evaluation examines
+      how people interpret public transportation headway data using
+      different visualization designs.
+    </p>
+
+    <p>
+      You will complete four analytical tasks using two visualization
+      conditions: a static visualization and an interactive visualization.
+      Please answer each question based on the information displayed.
+    </p>
+
+    <p>
+      There are no time limits. However, we will record the time taken
+      to complete each task. Please work independently and do not use
+      external tools or calculators.
+    </p>
+
+    <p>
+      Your responses are anonymous. The questionnaire does not collect
+      your name or email address. When you submit each answer, it is sent
+      to a Google Sheet maintained by the research team, together with your
+      anonymous participant ID, your answers, and the time taken.
+    </p>
+
+    <label for="participant">Anonymous Participant ID</label>
+    <input id="participant" placeholder="e.g. P001" required>
+
+    <label for="group">Assigned Experimental Group</label>
+    <select id="group">
+      <option value="">Select your assigned group</option>
+      <option value="1">Group 1</option>
+      <option value="2">Group 2</option>
+    </select>
+
+    <button onclick="startStudy()">Begin Evaluation</button>
+    <p id="welcomeError" class="error"></p>
+  </section>
+
+  <section id="taskSection" class="panel hidden">
+    <p class="progress" id="progress"></p>
+    <h2 id="conditionTitle"></h2>
+    <h3 id="taskTitle"></h3>
+
+    <div class="instruction" id="instructions"></div>
+
+    <div id="chart" class="chart"></div>
+
+    <form id="responseForm">
+      <div id="taskQuestions"></div>
+
+      <label for="explanation">
+        Briefly explain how you arrived at your answer.
+      </label>
+      <textarea id="explanation"
+        placeholder="Describe the visual evidence you used..."></textarea>
+
+      <label>How confident are you in your answer?</label>
+      <div class="rating-options">
+        <label><input type="radio" name="confidence" value="1" required>1</label>
+        <label><input type="radio" name="confidence" value="2">2</label>
+        <label><input type="radio" name="confidence" value="3">3</label>
+        <label><input type="radio" name="confidence" value="4">4</label>
+        <label><input type="radio" name="confidence" value="5">5</label>
+      </div>
+      <p class="progress">1 = Not confident; 5 = Very confident</p>
+
+      <label>How difficult was this task?</label>
+      <div class="rating-options">
+        <label><input type="radio" name="difficulty" value="1" required>1</label>
+        <label><input type="radio" name="difficulty" value="2">2</label>
+        <label><input type="radio" name="difficulty" value="3">3</label>
+        <label><input type="radio" name="difficulty" value="4">4</label>
+        <label><input type="radio" name="difficulty" value="5">5</label>
+      </div>
+      <p class="progress">1 = Very easy; 5 = Very difficult</p>
+
+      <button type="submit" id="submitButton">Submit Answer</button>
+    </form>
+  </section>
+
+  <section id="complete" class="panel hidden">
+    <h2>Evaluation Complete</h2>
+
+    <p>Thank you for completing the evaluation.</p>
+
+    <p id="sendStatus" class="progress"></p>
+
+    <button id="retryButton" class="hidden" onclick="retryUploads()">Retry Submitting Responses</button>
+    <button id="backupButton" class="hidden" onclick="downloadCSV()">Download Backup Copy (CSV)</button>
+  </section>
+
+<script>
+/* ------------------------------------------------------------------
+   DATA
+   One shared data set feeds both charts and the answer checking.
+   Route 96 is not included. Missing values (999 in the raw field data)
+   were replaced with the median of the observed values for the same
+   route + direction + stop, rounded down, column by column. One value
+   (Route 8, stop 14487, previous gap) had no observed values to take a
+   median from and is still 999; the charts filter it out.
+   ------------------------------------------------------------------ */
+const DATA = [
+  {"id":1,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":9,"actualNext":2,"comments":"3 mins early"},
+  {"id":2,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":2,"actualNext":13,"comments":"Bunched behind 13 minutes early"},
+  {"id":3,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":13,"actualNext":10,"comments":"Bus got added to Ventra App"},
+  {"id":4,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":10,"actualNext":8,"comments":"1 minute late"},
+  {"id":5,"route":"8","stop":"Halsted and Fulton","cta":"5792","direction":"S","previous":8,"actualNext":9,"comments":"Bus got added to Ventra App, 1 minute early once added to app"},
+  {"id":6,"route":"66","stop":"Grand and Kingsbury","cta":"771","direction":"W","previous":21,"actualNext":0,"comments":"Arrived on time. Previous bus for route arrived over 20 minutes prior"},
+  {"id":7,"route":"66","stop":"Grand and Kingsbury","cta":"771","direction":"W","previous":0,"actualNext":1,"comments":"Bus Bunched, three buses one after another"},
+  {"id":8,"route":"66","stop":"Grand and Kingsbury","cta":"771","direction":"W","previous":1,"actualNext":0,"comments":"Bus Bunched, three buses one after another"},
+  {"id":9,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":5,"actualNext":5,"comments":"Early"},
+  {"id":10,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":4,"actualNext":3,"comments":"On Time. 56 Bus is recorded as N S but travels on diagonal Milwaukee SE and NW"},
+  {"id":11,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":5,"actualNext":6,"comments":""},
+  {"id":12,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":2,"actualNext":6,"comments":""},
+  {"id":13,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":7,"actualNext":2,"comments":""},
+  {"id":14,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":1,"actualNext":1,"comments":"Bunched bus"},
+  {"id":15,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":1,"actualNext":6,"comments":"Bunched bus"},
+  {"id":16,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":16,"actualNext":7,"comments":""},
+  {"id":17,"route":"56","stop":"Clark and Washington","cta":"18122","direction":"E","previous":10,"actualNext":2,"comments":""},
+  {"id":18,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":7,"actualNext":0,"comments":"Arrived 7 mins late"},
+  {"id":19,"route":"20","stop":"Clark and Washington","cta":"18122","direction":"E","previous":0,"actualNext":6,"comments":"Bunched bus"},
+  {"id":20,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":7,"actualNext":7,"comments":""},
+  {"id":21,"route":"56","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":7,"actualNext":12,"comments":""},
+  {"id":22,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":4,"actualNext":8,"comments":"headway target met"},
+  {"id":23,"route":"56","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":13,"actualNext":23,"comments":"Exceeded CTA headway"},
+  {"id":24,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":9,"actualNext":7,"comments":""},
+  {"id":25,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":7,"actualNext":13,"comments":""},
+  {"id":26,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":13,"actualNext":3,"comments":""},
+  {"id":27,"route":"20","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":3,"actualNext":7,"comments":""},
+  {"id":28,"route":"56","stop":"La Salle and Madison","cta":"18123","direction":"W","previous":2,"actualNext":17,"comments":"Bus bunched"},
+  {"id":29,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":10,"actualNext":3,"comments":""},
+  {"id":30,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":3,"actualNext":11,"comments":"Exceeded CTA headway"},
+  {"id":31,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":11,"actualNext":9,"comments":""},
+  {"id":32,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":9,"actualNext":14,"comments":"Exceeded CTA headway"},
+  {"id":33,"route":"8","stop":"Lake and Halsted","cta":"15356","direction":"N","previous":14,"actualNext":10,"comments":"Exceeded CTA headway"},
+  {"id":1,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":11,"actualNext":11,"comments":"2 minutes early"},
+  {"id":2,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":14,"actualNext":9,"comments":"1 minute late"},
+  {"id":3,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":10,"actualNext":13,"comments":"1 minute late; normal spacing"},
+  {"id":4,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":13,"actualNext":8,"comments":"1 minute late"},
+  {"id":5,"route":"147","stop":"Sheridan and Granville","cta":"1033","direction":"S","previous":8,"actualNext":16,"comments":"On time; slightly longer following gap"},
+  {"id":6,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":9,"actualNext":7,"comments":"1 minute late"},
+  {"id":7,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":8,"actualNext":2,"comments":"Bus arrived 7 minutes earlier than expected; possible bunching"},
+  {"id":8,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":2,"actualNext":9,"comments":"Bus closely followed previous bus"},
+  {"id":9,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":11,"actualNext":12,"comments":"2 minutes late"},
+  {"id":10,"route":"22","stop":"Clark and Devon","cta":"1956","direction":"N","previous":12,"actualNext":14,"comments":"On time; longer-than-expected following gap"},
+  {"id":11,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":2,"actualNext":2,"comments":"1 minute early; bus arrived shortly after another bus"},
+  {"id":12,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":2,"actualNext":2,"comments":"1 minute early; bus closely followed previous bus; possible bunching"},
+  {"id":13,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":2,"actualNext":2,"comments":"1 minute early; three buses arrived within approximately 4 minutes"},
+  {"id":14,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":2,"actualNext":20,"comments":"1 minute early; large gap after previous group of buses; possible bunching followed by service gap"},
+  {"id":15,"route":"157","stop":"900 W Taylor","cta":"6700","direction":"E","previous":20,"actualNext":2,"comments":"On time; approximately 20-minute gap after three closely spaced buses"},
+  {"id":21,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":3,"actualNext":3,"comments":"On time; first bus in an evening bunching sequence"},
+  {"id":22,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":3,"actualNext":2,"comments":"Arrived earlier than predicted; closely followed previous bus"},
+  {"id":23,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":2,"actualNext":28,"comments":"Arrived shortly after previous bus; followed by a long service gap"},
+  {"id":24,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":28,"actualNext":3,"comments":"Approximately 28-minute service gap after bunching"},
+  {"id":25,"route":"147","stop":"Michigan and Randolph","cta":"1119","direction":"N","previous":3,"actualNext":3,"comments":"Arrived earlier than predicted; another closely spaced bus; end of observation window"},
+  {"id":26,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":13,"actualNext":1,"comments":"First observed bus; evening service"},
+  {"id":27,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":1,"actualNext":0,"comments":"Two buses recorded within the same minute; possible bunching"},
+  {"id":28,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":0,"actualNext":26,"comments":"Closely followed previous bus; approximately 26-minute gap afterward"},
+  {"id":29,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":26,"actualNext":26,"comments":"Approximately 26-minute service gap following bunching"},
+  {"id":30,"route":"22","stop":"Clark and Berwyn","cta":"1805","direction":"S","previous":26,"actualNext":13,"comments":"Approximately 26-minute gap since previous bus; arrived later than predicted"},
+  {"id":31,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":20,"actualNext":20,"comments":"On time; approximately 20-minute service spacing"},
+  {"id":32,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":20,"actualNext":20,"comments":"On time; approximately 20-minute spacing"},
+  {"id":33,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":20,"actualNext":10,"comments":"On time; next bus arrived sooner than the usual 20-minute interval"},
+  {"id":34,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":10,"actualNext":20,"comments":"Arrived earlier than predicted; approximately 10-minute gap since previous bus"},
+  {"id":35,"route":"157","stop":"Michigan and Hubbard (Wrigley Building)","cta":"1103","direction":"W","previous":20,"actualNext":20,"comments":"On time; service spacing returned to approximately 20 minutes"},
+  {"id":41,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":6,"actualNext":10,"comments":"1 minute late; first observed bus"},
+  {"id":42,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":10,"actualNext":9,"comments":"1 minute late; approximately 10-minute spacing"},
+  {"id":43,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":9,"actualNext":3,"comments":"On time; next bus arrived sooner than predicted"},
+  {"id":44,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":3,"actualNext":4,"comments":"Arrived earlier than predicted; possible bunching"},
+  {"id":45,"route":"36","stop":"Broadway and Wilson (Red/Purple Lines)","cta":"16194","direction":"N","previous":4,"actualNext":6,"comments":"Arrived shortly after previous bus; bunching observed"},
+  {"id":46,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":20,"actualNext":20,"comments":"1 minute late; first observed bus"},
+  {"id":47,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":20,"actualNext":20,"comments":"1 minute late; regular spacing"},
+  {"id":48,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":20,"actualNext":22,"comments":"1 minute late; slightly longer following interval"},
+  {"id":49,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":22,"actualNext":19,"comments":"3 minutes late; service remains relatively regular"},
+  {"id":50,"route":"146","stop":"Foster and Marine Drive","cta":"4847","direction":"N","previous":19,"actualNext":20,"comments":"2 minutes late; approximately 19-minute interval since previous bus"},
+  {"id":51,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":20,"actualNext":20,"comments":"1 minute late; first observed bus"},
+  {"id":52,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":20,"actualNext":19,"comments":"1 minute late; approximately regular spacing"},
+  {"id":53,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":19,"actualNext":21,"comments":"On time; regular spacing"},
+  {"id":54,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":21,"actualNext":20,"comments":"1 minute late; no substantial bunching observed"},
+  {"id":55,"route":"36","stop":"Broadway and Granville","cta":"14444","direction":"S","previous":20,"actualNext":20,"comments":"1 minute late; approximately 20-minute spacing"},
+  {"id":56,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":3,"actualNext":3,"comments":"1 minute late; first observed bus"},
+  {"id":57,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":3,"actualNext":2,"comments":"Arrived earlier than predicted; closely followed previous bus"},
+  {"id":58,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":2,"actualNext":27,"comments":"Bus bunching observed; followed by a long service gap"},
+  {"id":59,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":27,"actualNext":3,"comments":"Approximately 27-minute service gap; bus arrived later than predicted"},
+  {"id":60,"route":"146","stop":"Berwyn and Broadway (Red Line)","cta":"14668","direction":"S","previous":3,"actualNext":3,"comments":"Bus closely followed previous bus; another bunching episode"},
+  {"id":1,"route":"157","stop":"Taylor and Halsted","cta":"6701","direction":"E","previous":12,"actualNext":22,"comments":"On time"},
+  {"id":2,"route":"157","stop":"Taylor and Halsted","cta":"6701","direction":"E","previous":12,"actualNext":22,"comments":"Late by +1 min"},
+  {"id":3,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":10,"actualNext":11,"comments":"Late by +1 min"},
+  {"id":4,"route":"157","stop":"Taylor and Halsted","cta":"17277","direction":"W","previous":24,"actualNext":10,"comments":"On time"},
+  {"id":5,"route":"8","stop":"Halsted and Taylor","cta":"14487","direction":"N","previous":999,"actualNext":24,"comments":"Late by +2 min"},
+  {"id":6,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":10,"actualNext":11,"comments":"Late by +2 min"},
+  {"id":7,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":11,"actualNext":11,"comments":"On time"},
+  {"id":8,"route":"157","stop":"Taylor and Halsted","cta":"17277","direction":"W","previous":24,"actualNext":10,"comments":"Late by +4 min"},
+  {"id":9,"route":"8","stop":"Halsted and Taylor","cta":"4640","direction":"S","previous":8,"actualNext":11,"comments":"Late by +3 min"}
+];
+
+const ROUTE_COLORS = {
+  "8": "#1f77b4", "20": "#ff7f0e", "22": "#2ca02c", "36": "#d62728",
+  "56": "#9467bd", "66": "#17becf", "146": "#e377c2", "147": "#7f7f7f",
+  "157": "#bcbd22"
+};
+const ROUTES = Object.keys(ROUTE_COLORS);
+const FILLED = d => d === "N" || d === "W";     // filled = N/W, hollow = S/E
+const legendKeyOf = r => "Route " + r.route + " · " + r.stop + " (" + r.direction + ")";
+DATA.forEach(r => { r.legendKey = legendKeyOf(r); });
+
+/* One legend entry per route + stop + direction, ordered by route. */
+const KEYS = [...new Set(DATA.slice()
+  .sort((a, b) => ROUTES.indexOf(a.route) - ROUTES.indexOf(b.route))
+  .map(r => r.legendKey))];
+const KEY_ROW = Object.fromEntries(DATA.map(r => [r.legendKey, r]));
+const KEY_STROKE = KEYS.map(k => ROUTE_COLORS[KEY_ROW[k].route]);
+const KEY_FILL = KEYS.map(k => FILLED(KEY_ROW[k].direction) ? ROUTE_COLORS[KEY_ROW[k].route] : "white");
+
+/* ------------------------------------------------------------------
+   Vega-Lite specifications
+   ------------------------------------------------------------------ */
+const TICKS = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
+const X_TITLE = "Observation Previous (minutes)";
+const Y_TITLE = "Actual Next (minutes)";
+const axisEnc = (field, title) => ({
+  field: field,
+  type: "quantitative",
+  scale: { domain: [0, 60], nice: false },
+  axis: { title: title, values: TICKS, grid: true }
+});
+const DIAGONAL_LAYER = {
+  data: { values: [{ x: 0, y: 0 }, { x: 60, y: 60 }] },
+  mark: { type: "line", color: "#555555", strokeDash: [5, 5], strokeWidth: 2, clip: true },
+  encoding: { x: axisEnc("x", X_TITLE), y: axisEnc("y", Y_TITLE) }
+};
+const VALID_ONLY = "datum.previous != 999 && datum.actualNext != 999";
+const CONFIG = {
+  view: { stroke: "#cccccc" },
+  axis: { labelFontSize: 11, titleFontSize: 13, titleFontWeight: "normal" },
+  legend: { labelFontSize: 11, titleFontSize: 12 }
+};
+
+const STATIC_SPEC = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  description: "Bus headway balance using actual following-bus gaps.",
+  title: {
+    text: "Headway Imbalance and Bunching Diagnostic",
+    subtitle: "Filled circles = N/W; hollow circles = S/E; dashed line = equal headways."
+  },
+  width: 650,
+  height: 560,
+  layer: [
+    DIAGONAL_LAYER,
+    {
+      data: { values: DATA },
+      transform: [{ filter: VALID_ONLY }],
+      mark: { type: "point", size: 130, strokeWidth: 2, opacity: 0.9 },
+      encoding: {
+        x: axisEnc("previous", X_TITLE),
+        y: axisEnc("actualNext", Y_TITLE),
+        stroke: {
+          field: "legendKey",
+          type: "nominal",
+          scale: { domain: KEYS, range: KEY_STROKE },
+          legend: null
+        },
+        fill: {
+          field: "legendKey",
+          type: "nominal",
+          scale: { domain: KEYS, range: KEY_FILL },
+          legend: {
+            title: "Route · Stop (direction)",
+            orient: "right",
+            columns: 1,
+            symbolType: "circle",
+            symbolSize: 110,
+            symbolStrokeWidth: 2,
+            labelLimit: 340,
+            rowPadding: 2,
+            encode: { symbols: { update: { stroke: { scale: "stroke", field: "value" } } } }
+          }
+        }
+      }
+    }
+  ],
+  config: CONFIG
+};
+
+const ROUTE_COLOR_RANGE = ROUTES.map(r => ROUTE_COLORS[r]);
+const INTERACTIVE_SPEC = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  description: "Interactive CTA bus headway diagnostic. Route and Direction dropdowns filter observations; hover for details; drag to pan, scroll to zoom, double-click to reset.",
+  title: {
+    text: "Headway Imbalance and Bunching Diagnostic",
+    subtitle: "Select a route or direction; hover over points for details. Solid = N/W, hollow = S/E; dashed line = equal headways. Drag to pan, scroll to zoom, double-click to reset."
+  },
+  width: 650,
+  height: 560,
+  params: [
+    {
+      name: "routeFilter",
+      value: "All",
+      bind: {
+        input: "select",
+        name: "Route: ",
+        options: ["All"].concat(ROUTES),
+        labels: ["All routes"].concat(ROUTES.map(r => "Route " + r))
+      }
+    },
+    {
+      name: "directionFilter",
+      value: "All",
+      bind: {
+        input: "select",
+        name: "Direction: ",
+        options: ["All", "N", "S", "E", "W"],
+        labels: ["All directions", "North (N)", "South (S)", "East (E)", "West (W)"]
+      }
+    }
+  ],
+  layer: [
+    DIAGONAL_LAYER,
+    {
+      params: [{ name: "zoomPan", select: "interval", bind: "scales" }],
+      data: { values: DATA },
+      transform: [
+        { filter: VALID_ONLY },
+        { filter: "routeFilter === 'All' || datum.route === routeFilter" },
+        { filter: "directionFilter === 'All' || datum.direction === directionFilter" }
+      ],
+      mark: { type: "point", size: 130, strokeWidth: 2, opacity: 0.9, clip: true },
+      encoding: {
+        x: axisEnc("previous", X_TITLE),
+        y: axisEnc("actualNext", Y_TITLE),
+        stroke: {
+          field: "route",
+          type: "nominal",
+          scale: { domain: ROUTES, range: ROUTE_COLOR_RANGE },
+          legend: { title: "Route colors", orient: "right", symbolType: "circle" }
+        },
+        fill: {
+          condition: {
+            test: "datum.direction === 'N' || datum.direction === 'W'",
+            field: "route",
+            type: "nominal",
+            scale: { domain: ROUTES, range: ROUTE_COLOR_RANGE }
+          },
+          value: "white"
+        },
+        tooltip: [
+          { field: "id", type: "ordinal", title: "Observation ID" },
+          { field: "route", type: "nominal", title: "Route" },
+          { field: "direction", type: "nominal", title: "Direction" },
+          { field: "stop", type: "nominal", title: "Stop" },
+          { field: "cta", type: "nominal", title: "CTA Stop ID" },
+          { field: "previous", type: "quantitative", title: "Previous gap (min)" },
+          { field: "actualNext", type: "quantitative", title: "Actual next gap (min)" },
+          { field: "comments", type: "nominal", title: "Comments" }
+        ]
+      }
+    }
+  ],
+  config: Object.assign({}, CONFIG, { legend: { labelFontSize: 12, titleFontSize: 12 } })
+};
+
+/* ==================================================================
+   CONFIGURATION
+   ================================================================== */
+
+/* Paste the Web App URL from Google Apps Script here (ends in /exec).
+   Leave as-is to test locally: answers are then kept in this browser and
+   can be downloaded as a CSV backup. */
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbzb8D3LqaHvQe5pna194wbQL3U-8kcMiO8SRdWRoMAdwDe4_579qjSgTigXrL1A5oWf5A/exec";
+
+/* Accuracy tolerance.
+   An answer is scored correct when
+       |answer - truth| <= max(floorMin, pct * |truth|)
+   - pct      : relative error allowed (perceptual error grows with magnitude).
+   - floorMin : minimum allowance in minutes, because a percentage of a very
+                small value is below what anyone can read off a chart.
+   The static chart has to be read by eye (about 9 px per minute with grid
+   lines every 5 minutes), so it gets the looser tolerance. The interactive
+   chart shows exact values in tooltips, so it gets the tighter one.
+   These are design choices, not published standards; raw errors are saved
+   to the sheet so every answer can be re-scored with other thresholds. */
+const TOLERANCE = {
+  Static:      { pct: 0.05, floorMin: 1.0 },
+  Interactive: { pct: 0.02, floorMin: 0.5 }
+};
+
+/* "About the same" is the correct direction answer when the two true
+   averages differ by no more than this many minutes. */
+const SAME_THRESHOLD_MIN = 1.0;
+
+/* Column order of the Google Sheet (must match the Apps Script). */
+const COLUMNS = [
+  "submitted_at", "participant_id", "group", "condition", "task", "route",
+  "answer_stop", "previous_headway", "actual_next_headway",
+  "answer_direction", "mean_direction_1", "mean_direction_2",
+  "true_stop", "true_previous_headway", "true_actual_next_headway",
+  "true_direction", "true_mean_direction_1", "true_mean_direction_2",
+  "stop_correct", "previous_correct", "actual_correct",
+  "direction_correct", "mean1_correct", "mean2_correct", "task_correct",
+  "previous_abs_error", "actual_abs_error", "mean1_abs_error", "mean2_abs_error",
+  "tolerance_pct", "tolerance_floor_min",
+  "explanation", "confidence", "difficulty", "elapsed_seconds"
+];
+
+/* ==================================================================
+   SELECTED ROUTES AND CORRECT ANSWERS
+
+   Task 1 routes (22, 147): each has one clear outlier (a bunched pair of
+   buses followed by a 26-28 minute gap), the runner-up is 7-8 minutes
+   away, and both have 2 stops and 10 points.
+   Task 2 routes (36, 146): each has 5 points per direction and a
+   directional gap of about 13 minutes, in opposite directions.
+
+   Direction 1 = northbound or eastbound; Direction 2 = southbound or
+   westbound. The key below is checked against DATA when the page loads
+   (see verifyAnswerKey); a warning appears in the console if they differ.
+   ================================================================== */
+const ANSWER_KEY = {
+  1: {
+    "22":  { stop: "Clark and Berwyn",      previous: 0, actual: 26 },
+    "147": { stop: "Michigan and Randolph", previous: 2, actual: 28 }
+  },
+  2: {
+    "36":  { mean1: 6.4,  mean2: 20,  larger: "Direction 2" },
+    "146": { mean1: 20.2, mean2: 7.6, larger: "Direction 1" }
+  }
+};
+
+function validRows(route) {
+  return DATA.filter(r =>
+    r.route === route && r.previous !== 999 && r.actualNext !== 999);
+}
+
+/* Task 1: observation(s) farthest above the y = x line. */
+function truthTask1(route) {
+  const rows = validRows(route);
+  const diffs = rows.map(r => r.actualNext - r.previous);
+  const max = Math.max(...diffs);
+  return rows.filter((r, i) => diffs[i] === max);
+}
+
+/* Task 2: mean actual next headway per direction. */
+function truthTask2(route) {
+  const rows = validRows(route);
+  const mean = dirs => {
+    const s = rows.filter(r => dirs.includes(r.direction));
+    return s.length ? s.reduce((a, r) => a + r.actualNext, 0) / s.length : null;
+  };
+  return { m1: mean(["N", "E"]), m2: mean(["S", "W"]) };
+}
+
+function verifyAnswerKey() {
+  const problems = [];
+  Object.keys(ANSWER_KEY[1]).forEach(rt => {
+    const c = truthTask1(rt), k = ANSWER_KEY[1][rt];
+    if (c.length !== 1 || c[0].stop !== k.stop ||
+        c[0].previous !== k.previous || c[0].actualNext !== k.actual) {
+      problems.push("Task 1, route " + rt);
+    }
+  });
+  Object.keys(ANSWER_KEY[2]).forEach(rt => {
+    const t = truthTask2(rt), k = ANSWER_KEY[2][rt];
+    const dir = Math.abs(t.m1 - t.m2) <= SAME_THRESHOLD_MIN
+      ? "About the same" : (t.m1 > t.m2 ? "Direction 1" : "Direction 2");
+    if (Math.abs(t.m1 - k.mean1) > 0.01 || Math.abs(t.m2 - k.mean2) > 0.01 ||
+        dir !== k.larger) {
+      problems.push("Task 2, route " + rt);
+    }
+  });
+  if (problems.length) console.warn("ANSWER_KEY does not match DATA:", problems);
+}
+verifyAnswerKey();
+
+function allowedError(condition, truth) {
+  const t = TOLERANCE[condition];
+  return Math.max(t.floorMin, t.pct * Math.abs(truth));
+}
+
+function absError(answer, truth) {
+  const a = parseFloat(answer);
+  if (!isFinite(a) || truth === null) return "";
+  return Math.round(Math.abs(a - truth) * 100) / 100;
+}
+
+function isWithin(answer, truth, condition) {
+  const e = absError(answer, truth);
+  if (e === "") return "";
+  return e <= allowedError(condition, truth) + 1e-9 ? 1 : 0;
+}
+
+function scoreResponse(item, form) {
+  const out = {};
+  const tol = TOLERANCE[item.condition];
+  out.tolerance_pct = tol.pct;
+  out.tolerance_floor_min = tol.floorMin;
+  const key = ANSWER_KEY[item.task][item.route];
+
+  if (item.task === 1) {
+    const pv = form.get("previous");
+    const ac = form.get("actual");
+
+    out.true_stop = key.stop;
+    out.true_previous_headway = key.previous;
+    out.true_actual_next_headway = key.actual;
+    out.stop_correct = (form.get("stop") || "") === key.stop ? 1 : 0;
+    out.previous_correct = isWithin(pv, key.previous, item.condition);
+    out.actual_correct = isWithin(ac, key.actual, item.condition);
+    out.previous_abs_error = absError(pv, key.previous);
+    out.actual_abs_error = absError(ac, key.actual);
+    out.task_correct =
+      (out.stop_correct && out.previous_correct === 1 && out.actual_correct === 1) ? 1 : 0;
+  } else {
+    out.true_direction = key.larger;
+    out.true_mean_direction_1 = key.mean1;
+    out.true_mean_direction_2 = key.mean2;
+    out.direction_correct = (form.get("direction") || "") === key.larger ? 1 : 0;
+    out.mean1_correct = isWithin(form.get("mean1"), key.mean1, item.condition);
+    out.mean2_correct = isWithin(form.get("mean2"), key.mean2, item.condition);
+    out.mean1_abs_error = absError(form.get("mean1"), key.mean1);
+    out.mean2_abs_error = absError(form.get("mean2"), key.mean2);
+    out.task_correct =
+      (out.direction_correct && out.mean1_correct === 1 && out.mean2_correct === 1) ? 1 : 0;
+  }
+  return out;
+}
+
+/* ==================================================================
+   TASK WORDING AND ANSWER FIELDS
+   (field names match the sheet columns above; edit the wording freely)
+   ================================================================== */
+function stopOptions(route) {
+  const seen = new Map();
+  validRows(route).forEach(r => { if (!seen.has(r.stop)) seen.set(r.stop, r.direction); });
+  return [...seen.entries()]
+    .map(([stop, dir]) => `<option value="${stop}">${stop} (${dir})</option>`)
+    .join("");
+}
+
+/* Stop names for Direction 1 (N/E) and Direction 2 (S/W) of a route. */
+function directionStops(route) {
+  const names = dirs => [...new Set(
+    validRows(route).filter(r => dirs.includes(r.direction)).map(r => r.stop))].join(" and ");
+  return { d1: names(["N", "E"]), d2: names(["S", "W"]) };
+}
+
+function findRouteHint(item) {
+  return item.condition === "Static"
+    ? "Use the legend to find the points for this route (each color is one route; filled circles are N/W and hollow circles are S/E)."
+    : "Use the Route dropdown above the chart to show only this route, and hover over a point to see its values.";
+}
+
+const tasks = {
+  1: {
+    title: "Task 1: Identify the most uneven spacing",
+    instruction: item =>
+      "Find the single observation on Route " + item.route + " that lies farthest " +
+      "above the dashed y = x line, meaning a short gap before the bus " +
+      "was followed by a long gap after it. " + findRouteHint(item),
+    questions: item => `
+      <label for="stop">Which stop is this observation from?</label>
+      <select id="stop" name="stop" required>
+        <option value="">Select a stop</option>
+        ${stopOptions(item.route)}
+      </select>
+
+      <label for="previous">Previous headway (minutes)</label>
+      <input id="previous" name="previous" type="number" min="0" step="1" required>
+
+      <label for="actual">Actual next headway (minutes)</label>
+      <input id="actual" name="actual" type="number" min="0" step="1" required>
+    `
+  },
+  2: {
+    title: "Task 2: Compare the two directions",
+    instruction: item => {
+      const s = directionStops(item.route);
+      return "Compare the two directions of travel on Route " + item.route + ". " +
+        "Direction 1 is the northbound or eastbound direction (" + s.d1 + "); " +
+        "Direction 2 is the southbound or westbound direction (" + s.d2 + "). " +
+        "Estimate the average actual next headway for each. " + findRouteHint(item);
+    },
+    questions: () => `
+      <label for="direction">Which direction has the larger average actual next headway?</label>
+      <select id="direction" name="direction" required>
+        <option value="">Select one</option>
+        <option value="Direction 1">Direction 1 (northbound / eastbound)</option>
+        <option value="Direction 2">Direction 2 (southbound / westbound)</option>
+        <option value="About the same">About the same</option>
+      </select>
+
+      <label for="mean1">Estimated average for Direction 1 (minutes)</label>
+      <input id="mean1" name="mean1" type="number" min="0" step="0.1" required>
+
+      <label for="mean2">Estimated average for Direction 2 (minutes)</label>
+      <input id="mean2" name="mean2" type="number" min="0" step="0.1" required>
+    `
+  }
+};
+
+/* Each route is seen once in each condition across the two groups. */
+const groupSequences = {
+  1: [
+    { condition: "Static", task: 1, route: "22" },
+    { condition: "Static", task: 2, route: "36" },
+    { condition: "Interactive", task: 1, route: "147" },
+    { condition: "Interactive", task: 2, route: "146" }
+  ],
+  2: [
+    { condition: "Interactive", task: 1, route: "22" },
+    { condition: "Interactive", task: 2, route: "36" },
+    { condition: "Static", task: 1, route: "147" },
+    { condition: "Static", task: 2, route: "146" }
+  ]
+};
+
+/* ==================================================================
+   STUDY FLOW
+   ================================================================== */
+let participantId = "";
+let sequence = [];
+let currentTask = 0;
+let taskStartTime = null;
+let responses = [];
+let sentFlags = [];
+
+function startStudy() {
+  participantId = document.getElementById("participant").value.trim();
+  const group = document.getElementById("group").value;
+
+  if (!participantId || !group) {
+    document.getElementById("welcomeError").textContent =
+      "Please enter a participant ID and select your assigned group.";
+    return;
+  }
+
+  sequence = groupSequences[group];
+
+  document.getElementById("welcome").classList.add("hidden");
+  document.getElementById("taskSection").classList.remove("hidden");
+
+  renderTask();
+}
+
+async function renderTask() {
+  if (currentTask >= sequence.length) {
+    document.getElementById("taskSection").classList.add("hidden");
+    document.getElementById("complete").classList.remove("hidden");
+    await retryUploads();
+    return;
+  }
+
+  const item = sequence[currentTask];
+  const chartDiv = document.getElementById("chart");
+
+  try {
+    const task = tasks[item.task];
+    if (!task) throw new Error("No task definition for task " + item.task);
+
+    document.getElementById("progress").textContent =
+      `Task ${currentTask + 1} of ${sequence.length}`;
+
+    document.getElementById("conditionTitle").textContent =
+      `${item.condition} Visualization`;
+
+    document.getElementById("taskTitle").textContent = task.title;
+
+    document.getElementById("instructions").textContent =
+      typeof task.instruction === "function" ? task.instruction(item) : task.instruction;
+
+    document.getElementById("taskQuestions").innerHTML =
+      typeof task.questions === "function" ? task.questions(item) : task.questions;
+
+    document.getElementById("responseForm").reset();
+
+    const spec = item.condition === "Static"
+      ? STATIC_SPEC
+      : INTERACTIVE_SPEC;
+
+    chartDiv.innerHTML = "";
+
+    await vegaEmbed("#chart", spec, {
+      actions: false,
+      renderer: "canvas"
+    });
+  } catch (error) {
+    console.error("Task rendering error:", error);
+    chartDiv.innerHTML =
+      `<p class="error">Chart could not be rendered: ${error.message}</p>`;
+  }
+
+  taskStartTime = Date.now();
+}
+
+document.getElementById("responseForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const item = sequence[currentTask];
+  const elapsed = ((Date.now() - taskStartTime) / 1000).toFixed(2);
+  const form = new FormData(e.target);
+
+  const response = {
+    submitted_at: new Date().toISOString(),
+    participant_id: participantId,
+    group: document.getElementById("group").value,
+    condition: item.condition,
+    task: item.task,
+    route: item.route,
+    answer_stop: form.get("stop") || "",
+    previous_headway: form.get("previous") || "",
+    actual_next_headway: form.get("actual") || "",
+    answer_direction: form.get("direction") || "",
+    mean_direction_1: form.get("mean1") || "",
+    mean_direction_2: form.get("mean2") || "",
+    ...scoreResponse(item, form),
+    explanation: document.getElementById("explanation").value,
+    confidence: form.get("confidence"),
+    difficulty: form.get("difficulty"),
+    elapsed_seconds: elapsed
+  };
+
+  // Fixed column order, blanks for fields that do not apply to this task
+  const row = {};
+  COLUMNS.forEach(c => { row[c] = response[c] === undefined ? "" : response[c]; });
+
+  responses.push(row);
+  sentFlags.push(false);
+  backupLocally();
+
+  currentTask++;
+  renderTask();
+});
+
+/* ==================================================================
+   SAVING: Google Sheet (via Apps Script) + local backup
+   ================================================================== */
+function endpointConfigured() {
+  return SHEET_ENDPOINT && !SHEET_ENDPOINT.startsWith("PASTE_");
+}
+
+function backupLocally() {
+  try {
+    localStorage.setItem("headway_responses_" + participantId,
+      JSON.stringify(responses));
+  } catch (err) { /* storage unavailable; ignore */ }
+}
+
+async function sendToSheet(row) {
+  if (!endpointConfigured()) return false;
+  try {
+    // text/plain avoids a CORS preflight; no-cors means the reply is opaque,
+    // so a "true" here means the request was sent, not that it was verified.
+    await fetch(SHEET_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(row)
+    });
+    return true;
+  } catch (err) {
+    console.error("Upload error:", err);
+    return false;
+  }
+}
+
+async function retryUploads() {
+  const status = document.getElementById("sendStatus");
+  status.textContent = "Submitting your responses...";
+
+  for (let i = 0; i < responses.length; i++) {
+    if (!sentFlags[i]) sentFlags[i] = await sendToSheet(responses[i]);
+  }
+
+  const sent = sentFlags.filter(Boolean).length;
+  const total = responses.length;
+
+  if (!endpointConfigured()) {
+    status.textContent =
+      "Test mode: no Google Sheet is connected, so nothing was uploaded. " +
+      "Download the backup copy below.";
+  } else if (sent === total) {
+    status.textContent = "All " + total + " responses were submitted. Thank you!";
+  } else {
+    status.textContent =
+      sent + " of " + total + " responses were submitted. " +
+      "Please check your connection and click Retry.";
+  }
+
+  document.getElementById("retryButton")
+    .classList.toggle("hidden", !endpointConfigured() || sent === total);
+  document.getElementById("backupButton")
+    .classList.toggle("hidden", endpointConfigured() && sent === total);
+}
+
+function downloadCSV() {
+  if (!responses.length) return;
+
+  const escapeCSV = value =>
+    `"${String(value ?? "").replace(/"/g, '""')}"`;
+
+  const csv = [
+    COLUMNS.map(escapeCSV).join(","),
+    ...responses.map(row =>
+      COLUMNS.map(header => escapeCSV(row[header])).join(",")
+    )
+  ].join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = `headway_evaluation_${participantId}.csv`;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+</script>
+
+</body>
+</html>

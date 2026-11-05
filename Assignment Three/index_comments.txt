@@ -1,0 +1,516 @@
+HEADWAY VISUALIZATION EVALUATION: DESIGN RATIONALE FOR THE HTML CODE
+=====================================================================
+Companion commentary for the file "Headway Visualization Evaluation" (single-page HTML,
+Vega-Lite 6 / Vega-Embed 7, Google Apps Script back end).
+
+How to read this file
+- Each block names a component of the code, then explains WHAT it does and WHY it was designed
+  that way, with in-text citations in (Author, Year) form. Full references are at the end.
+- Items marked [CHECK IN PILOT] are places where I noticed a possible validity or usability
+  issue while reading the code. They are not errors in the syntax; they are design risks the
+  assignment explicitly asks you to look for during the pilot study.
+- Reference details (volume/pages) are given from memory of standard citations. Please verify
+  each against your library database or Google Scholar before submitting.
+
+
+---------------------------------------------------------------------
+0. OVERALL ARCHITECTURE
+---------------------------------------------------------------------
+The page is a self-contained study instrument: a welcome/consent screen, a task screen that is
+re-rendered four times, and a completion screen. One data set (DATA) feeds BOTH chart
+conditions and the automatic answer checking.
+
+WHY a single data source: a fair static-vs-interactive comparison requires that the two
+conditions differ only in interaction, not in the underlying data or encodings (Lam et al.,
+2012; Munzner, 2014, ch. 4). Using one DATA array and one DIAGONAL_LAYER guarantees that
+visual encodings (position, color, fill, axes, domain 0-60) are identical across conditions.
+
+WHY a browser-based, self-administered instrument: it allows exact timing, automatic scoring
+and remote participation, and it is the common practice for graphical-perception experiments
+(Heer & Bostock, 2010). The cost is less control over the environment (screen size, distraction),
+which is why the welcome text asks participants to work independently without calculators.
+
+WHY a within-subject design with two groups: the assignment requires that each participant
+use both conditions. Within-subject designs remove between-person variability (reading skill,
+visualization literacy) from the comparison and need fewer participants for the same power
+(Charness, Gneezy & Kuhn, 2012; Lazar, Feng & Hochheiser, 2017), but they risk learning and
+carry-over effects (Greenwald, 1976; Poulton, 1982). The two-group sequence table
+(groupSequences) is the control for those risks (see section 9).
+
+
+---------------------------------------------------------------------
+1. <head>: LIBRARIES (vega@6, vega-lite@6, vega-embed@7)
+---------------------------------------------------------------------
+WHAT: Loads Vega (runtime), Vega-Lite (high-level grammar) and Vega-Embed (renders a spec into
+a div and builds bindings such as dropdowns).
+
+WHY Vega-Lite: it is a declarative grammar of graphics in which both the static chart and the
+interaction (parameters, selections, filters) are expressed in one JSON spec (Satyanarayan,
+Moritz, Wongsuphasawat & Heer, 2017). Because the interactive spec is a superset of the static
+spec, the two conditions are guaranteed to be "the same visualization with and without
+interaction", which is exactly what the assignment requires. Vega-Lite compiles to Vega's
+reactive dataflow (Satyanarayan, Russell, Hoffswell & Heer, 2016), which is what makes dropdown
+filtering and zooming update instantly.
+
+WHY versions are pinned to the "$schema" version (v6): a spec written for one major version can
+silently change behavior in another, which would break reproducibility of the experiment
+(a stated goal of the assignment: "detailed enough for someone else to reproduce").
+[CHECK IN PILOT] The script URLs use major-version tags (vega@6) rather than exact pinned
+versions (e.g., vega@6.x.y). For a reproducible study, pin the exact versions you tested with.
+
+
+---------------------------------------------------------------------
+2. <style>: LAYOUT AND FORM STYLING
+---------------------------------------------------------------------
+- max-width 1000px, centered, line-height 1.6, Arial: a narrow single column with generous
+  line spacing keeps instructions readable and keeps the chart and the answer form on one
+  screen flow, so participants do not hunt for the answer fields (Nielsen, 1993, on minimizing
+  unnecessary effort in the instrument itself, so measured time reflects the task rather than
+  the interface of the questionnaire).
+- .panel / .hidden: only one panel is visible at a time (welcome, task, complete). This prevents
+  participants from skipping ahead or seeing later tasks and routes.
+- .instruction (light blue box): the task wording is visually separated from the chart so it is
+  not mistaken for chart content.
+- .chart {overflow-x: auto}: the chart is 650 px wide plus a legend; on narrow screens it
+  scrolls instead of being clipped or rescaled (rescaling would change the physical size of
+  marks and therefore perceptual accuracy; see Cleveland & McGill, 1984).
+- Large radio buttons, labeled 1-5 with anchors written beneath: Likert-type items need
+  clearly anchored endpoints to be interpreted consistently (Likert, 1932).
+- button:disabled style: used so the final submission cannot be double-clicked into duplicate rows
+  [CHECK IN PILOT: the code defines the style but submit does not currently disable the button].
+- .vega-bindings / .vega-bind CSS: restyles the dropdowns that Vega-Embed injects for the
+  Route and Direction parameters so they appear compact above the chart and do not inherit the
+  full-width form-input style, which would look like part of the answer form.
+
+
+---------------------------------------------------------------------
+3. WELCOME SCREEN (participant ID, group, wording)
+---------------------------------------------------------------------
+- Anonymous Participant ID (e.g., P001): no name or email is collected. Anonymity lowers risk
+  to participants and is the simplest route to ethical approval for minimal-risk studies
+  (National Commission, 1979, on respect for persons and beneficence). The text also states
+  exactly what is sent (ID, answers, time) to the Google Sheet, which is informed-consent
+  practice: tell people what data leave their device.
+- "Assigned Experimental Group" dropdown (Group 1 / Group 2): the group is assigned by the
+  researcher in advance (e.g., alternate P001 -> Group 1, P002 -> Group 2). Manual assignment
+  keeps the two groups balanced in size, which a random choice made by each participant could
+  not guarantee (Lazar et al., 2017).
+  [CHECK IN PILOT] Participants could select the wrong group by mistake; consider deriving the
+  group from the ID (odd/even) or issuing a link per group.
+- "No time limits, but we will record time": telling people timing is recorded can raise a
+  speed-accuracy trade-off; stating "no time limits" and "work independently" is a standard way
+  to encourage normal behavior while still collecting time (Wickelgren, 1977). Because accuracy
+  and time are analyzed together, a participant who rushes shows up as fast-but-wrong.
+- "Do not use external tools or calculators": the means in Task 2 could be computed exactly with
+  a calculator from tooltip values, which would turn an estimation task into an arithmetic task.
+  The instruction protects the construct being measured (graphical estimation).
+
+
+---------------------------------------------------------------------
+4. TASK SCREEN (progress, titles, instructions, chart, form)
+---------------------------------------------------------------------
+- "Task k of 4" progress line: reduces uncertainty and dropout in a multi-trial session.
+- Condition title ("Static Visualization" / "Interactive Visualization"): participants are told
+  which condition they are in. It is not possible to blind participants to a visible interaction
+  difference, so the label is simply honest and avoids confusion about whether dropdowns exist.
+- Instruction text is generated by function (tasks[n].instruction(item)) so that route names,
+  stop names and the condition-specific hint (findRouteHint) are filled in programmatically.
+  This removes copy/paste wording errors between variants and keeps variants structurally
+  identical, which supports "comparable, but not identical" tasks.
+- findRouteHint: gives each condition the route-finding strategy that its interface supports
+  (legend lookup vs Route dropdown plus hover). Explaining the available affordance is
+  important: an interaction that participants do not know about cannot help them, and the
+  study would then measure discoverability rather than usefulness of the interaction
+  (Heer & Shneiderman, 2012).
+- Form fields use native HTML controls with "required": prevents partially completed rows,
+  which would otherwise contaminate accuracy and time analyses with missing values.
+- "Briefly explain how you arrived at your answer" (free text): a qualitative strategy probe.
+  It helps explain surprising quantitative results (e.g., a participant who used the legend
+  versus one who guessed) and corresponds to the "may include additional measurements" clause of
+  the assignment (Lam et al., 2012, on combining performance data with observation of process).
+- Confidence (1-5) and difficulty (1-5): subjective measures that complement accuracy and time.
+  Confidence checks for over/under-confidence relative to accuracy; difficulty acts as a
+  lightweight workload proxy. For a fuller measure, NASA-TLX (Hart & Staveland, 1988) could
+  be used, but a single 1-5 item keeps the session short (see single-item discussion in
+  Lazar et al., 2017).
+  [CHECK IN PILOT] Timer scope: taskStartTime is set after the chart renders and the elapsed
+  time is computed at submit, so "elapsed_seconds" includes typing the explanation and
+  clicking the confidence/difficulty ratings. That adds noise unrelated to the condition. Options:
+  (a) also log the time at which the first answer field is touched, (b) move the explanation
+  and ratings to a second screen after the timed answer, or (c) log a separate timestamp when
+  the answer fields are complete. Option (b) is the cleanest.
+
+
+---------------------------------------------------------------------
+5. DATA BLOCK (DATA array)
+---------------------------------------------------------------------
+Domain: Chicago Transit Authority (CTA) bus headways, observed at stops. "previous" is the gap
+(minutes) between the bus and the one before it; "actualNext" is the gap to the following bus.
+Plotting previous (x) against actualNext (y) with a y = x reference line is a diagnostic for
+bunching and headway irregularity: points on the line show even spacing, points far above it
+mean a short gap behind and a long gap ahead, the signature of bus bunching (Newell & Potts,
+1964; Pangilinan, Wilson & Moore, 2008). This ties the study tasks to the domain question
+developed in Assignment 2 (replace/adjust if your Assignment 2 domain question was worded
+differently).
+
+Missing values (999) and imputation:
+- The header comment documents that 999 was a missing-value code and was replaced by the column-
+  wise median of observed values for the same route + direction + stop, rounded down.
+  Median imputation is a simple, transparent, outlier-robust method, acceptable when missingness
+  is small and the goal is a usable chart rather than inference (Little & Rubin, 2019).
+  The one value that could not be imputed (Route 8, stop 14487, previous = 999) is filtered
+  out by VALID_ONLY. Keeping the sentinel visible in DATA, and filtering explicitly, prevents
+  a 999-minute point from silently stretching the axes.
+- Route 96 was removed and the axes fixed to 0-60: a fixed, shared domain means participants
+  read absolute values the same way in both conditions and one extreme point cannot rescale
+  the chart (Cleveland & McGill, 1984, on common scales).
+- Routes 8, 20, 56, 66, 157 are not used in tasks but remain in the chart. They are deliberate
+  distractors: the tasks should "require more than identifying an obvious value" and need
+  participants to isolate one route from several, which is what makes Route filtering
+  (the interaction) worth testing.
+  [CHECK IN PILOT] "id" values repeat across blocks (1-5, 6-10, etc.), so the tooltip's
+  "Observation ID" is not unique. It is harmless for scoring (the key uses route + stop) but
+  could confuse a participant; consider a unique id.
+  [CHECK IN PILOT] Many comment strings in the tooltip state facts that answer the task
+  ("approximately 26-minute gap afterward", "approximately 28-minute service gap"). In the
+  interactive condition a participant can read the answer from the comment instead of the
+  encoding. That favors the interactive condition for reasons other than the filtering you
+  want to test. Either hide the comments field from the tooltip in the study version or
+  scrub numeric statements from comments.
+
+
+---------------------------------------------------------------------
+6. ENCODING CONSTANTS (colors, filled vs hollow, legend keys)
+---------------------------------------------------------------------
+- ROUTE_COLORS: nine hues, one per route. These are the standard 10-color categorical set
+  (the "tab10"-style palette). Categorical hues should be few, distinct and nameable; beyond
+  roughly 6-10 colors, discrimination degrades (Ware, 2012; Munzner, 2014, ch. 10).
+  Using color for route identity is appropriate because route is a nominal variable.
+  [CHECK IN PILOT] Several hues in this set are hard to separate for some color-vision
+  deficiencies (e.g., red/green pairs). Consider a colorblind-safe palette or
+  ask in the demographics whether anyone has a color-vision deficiency.
+- FILLED = N or W; hollow = S or E: a second, redundant channel for direction. Redundant
+  coding (color for route + fill for direction pair) lets participants map points to
+  Direction 1 (N/E) and Direction 2 (S/W) in Task 2 without reading text. Because fill is a
+  weaker channel than position or hue, it is used only for a binary variable
+  (Munzner, 2014, ch. 5; Cleveland & McGill, 1984, on channel accuracy ranking).
+- KEYS / KEY_ROW / KEY_STROKE / KEY_FILL: in the STATIC condition the legend lists one entry
+  per route + stop + direction (about 21 entries). The static chart has no tooltips, so the
+  legend must carry the stop names that participants need to answer "Which stop is this
+  observation from?" in Task 1. The interactive chart gets stop names from tooltips instead.
+  This is the main designed difference between conditions: where the identifying information
+  lives (legend vs on-demand), which is precisely "details on demand" (Shneiderman, 1996).
+  [CHECK IN PILOT] A 21-row legend is long; make sure it is visible without scrolling at
+  typical laptop resolutions, otherwise static time will be inflated by interface scrolling.
+
+
+---------------------------------------------------------------------
+7. VEGA-LITE SPECS
+---------------------------------------------------------------------
+Shared pieces
+- TICKS 0-60 by 5 with grid: gridlines every 5 minutes give a reading aid for the static
+  condition, where values must be estimated by eye. A grid reduces estimation error
+  because it supplies local reference marks (Cleveland & McGill, 1984; Ware, 2012).
+- scale {domain [0,60], nice false}: fixed axes, identical in both specs (see section 5).
+- Equal width and height-ish (650 x 560) with the same 0-60 domain on both axes keeps the
+  y = x line visually near 45 degrees, so "above the line" is perceptually meaningful
+  (aspect ratio matters for judging slopes; Cleveland, 1993, banking to 45 degrees).
+- DIAGONAL_LAYER: dashed y = x reference line from (0,0) to (60,60). A reference line turns
+  the abstract judgment "uneven spacing" into a visual one: vertical distance above the line is
+  actualNext - previous. This is the key visual device for Task 1.
+- VALID_ONLY filter removes the 999 sentinel.
+- CONFIG: axis and legend font sizes tuned for legibility; light-gray view stroke frames the plot.
+
+STATIC_SPEC
+- Layer of points (size 130, strokeWidth 2, opacity 0.9): large open-ish marks with slight
+  transparency so overlapping points (e.g., three identical points at (2,2) on Route 157) are
+  still partly visible. Mark size is a compromise between overplotting and legibility.
+- stroke and fill share the same domain/range from KEYS, which makes the legend show
+  outline color plus fill state. The legend `encode` override ensures legend symbols use
+  the same stroke colors.
+- No params, tooltip or filters: the static condition is truly non-interactive. Note that
+  Vega-Embed `actions: false` also removes the export/menu links so no hidden affordances exist.
+  [CHECK IN PILOT] Static points that coincide exactly (identical previous and actualNext) are
+  indistinguishable; verify that this does not make Task 2 means unreadable for the static
+  chart on routes 36 and 146.
+
+INTERACTIVE_SPEC
+- Two select-bound parameters, routeFilter (All + 9 routes) and directionFilter
+  (All/N/S/E/W), applied as filter transforms. These implement the "filter" interaction,
+  one of the core interaction categories in the literature (Yi, Kang, Stasko & Jacko, 2007)
+  and the one the assignment example itself suggests. Dropdown filters were chosen over
+  brush selections because they are discoverable, accessible and have low interaction cost
+  (Lam, 2008).
+- zoomPan: interval selection bound to scales ("bind: scales"): drag to pan, scroll to
+  zoom, double-click to reset. This is the "zoom/pan" interaction and helps separate crowded
+  points. Reset on double-click prevents participants from getting stuck in a zoomed state.
+  [CHECK IN PILOT] Participants may zoom accidentally with the scroll wheel while scrolling
+  the page. Watch for this and mention reset in the instructions if needed.
+- Tooltip with eight fields (ID, route, direction, stop, CTA stop ID, previous, actual next,
+  comments): exact values on hover are the "details on demand" step of the Visual
+  Information Seeking Mantra (Shneiderman, 1996) and are what allow the interactive condition
+  to be scored with a tighter tolerance (see section 10).
+- Fill uses a condition: filled for N/W, white otherwise, mirroring the static chart's
+  redundant coding, so the encodings are the same across conditions.
+- Legend shows only route colors (stops come from tooltips), and the config overrides legend
+  font sizes.
+- clip: true on the mark: zoomed points do not spill outside the plot.
+
+Rendering
+- vegaEmbed(..., {actions:false, renderer:"canvas"}): canvas rendering is faster for many
+  marks and avoids SVG DOM text selection, which could let participants copy numbers.
+  Rendering errors are caught and displayed so a broken chart is visible to the
+  experimenter rather than silently producing a blank page with a running timer.
+
+
+---------------------------------------------------------------------
+8. ACCURACY TOLERANCE AND SCORING
+---------------------------------------------------------------------
+Rule: an answer is correct when |answer - truth| <= max(floorMin, pct * |truth|).
+- Static: pct 5%, floor 1.0 minute. Interactive: pct 2%, floor 0.5 minute.
+
+WHY a tolerance at all: readings from a chart are estimates, and graphical perception research
+models judgment error as a function of magnitude (Cleveland & McGill, 1984; Heer & Bostock,
+2010). Counting only exact answers would punish normal perceptual error in the static
+condition and conflate perception with precision.
+WHY a percentage plus a floor: relative error grows with magnitude (a Weber-like pattern), but
+a percentage of a tiny value (e.g., 0) is smaller than the thickness of a gridline, so a minimum
+allowance is needed.
+WHY a looser tolerance for static and tighter for interactive: static values must be read
+off a grid at roughly 9 px per minute; interactive tooltips show exact values.
+A tolerance that matched each condition's achievable precision avoids penalizing the static
+condition for something it cannot show, while still rewarding the interactive condition's
+extra precision. As the code comment states, these are design choices rather than published
+standards, and raw absolute errors are saved so any other threshold can be applied later,
+which is also good practice for transparency (Dragicevic, 2016).
+[CHECK IN PILOT] Different tolerances mean "correct" is not defined identically in the two
+conditions, which a reviewer may challenge as biasing the accuracy comparison. Mitigation:
+report accuracy at a common tolerance (e.g., +/-1 minute) as a sensitivity analysis, plus the
+mean absolute error, which needs no threshold.
+Worked values: Task 1 Route 22 true answer (0, 26): static allows +/-1 and +/-1.3; interactive
++/-0.5 and +/-0.52. Because the inputs use whole minutes (step 1), the interactive condition
+therefore effectively requires the exact integers.
+
+Other scoring details
+- stop_correct: exact match on stop name (categorical).
+- task_correct = stop correct AND both numeric parts within tolerance. Requiring all parts makes
+  a task a single objectively assessable outcome ("Task accuracy: whether participants
+  correctly complete each task").
+- Task 2: direction answer must match key.larger, including an "About the same" option when the
+  true means differ by <= SAME_THRESHOLD_MIN (1 min). That option stops guessers from being
+  forced to choose and gives a principled meaning to "no difference".
+
+
+---------------------------------------------------------------------
+9. ANSWER KEY, TASK DEFINITIONS AND COUNTERBALANCING
+---------------------------------------------------------------------
+Task 1 (Identify the most uneven spacing) - Find the observation farthest above y = x.
+- Analytical ability: locate an extreme of a derived quantity (actualNext - previous), not the
+  tallest bar. This is a "find extremum"/"compute derived value" combination (Amar, Eagan &
+  Stasko, 2005; Brehmer & Munzner, 2013) and needs comparison across points of a route.
+- Variants: Route 22 and Route 147. Each has exactly one clear outlier
+  (a bunched pair followed by a 26-28 minute gap), the runner-up is 7-8 minutes away, and both
+  routes have 2 stops and 10 points. Matching the two variants on number of points, stops and
+  outlier clarity keeps difficulty comparable (the assignment's "comparable, but not identical"
+  requirement). I checked the key against DATA:
+    Route 22 differences (actualNext - previous): the maximum is +26 at Clark and Berwyn
+    (previous 0, next 26); the runner-up is +7 at Clark and Devon.
+    Route 147 differences: the maximum is +26 at Michigan and Randolph (previous 2, next 28);
+    the runner-up is +8 at Sheridan and Granville.
+  Both maxima are unique, so the answer is unambiguous. (truthTask1 also returns all ties so
+  a tie would be caught by verifyAnswerKey.)
+
+Task 2 (Compare the two directions) - Estimate the mean actual next headway of each direction
+and say which is larger.
+- Analytical ability: compare aggregates across categories, which is the assignment's required
+  "comparing multiple values/categories" task and cannot be solved by spotting a single mark.
+  It requires visual averaging of five points per direction (Ensemble/mean estimation is
+  possible but less accurate than reading single values; Ware, 2012).
+- Variants: Route 36 and Route 146. Each has 5 points per direction and a directional gap of
+  about 13 minutes, in opposite directions (so the "correct direction" is not the same in both
+  variants, preventing a learned answer pattern). Checked against DATA:
+    Route 36: Direction 1 (N) mean = (10+9+3+4+6)/5 = 6.4; Direction 2 (S) mean =
+    (20+19+21+20+20)/5 = 20.0; larger = Direction 2.
+    Route 146: Direction 1 (N) mean = (20+20+22+19+20)/5 = 20.2; Direction 2 (S) mean =
+    (3+2+27+3+3)/5 = 7.6; larger = Direction 1.
+  Route 146's southbound mean is pulled up by one 27-minute gap, which makes it a more
+  demanding judgment than a simple eyeball of the cluster; this is intended, so that the task is
+  not trivially "the higher cloud".
+
+Counterbalancing (groupSequences)
+- Group 1: Static (Task 1 R22, Task 2 R36) then Interactive (Task 1 R147, Task 2 R146).
+- Group 2: Interactive (R22, R36) then Static (R147, R146).
+- Each route appears once in each condition across groups, so variant difficulty is not tied
+  to a condition; and half the participants see static first, half interactive first, so
+  order/learning effects are balanced. This is a simple 2 x 2 crossover (a Latin-square
+  logic; Williams, 1949; Lazar et al., 2017; MacKenzie, 2013).
+- Task type is always Task 1 then Task 2 within each condition block, so task type is
+  confounded with position but not with condition; this is acceptable because the comparison of
+  interest is condition within task type.
+  [CHECK IN PILOT] With only two sequences, any asymmetric carry-over (e.g., learning how to
+  read the chart in the static block helps the interactive block more than the reverse) cannot
+  be fully separated from condition; analyze order as a factor (see section 12).
+
+verifyAnswerKey(): recomputes the truth from DATA on page load and warns in the console if the
+hand-entered ANSWER_KEY disagrees. Protects against the most common instrument bug: editing the
+data and forgetting to update the key.
+
+
+---------------------------------------------------------------------
+10. STUDY FLOW, TIMING AND RECORDING
+---------------------------------------------------------------------
+- startStudy(): validates ID and group, selects the sequence, switches panels.
+- renderTask(): re-renders title, instructions, answer form and chart for the current item,
+  resets the form, and starts the timer AFTER the chart is embedded (taskStartTime is set at the
+  end), so chart rendering delay is not counted against participants. Good practice for timing
+  fairness (Lazar et al., 2017).
+- Submit handler: computes elapsed seconds, scores, builds a row in the fixed COLUMNS order
+  (blank where a field does not apply), pushes to a local array, stores a localStorage backup,
+  and advances. A fixed column order means all rows line up in the Google Sheet and can be
+  analyzed without reshaping.
+- Logged beyond accuracy and time: confidence, difficulty, explanation, true values, and
+  absolute errors (tolerance-free), supporting re-scoring and sensitivity analysis.
+  [CHECK IN PILOT] The number of interactions (dropdown changes, zooms) is not logged. It is an
+  allowed extra measure in the assignment and would show HOW the interactive condition was used;
+  Vega-Embed's view.addSignalListener could record changes to routeFilter, directionFilter and
+  the zoom/pan signals.
+- Saving: sendToSheet() uses fetch with mode "no-cors" and a text/plain content type, which
+  avoids a CORS preflight that Google Apps Script web apps do not answer. Because no-cors
+  responses are opaque, a "true" result means only that the request was sent, not that the sheet
+  confirmed it (as the code comment says). Therefore the CSV backup button and the localStorage
+  copy are the safety net.
+  [CHECK IN PILOT] Test end-to-end with a dummy ID and confirm that rows appear in the sheet and
+  that retrying does not create duplicates (the current code sends each row once because
+  sentFlags is set to true after a send).
+- downloadCSV(): escapes quotes and builds a CSV from COLUMNS so data can be recovered even if
+  the network upload fails.
+- Local-test mode: if SHEET_ENDPOINT is not configured the page says "Test mode" and nothing is
+  uploaded, so pilots can be run without polluting the real sheet.
+
+
+---------------------------------------------------------------------
+11. HYPOTHESES THE INSTRUMENT IS BUILT TO TEST
+---------------------------------------------------------------------
+H1 (accuracy): For tasks that require isolating one route and reading exact values, the
+   interactive visualization (route/direction filtering + tooltips) yields higher task accuracy than
+   the static one.
+H2 (time): Filtering a nine-route chart to one route removes visual search through a long
+   legend, so the interactive visualization reduces completion time for Task 1; for Task 2 the
+   effect on time is exploratory because the cost of operating controls (Lam, 2008) may offset the
+   benefit.
+These follow the idea that interaction supports selecting and focusing on subsets of data
+(Yi et al., 2007; Heer & Shneiderman, 2012) and that effects should be tested separately for
+different task types (Brehmer & Munzner, 2013; Lam et al., 2012).
+
+
+---------------------------------------------------------------------
+12. SUGGESTED ANALYSIS (not in the HTML, but implied by its columns)
+---------------------------------------------------------------------
+- Time: log-transform (task times are right-skewed) and compare geometric means; paired t-test on
+  log time, or Wilcoxon signed-rank if assumptions fail (Sauro & Lewis, 2010; Wilcoxon, 1945;
+  Shapiro & Wilk, 1965).
+- Accuracy: per-participant proportion correct by condition, McNemar or a mixed-effects logistic
+  model with participant as random effect (Bates, Maechler, Bolker & Walker, 2015;
+  Barr, Levy, Scheepers & Tily, 2013).
+- Order and variant: include order (static-first vs interactive-first) and route variant as
+  fixed effects to check carry-over and difficulty imbalance.
+- Report effect sizes and confidence intervals rather than only p-values (Lakens, 2013;
+  Dragicevic, 2016); correct for multiple comparisons across the two task types
+  (Holm, 1979).
+- Sample size: for a paired comparison with power .80 and alpha .05, about 15 participants
+  detect a large effect (d_z = 0.8) and about 34 a medium effect (d_z = 0.5) (Cohen, 1988).
+
+
+---------------------------------------------------------------------
+13. PILOT STUDY CHECKLIST (assignment requires checking for too obvious / too hard / unfair)
+---------------------------------------------------------------------
+1. Run 3-5 pilot participants (van Teijlingen & Hundley, 2001; Nielsen, 1993).
+2. Too obvious? If nearly everyone is correct in under ~20 s in BOTH conditions, make outliers
+   less isolated or raise the number of distractor routes.
+3. Too hard? If static accuracy is near chance for Task 2, widen the directional gap or reduce
+   overlapping points.
+4. Unfair? Check that (a) tooltip comments do not leak answers, (b) the static legend fits on
+   screen, (c) timing excludes explanation typing, (d) route variants take similar time within
+   the same condition.
+5. Confirm sheet logging, CSV backup and the group-to-sequence mapping.
+
+
+---------------------------------------------------------------------
+REFERENCES
+---------------------------------------------------------------------
+Amar, R., Eagan, J., & Stasko, J. (2005). Low-level components of analytic activity in
+  information visualization. Proceedings of IEEE Symposium on Information Visualization
+  (InfoVis 2005), 111-117.
+Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for
+  confirmatory hypothesis testing: Keep it maximal. Journal of Memory and Language, 68(3),
+  255-278.
+Bates, D., Maechler, M., Bolker, B., & Walker, S. (2015). Fitting linear mixed-effects models
+  using lme4. Journal of Statistical Software, 67(1), 1-48.
+Brehmer, M., & Munzner, T. (2013). A multi-level typology of abstract visualization tasks.
+  IEEE Transactions on Visualization and Computer Graphics, 19(12), 2376-2385.
+Charness, G., Gneezy, U., & Kuhn, M. A. (2012). Experimental methods: Between-subject and
+  within-subject design. Journal of Economic Behavior & Organization, 81(1), 1-8.
+Cleveland, W. S. (1993). Visualizing Data. Hobart Press.
+Cleveland, W. S., & McGill, R. (1984). Graphical perception: Theory, experimentation, and
+  application to the development of graphical methods. Journal of the American Statistical
+  Association, 79(387), 531-554.
+Cohen, J. (1988). Statistical Power Analysis for the Behavioral Sciences (2nd ed.). Lawrence
+  Erlbaum Associates.
+Dragicevic, P. (2016). Fair statistical communication in HCI. In J. Robertson & M. Kaptein
+  (Eds.), Modern Statistical Methods for HCI (pp. 291-330). Springer.
+Greenwald, A. G. (1976). Within-subjects designs: To use or not to use? Psychological
+  Bulletin, 83(2), 314-320.
+Hart, S. G., & Staveland, L. E. (1988). Development of NASA-TLX (Task Load Index): Results of
+  empirical and theoretical research. In P. A. Hancock & N. Meshkati (Eds.), Human Mental
+  Workload (pp. 139-183). North-Holland.
+Heer, J., & Bostock, M. (2010). Crowdsourcing graphical perception: Using Mechanical Turk to
+  assess visualization design. Proceedings of ACM CHI 2010, 203-212.
+Heer, J., & Shneiderman, B. (2012). Interactive dynamics for visual analysis. Communications
+  of the ACM, 55(4), 45-54.
+Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal
+  of Statistics, 6(2), 65-70.
+Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: A
+  practical primer for t-tests and ANOVAs. Frontiers in Psychology, 4, 863.
+Lam, H. (2008). A framework of interaction costs in information visualization. IEEE
+  Transactions on Visualization and Computer Graphics, 14(6), 1149-1156.
+Lam, H., Bertini, E., Isenberg, P., Plaisant, C., & Carpendale, S. (2012). Empirical studies in
+  information visualization: Seven scenarios. IEEE Transactions on Visualization and Computer
+  Graphics, 18(9), 1520-1536.
+Lazar, J., Feng, J. H., & Hochheiser, H. (2017). Research Methods in Human-Computer
+  Interaction (2nd ed.). Morgan Kaufmann.
+Likert, R. (1932). A technique for the measurement of attitudes. Archives of Psychology, 22(140),
+  1-55.
+Little, R. J. A., & Rubin, D. B. (2019). Statistical Analysis with Missing Data (3rd ed.). Wiley.
+MacKenzie, I. S. (2013). Human-Computer Interaction: An Empirical Research Perspective. Morgan
+  Kaufmann.
+Munzner, T. (2014). Visualization Analysis and Design. CRC Press.
+National Commission for the Protection of Human Subjects of Biomedical and Behavioral Research.
+  (1979). The Belmont Report.
+Newell, G. F., & Potts, R. B. (1964). Maintaining a bus schedule. Proceedings of the 2nd
+  Australian Road Research Board Conference, 2, 388-393.
+Nielsen, J. (1993). Usability Engineering. Academic Press.
+Pangilinan, C., Wilson, N., & Moore, A. (2008). Bus supervision deployment strategies and use
+  of real-time automatic vehicle location for improved bus service reliability.
+  Transportation Research Record, 2063, 28-33.
+Poulton, E. C. (1982). Influential companions: Effects of one strategy on another in the
+  within-subjects designs of cognitive psychology. Psychological Bulletin, 91(3), 673-690.
+Satyanarayan, A., Moritz, D., Wongsuphasawat, K., & Heer, J. (2017). Vega-Lite: A grammar of
+  interactive graphics. IEEE Transactions on Visualization and Computer Graphics, 23(1),
+  341-350.
+Satyanarayan, A., Russell, R., Hoffswell, J., & Heer, J. (2016). Reactive Vega: A streaming
+  dataflow architecture for declarative interactive visualization. IEEE Transactions on
+  Visualization and Computer Graphics, 22(1), 659-668.
+Sauro, J., & Lewis, J. R. (2010). Average task times in usability tests: What to report?
+  Proceedings of ACM CHI 2010, 2347-2350.
+Shapiro, S. S., & Wilk, M. B. (1965). An analysis of variance test for normality (complete
+  samples). Biometrika, 52(3-4), 591-611.
+Shneiderman, B. (1996). The eyes have it: A task by data type taxonomy for information
+  visualizations. Proceedings of IEEE Symposium on Visual Languages, 336-343.
+van Teijlingen, E., & Hundley, V. (2001). The importance of pilot studies. Social Research
+  Update, 35.
+Ware, C. (2012). Information Visualization: Perception for Design (3rd ed.). Morgan Kaufmann.
+Wickelgren, W. A. (1977). Speed-accuracy tradeoff and information processing dynamics. Acta
+  Psychologica, 41(1), 67-85.
+Wilcoxon, F. (1945). Individual comparisons by ranking methods. Biometrics Bulletin, 1(6), 80-83.
+Williams, E. J. (1949). Experimental designs balanced for the estimation of residual effects of
+  treatments. Australian Journal of Scientific Research, Series A, 2, 149-168.
