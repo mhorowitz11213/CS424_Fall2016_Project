@@ -1,0 +1,1301 @@
+HEADWAY IMBALANCE AND BUNCHING DIAGNOSTIC
+Vega-Lite Visualization: Code Documentation and Implementation Process
+
+============================================================
+1. OVERVIEW AND PURPOSE
+============================================================
+
+This visualization, titled "Headway Imbalance and Bunching
+Diagnostic," is a scatterplot designed to examine bus headway
+regularity using observed intervals between consecutive buses.
+
+The visualization compares two measurements:
+
+1. Observation Previous:
+   The number of minutes between the previous bus and the
+   currently observed bus.
+
+2. Actual Next:
+   The number of minutes between the currently observed bus
+   and the next bus.
+
+The purpose is to identify differences between the spacing
+before and after an observed bus. These differences can
+indicate irregular service, bus bunching, or unusually long
+gaps between buses.
+
+The visualization uses a diagonal reference line to represent
+equal headways. Points on this line indicate that the interval
+before and after the observed bus was approximately equal.
+
+Points above or below the diagonal represent differences
+between the two intervals.
+
+The visualization also distinguishes routes and stops through
+color, while using filled and hollow circles to distinguish
+direction categories.
+
+============================================================
+2. VEGA-LITE SCHEMA AND GENERAL CONFIGURATION
+============================================================
+
+"$schema": "https://vega.github.io/schema/vega-lite/v6.json"
+
+This property specifies the Vega-Lite JSON schema version.
+It tells Vega-Lite how to interpret the visualization
+specification and which syntax and features are expected.
+
+The specification uses Vega-Lite version 6.
+
+"description": "Bus headway balance using actual following-bus gaps."
+
+This provides a short description of the visualization.
+It explains that the chart examines bus headway balance by
+comparing the intervals before and after each observed bus.
+
+"title": {
+    "text": "Headway Imbalance and Bunching Diagnostic",
+    "subtitle": "Filled circles = N/W; hollow circles = S/E;
+                 dotted line = equal headways."
+}
+
+The title property defines the heading displayed above
+the visualization.
+
+The text property specifies the main title.
+
+The subtitle provides an explanation of the visual encoding.
+It tells the viewer how to interpret the circle fill and
+the diagonal reference line.
+
+The intended visual encoding is:
+
+- Filled circles represent northbound and westbound buses.
+- Hollow circles represent southbound and eastbound buses.
+- The dotted diagonal represents equal headways.
+
+width: 650
+
+This specifies the width of the visualization in pixels.
+It provides enough horizontal space for the scatterplot and
+its accompanying legend.
+
+height: 560
+
+This specifies the height of the visualization in pixels.
+The height provides enough room to display the quantitative
+axes and the plotted observations.
+
+============================================================
+3. LAYERED VISUALIZATION STRUCTURE
+============================================================
+
+"layer": [
+    {...},
+    {...}
+]
+
+The layer property allows multiple visualization layers to
+be combined into one chart.
+
+This specification contains two layers:
+
+Layer 1:
+A diagonal reference line representing equal headways.
+
+Layer 2:
+The scatterplot containing the actual bus observations.
+
+Using layers allows the reference line and the observed data
+to share the same coordinate system.
+
+This is useful because the viewer can compare individual
+observations directly against the equality reference.
+
+============================================================
+4. FIRST LAYER: DIAGONAL REFERENCE LINE
+============================================================
+
+"data": {
+    "values": [
+        {"x": 0, "y": 0},
+        {"x": 60, "y": 60}
+    ]
+}
+
+The first layer contains two data points.
+
+The first point is (0, 0).
+The second point is (60, 60).
+
+These points define the beginning and end of the diagonal
+reference line.
+
+The line represents the relationship:
+
+Actual Next = Observation Previous
+
+In other words, the interval after the observed bus is equal
+to the interval before it.
+
+"mark": {
+    "type": "line",
+    "color": "#555555",
+    "strokeDash": [5, 5],
+    "strokeWidth": 2
+}
+
+The mark property determines how the data is displayed.
+
+"type": "line"
+
+This specifies that the first layer should be drawn as a line.
+
+"color": "#555555"
+
+This sets the line color to dark gray.
+
+"strokeDash": [5, 5]
+
+This makes the line dashed rather than solid.
+
+The two values specify the approximate lengths of the dash
+and the gap between dashes.
+
+"strokeWidth": 2
+
+This sets the thickness of the reference line to two pixels.
+
+The dashed style distinguishes the reference line from the
+individual bus observations.
+
+ENCODING THE REFERENCE LINE
+
+"x": {
+    "field": "x",
+    "type": "quantitative",
+    "scale": {
+        "domain": [0, 60],
+        "nice": false
+    },
+    "axis": {...}
+}
+
+The x encoding determines the horizontal position of the
+reference line.
+
+"field": "x"
+
+This tells Vega-Lite to use the x field from the reference
+line's data.
+
+"type": "quantitative"
+
+This identifies x as a numerical variable.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+The scale defines the numerical range displayed on the
+horizontal axis.
+
+The domain begins at zero and ends at sixty minutes.
+
+"nice": false prevents Vega-Lite from automatically
+adjusting the specified domain to more convenient values.
+
+"axis": {
+    "title": "Observation Previous (minutes)",
+    "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+    "grid": true
+}
+
+The axis property controls the appearance of the horizontal
+axis.
+
+"title" specifies the axis label.
+
+"values" explicitly defines the tick positions, with
+increments of five minutes.
+
+"grid": true enables grid lines, making it easier to compare
+individual observations against the numerical scale.
+
+The y encoding follows the same structure.
+
+"field": "y"
+
+This uses the y field from the reference line data.
+
+"type": "quantitative"
+
+This specifies that the vertical variable is numerical.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+This keeps the vertical axis between zero and sixty minutes.
+
+"axis": {
+    "title": "Actual Next (minutes)",
+    "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+    "grid": true
+}
+
+This defines the vertical axis title, tick positions, and
+grid lines.
+
+Both axes use the same numerical domain so that the
+45-degree diagonal visually represents equality.
+
+============================================================
+5. SECOND LAYER: BUS OBSERVATION DATA
+============================================================
+
+The second layer contains the actual observations.
+
+"data": {
+    "values": [
+        {...},
+        {...},
+        {...}
+    ]
+}
+
+The values array contains individual bus observations.
+
+Each object represents one observed bus interval comparison.
+
+The records contain several fields that provide the
+information necessary to position, categorize, and describe
+each observation.
+
+DATA FIELD EXPLANATIONS
+
+"id"
+
+This is an identifier assigned to an observation.
+
+It distinguishes records within the dataset or observation
+sequence.
+
+The IDs are not globally unique across all stops. Some IDs
+are reused for different locations, so they should not be
+treated as unique identifiers for the entire dataset.
+
+"route"
+
+This specifies the CTA bus route number.
+
+Examples include routes 8, 20, 22, 36, 56, 66, 146, 147,
+and 157.
+
+"stop"
+
+This specifies the bus stop or intersection where the
+observation was recorded.
+
+Examples include:
+
+- Halsted and Fulton
+- Clark and Washington
+- La Salle and Madison
+- Lake and Halsted
+- Sheridan and Granville
+- Michigan and Randolph
+- Broadway and Wilson
+
+"cta"
+
+This contains the associated CTA stop identifier.
+
+It distinguishes stops that might otherwise have similar
+or related names.
+
+"direction"
+
+This specifies the direction of travel for the observed bus.
+
+The values include:
+
+N = Northbound
+S = Southbound
+E = Eastbound
+W = Westbound
+
+"previous"
+
+This is the number of minutes between the previous bus and
+the currently observed bus.
+
+It is used as the horizontal coordinate in the scatterplot.
+
+"actualNext"
+
+This is the number of minutes between the currently observed
+bus and the next bus.
+
+It is used as the vertical coordinate in the scatterplot.
+
+"comments"
+
+This field contains contextual observations associated with
+the bus record.
+
+Examples include:
+
+- Bus arrived early.
+- Bus arrived late.
+- Bus was closely followed by another bus.
+- Multiple buses arrived within a short interval.
+- A long service gap occurred after a group of buses.
+
+These comments provide additional context for interpreting
+the numerical measurements.
+
+"legendKey"
+
+This field combines the route number, stop name, and
+direction into one categorical value.
+
+For example:
+
+Route 8 · Halsted and Fulton (S)
+
+This combined field is important because it allows the
+visualization to assign a consistent color and legend
+category to each route-stop-direction combination.
+
+It also prevents observations from different stops on the
+same route from automatically being treated as one
+identical category.
+
+============================================================
+6. ORGANIZATION OF THE OBSERVATION DATA
+============================================================
+
+The dataset contains observations from multiple routes
+and locations.
+
+The first group of records includes observations from
+downtown locations such as Halsted and Fulton, Grand and
+Kingsbury, Clark and Washington, and La Salle and Madison.
+
+These observations include routes 8, 20, 56, and 66.
+
+The next group contains observations from additional
+locations, including Sheridan and Granville, Clark and
+Devon, 900 W Taylor, Michigan and Randolph, Clark and
+Berwyn, and Michigan and Hubbard.
+
+These observations include routes 22, 147, and 157.
+
+The dataset also includes observations from north-side
+locations such as Broadway and Wilson, Foster and Marine
+Drive, Broadway and Granville, and Berwyn and Broadway.
+
+These observations include routes 36 and 146.
+
+The final records include observations from Taylor and
+Halsted, covering different route and direction combinations.
+
+The observations are represented as individual records
+rather than being aggregated into route-level averages.
+
+This preserves the variation between individual bus
+intervals and allows the visualization to show irregular
+service patterns.
+
+============================================================
+7. DATA TRANSFORMATION AND FILTERING
+============================================================
+
+"transform": [
+    {
+        "filter": "datum.previous != 999 &&
+                   datum.actualNext != 999"
+    }
+]
+
+The transform property applies data transformations before
+the records are displayed.
+
+This specification uses a filter transformation.
+
+The expression checks two conditions:
+
+datum.previous != 999
+
+This removes observations where the previous interval is
+recorded as 999.
+
+datum.actualNext != 999
+
+This removes observations where the following interval is
+recorded as 999.
+
+The value 999 is used as a sentinel value rather than a
+realistic headway measurement.
+
+These records are excluded because they do not provide a
+valid interval for the corresponding comparison.
+
+The AND operator (&&) means that a record is retained only
+when both conditions are satisfied.
+
+Therefore, an observation is displayed only if both its
+previous and actual-next intervals are valid.
+
+Importantly, zero-minute intervals are not removed by this
+filter.
+
+A zero is retained because it can represent two buses
+arriving within the same minute or an observed interval
+recorded as zero.
+
+============================================================
+8. SCATTERPLOT MARK CONFIGURATION
+============================================================
+
+"mark": {
+    "type": "point",
+    "size": 130,
+    "strokeWidth": 2,
+    "opacity": 0.9
+}
+
+This defines how the bus observations are represented.
+
+"type": "point"
+
+This specifies a scatterplot using individual point marks.
+
+Each valid observation is represented by a circle.
+
+"size": 130
+
+This determines the approximate size of each point.
+
+The size is large enough to make the observations visible
+without making the scatterplot excessively crowded.
+
+"strokeWidth": 2
+
+This specifies the thickness of the circle outlines.
+
+The outline is particularly important because some circles
+have white interiors.
+
+"opacity": 0.9
+
+This sets the point opacity to 90 percent.
+
+The slight transparency helps distinguish overlapping
+observations while keeping the points visually prominent.
+
+============================================================
+9. HORIZONTAL AXIS: PREVIOUS HEADWAY
+============================================================
+
+"x": {
+    "field": "previous",
+    "type": "quantitative",
+    "scale": {
+        "domain": [0, 60],
+        "nice": false
+    },
+    "axis": {
+        "title": "Observation Previous (in mins)",
+        "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+        "grid": true
+    }
+}
+
+This encoding determines the horizontal position of every
+observation.
+
+"field": "previous"
+
+The horizontal position is determined by the previous
+headway measurement.
+
+"type": "quantitative"
+
+This identifies the field as numerical data.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+This sets the horizontal range from zero to sixty minutes.
+
+"axis": {
+    "title": "Observation Previous (in mins)",
+    "values": [...],
+    "grid": true
+}
+
+The axis title explains what the horizontal measurements
+represent.
+
+The values array defines tick marks at five-minute
+increments.
+
+The grid property enables horizontal grid lines across
+the chart.
+
+This helps viewers estimate the previous interval for
+each observation.
+
+============================================================
+10. VERTICAL AXIS: ACTUAL FOLLOWING HEADWAY
+============================================================
+
+"y": {
+    "field": "actualNext",
+    "type": "quantitative",
+    "scale": {
+        "domain": [0, 60],
+        "nice": false
+    },
+    "axis": {
+        "title": "Actual Next (in Mins)",
+        "values": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+        "grid": true
+    }
+}
+
+This encoding determines the vertical position of every
+observation.
+
+"field": "actualNext"
+
+The vertical position represents the actual interval
+between the observed bus and the next bus.
+
+"type": "quantitative"
+
+This specifies that the measurement is numerical.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+This uses the same zero-to-sixty-minute range as the
+horizontal axis.
+
+"axis": {
+    "title": "Actual Next (in Mins)",
+    "values": [...],
+    "grid": true
+}
+
+This specifies the vertical axis title and tick positions.
+
+The five-minute increments and grid lines make it easier
+to compare the two measurements.
+
+Using identical domains for both axes is important because
+it ensures that the diagonal reference line represents
+actual equality rather than a difference caused by
+inconsistent axis scales.
+
+============================================================
+11. COLOR ENCODING: ROUTE, STOP, AND DIRECTION
+============================================================
+
+"stroke": {
+    "field": "legendKey",
+    "type": "nominal",
+    "scale": {
+        "domain": [...],
+        "range": [...]
+    },
+    "legend": null
+}
+
+The stroke encoding controls the outline color of each
+circle.
+
+"field": "legendKey"
+
+The outline color is determined by the combined
+route-stop-direction category.
+
+"type": "nominal"
+
+This specifies that the field represents categorical data
+rather than a continuous numerical variable.
+
+"scale": {
+    "domain": [...],
+    "range": [...]
+}
+
+The domain defines the categorical values that the scale
+recognizes.
+
+The range defines the corresponding colors.
+
+Each category is assigned a color.
+
+For example:
+
+Route 8 categories use blue.
+Route 20 categories use orange.
+Route 22 categories use green.
+Route 36 categories use red.
+Route 56 categories use purple.
+Route 66 uses teal.
+Route 146 uses brown.
+Route 147 uses pink.
+Route 157 categories use gray, olive, or other assigned
+colors.
+
+The colors are assigned consistently to the corresponding
+route-stop-direction categories.
+
+"legend": null
+
+This disables the separate legend generated by the stroke
+encoding.
+
+The reason for doing this is to avoid displaying two
+independent legends for the same categorical field.
+
+The fill encoding is used to display the visible legend
+instead.
+
+============================================================
+12. FILL ENCODING: FILLED AND HOLLOW CIRCLES
+============================================================
+
+"fill": {
+    "field": "legendKey",
+    "type": "nominal",
+    "scale": {
+        "domain": [...],
+        "range": [...]
+    },
+    "legend": {...}
+}
+
+The fill encoding controls the interior of each circle.
+
+It uses the same legendKey field as the stroke encoding.
+
+This is important because the interior and outline of a
+point must correspond to the same route-stop-direction
+category.
+
+The fill scale assigns either:
+
+1. A route-associated color.
+2. White.
+
+A colored interior produces a filled circle.
+
+A white interior produces a hollow-looking circle because
+the background of the chart is white.
+
+The stroke encoding remains responsible for the colored
+outline.
+
+The intended design is:
+
+- Northbound and westbound observations: colored interiors.
+- Southbound and eastbound observations: white interiors.
+
+This makes direction distinguishable without requiring
+an entirely separate color palette for each direction.
+
+The design uses two visual channels:
+
+Stroke color:
+Identifies the route-stop-direction category.
+
+Fill:
+Distinguishes the direction grouping through filled or
+hollow circles.
+
+============================================================
+13. FILL SCALE DOMAIN
+============================================================
+
+The fill scale domain contains the same categorical
+route-stop-direction values as the stroke scale.
+
+Examples include:
+
+Route 8 · Halsted and Fulton (S)
+Route 8 · Halsted and Taylor (S)
+Route 8 · Lake and Halsted (N)
+Route 20 · Clark and Washington (E)
+Route 20 · La Salle and Madison (W)
+Route 22 · Clark and Berwyn (S)
+Route 22 · Clark and Devon (N)
+Route 36 · Broadway and Granville (S)
+Route 36 · Broadway and Wilson (Red/Purple Lines) (N)
+Route 56 · Clark and Washington (E)
+Route 56 · La Salle and Madison (W)
+Route 66 · Grand and Kingsbury (W)
+Route 146 · Berwyn and Broadway (Red Line) (S)
+Route 146 · Foster and Marine Drive (N)
+Route 147 · Michigan and Randolph (N)
+Route 147 · Sheridan and Granville (S)
+Route 157 · 900 W Taylor (E)
+Route 157 · Michigan and Hubbard (Wrigley Building) (W)
+Route 157 · Taylor and Halsted (E)
+Route 157 · Taylor and Halsted (W)
+
+Each value corresponds to a category in the dataset.
+
+Using an explicit domain ensures that the color and fill
+assignments remain consistent rather than depending on
+the order in which categories happen to appear.
+
+============================================================
+14. FILL SCALE RANGE
+============================================================
+
+The fill range specifies the interior color for every
+category in the domain.
+
+The values are assigned in the same order as the domain.
+
+"white"
+
+This makes the circle interior white.
+
+Because the outline is still assigned through the stroke
+encoding, the circle appears hollow with a colored border.
+
+A hexadecimal color such as "#1f77b4" or "#ff7f0e"
+produces a colored interior.
+
+The intended visual distinction is between hollow and
+filled circles.
+
+This encoding allows the viewer to identify direction
+while retaining the route-associated color.
+
+IMPORTANT IMPLEMENTATION CHECK:
+
+The subtitle describes filled circles as N/W and hollow
+circles as S/E.
+
+However, the final two fill assignments in the supplied
+range do not follow that rule:
+
+Route 157 · Taylor and Halsted (E) is assigned white.
+Route 157 · Taylor and Halsted (W) is assigned "#bcbd22".
+
+Based on the stated direction convention, these two
+assignments should be reversed:
+
+Route 157 · Taylor and Halsted (E) should be white.
+Route 157 · Taylor and Halsted (W) should be "#bcbd22".
+
+This correction is necessary if the intention is to apply
+the same N/W versus S/E rule consistently to every record.
+
+============================================================
+15. LEGEND CONFIGURATION
+============================================================
+
+"legend": {
+    "title": "Route · Stop (direction)",
+    "orient": "right",
+    "columns": 1,
+    "symbolType": "circle",
+    "symbolSize": 110,
+    "symbolStrokeWidth": 2,
+    "labelLimit": 340,
+    "rowPadding": 2,
+    "encode": {...}
+}
+
+This configures the legend associated with the fill encoding.
+
+"title": "Route · Stop (direction)"
+
+This gives the legend a descriptive title.
+
+It explains that the categories represent combinations
+of routes, stops, and travel directions.
+
+"orient": "right"
+
+This places the legend to the right of the scatterplot.
+
+"columns": 1
+
+This arranges the legend entries in one vertical column.
+
+This is useful because the category labels are relatively
+long and would be difficult to read if arranged across
+multiple columns.
+
+"symbolType": "circle"
+
+This specifies circular legend symbols.
+
+The circles match the point marks used in the scatterplot.
+
+"symbolSize": 110
+
+This determines the size of the legend symbols.
+
+"symbolStrokeWidth": 2
+
+This controls the thickness of the legend symbol outlines.
+
+"labelLimit": 340
+
+This sets the maximum label width.
+
+The relatively large value accommodates longer stop names.
+
+"rowPadding": 2
+
+This controls the spacing between legend entries.
+
+It provides a small amount of separation without making
+the legend unnecessarily tall.
+
+============================================================
+16. CUSTOM LEGEND SYMBOL OUTLINES
+============================================================
+
+"encode": {
+    "symbols": {
+        "update": {
+            "stroke": {
+                "scale": "stroke",
+                "field": "value"
+            }
+        }
+    }
+}
+
+This section customizes how the legend symbols are drawn.
+
+The legend is generated from the fill encoding, but the
+symbol outlines need to represent the route-associated
+stroke colors.
+
+"symbols"
+
+This targets the graphical symbols in the legend.
+
+"update"
+
+This defines properties that should be applied when the
+legend symbols are updated and rendered.
+
+"stroke"
+
+This controls the outline color of each legend symbol.
+
+"scale": "stroke"
+
+This references the stroke color scale.
+
+"field": "value"
+
+This uses the current legend category as the value passed
+to the stroke scale.
+
+As a result, the legend symbols can have the same
+route-associated outline colors as the corresponding
+scatterplot points.
+
+This is particularly important for hollow symbols.
+
+Without the colored outline, a white-filled circle could
+be difficult to see against a white background.
+
+The custom encoding therefore allows the legend to
+communicate both the interior fill and the outline color.
+
+============================================================
+17. CONFIGURATION AND VISUAL STYLING
+============================================================
+
+"config": {
+    "view": {
+        "stroke": "#cccccc"
+    },
+    "axis": {
+        "labelFontSize": 11,
+        "titleFontSize": 13,
+        "titleFontWeight": "normal"
+    },
+    "legend": {
+        "labelFontSize": 11,
+        "titleFontSize": 12
+    }
+}
+
+The config property defines styling defaults for the
+visualization.
+
+These settings apply to the chart's appearance rather
+than its underlying data.
+
+VIEW CONFIGURATION
+
+"view": {
+    "stroke": "#cccccc"
+}
+
+This specifies a light-gray border around the chart view.
+
+The border visually separates the plotting area from
+the surrounding page.
+
+AXIS CONFIGURATION
+
+"labelFontSize": 11
+
+This sets the font size of the numerical axis labels.
+
+"titleFontSize": 13
+
+This sets the font size of the axis titles.
+
+"titleFontWeight": "normal"
+
+This prevents axis titles from appearing excessively bold.
+
+These settings maintain a readable hierarchy between
+the axis titles and the numerical tick labels.
+
+LEGEND CONFIGURATION
+
+"labelFontSize": 11
+
+This sets the font size of the individual legend labels.
+
+"titleFontSize": 12
+
+This sets the font size of the legend heading.
+
+These settings make the legend readable while allowing
+multiple route-stop categories to fit beside the chart.
+
+============================================================
+18. HOW TO INTERPRET THE SCATTERPLOT
+============================================================
+
+Each point represents one bus observation.
+
+The horizontal coordinate represents the interval
+between the previous bus and the observed bus.
+
+The vertical coordinate represents the interval
+between the observed bus and the next bus.
+
+The diagonal line represents equal intervals.
+
+The position of a point relative to the diagonal can
+be interpreted as follows:
+
+POINTS ON THE DIAGONAL
+
+When a point lies on the diagonal, the previous and
+following intervals are equal.
+
+For example:
+
+Previous = 10 minutes
+Actual Next = 10 minutes
+
+This indicates balanced spacing around the observed bus.
+
+POINTS ABOVE THE DIAGONAL
+
+When a point appears above the diagonal, the following
+interval is longer than the previous interval.
+
+For example:
+
+Previous = 5 minutes
+Actual Next = 15 minutes
+
+The bus was followed by a longer gap than the gap that
+preceded it.
+
+This can indicate a service gap following a closely
+spaced pair of buses.
+
+POINTS BELOW THE DIAGONAL
+
+When a point appears below the diagonal, the following
+interval is shorter than the previous interval.
+
+For example:
+
+Previous = 15 minutes
+Actual Next = 5 minutes
+
+The observed bus was followed by another bus relatively
+quickly.
+
+This can indicate a short following interval and may
+be associated with bunching.
+
+POINTS NEAR THE ORIGIN
+
+Observations near (0, 0) indicate very short intervals
+both before and after the observed bus.
+
+These observations may indicate multiple buses arriving
+close together.
+
+POINTS FAR FROM THE ORIGIN
+
+Observations farther from the origin represent longer
+headways.
+
+A point near (30, 30), for example, indicates that the
+observed bus had approximately thirty-minute intervals
+on both sides.
+
+============================================================
+19. IMPLEMENTATION PROCESS
+============================================================
+
+The visualization was constructed using a layered
+Vega-Lite specification.
+
+The implementation process can be summarized as follows.
+
+STEP 1: DEFINE THE DATA
+
+The first step was to organize bus observations into
+structured JSON records.
+
+Each record contains the route, stop, CTA identifier,
+direction, previous headway, actual following headway,
+and contextual comments.
+
+A combined legendKey field was also included to identify
+each route-stop-direction category.
+
+STEP 2: DEFINE THE REFERENCE LINE
+
+A separate dataset containing two points was created.
+
+These points define a diagonal line from (0, 0) to (60, 60).
+
+The line provides a visual reference for comparing the
+previous and following headways.
+
+STEP 3: CREATE THE SCATTERPLOT
+
+The main observation dataset was added as a point layer.
+
+Each record is displayed as an individual circular mark.
+
+The previous headway determines the horizontal position,
+and the actual following headway determines the vertical
+position.
+
+STEP 4: FILTER INVALID OBSERVATIONS
+
+A filter transformation was applied to exclude records
+containing the sentinel value 999 in either headway field.
+
+This ensures that invalid measurements do not distort
+the visualization.
+
+STEP 5: APPLY COLOR ENCODINGS
+
+The stroke encoding assigns route-associated outline
+colors to the observations.
+
+The fill encoding determines whether the circles have
+colored or white interiors.
+
+This creates a visual distinction between route-stop
+categories and direction groups.
+
+STEP 6: CUSTOMIZE THE LEGEND
+
+The automatically generated stroke legend was disabled.
+
+The fill legend was retained and customized.
+
+A custom symbol encoding was added so that legend
+symbols use the corresponding stroke colors.
+
+This makes the legend consistent with the appearance
+of the scatterplot.
+
+STEP 7: APPLY FINAL STYLING
+
+The final configuration adjusts the chart dimensions,
+axis titles, numerical tick marks, grid lines, legend
+position, font sizes, and chart border.
+
+These settings improve readability and provide a
+consistent visual hierarchy.
+
+============================================================
+20. DESIGN RATIONALE
+============================================================
+
+The scatterplot was selected because it allows two
+quantitative measurements to be compared simultaneously.
+
+Rather than displaying only the average headway for
+each route, the visualization preserves individual
+observations.
+
+This is important because bus bunching and service gaps
+can occur irregularly and may be hidden by aggregated
+statistics.
+
+The diagonal reference line provides an immediate
+visual benchmark for identifying differences between
+the intervals before and after an observed bus.
+
+The route-associated color encoding helps distinguish
+observations from different route-stop combinations.
+
+The filled and hollow circle encoding adds another
+categorical distinction without requiring additional
+visual marks or separate charts.
+
+The comments field preserves contextual information
+about individual observations, including early arrivals,
+late arrivals, bunching, and long service gaps.
+
+Together, these design decisions support the analysis
+of headway imbalance and irregular bus service.
+
+============================================================
+21. TECHNICAL NOTES AND VALIDATION
+============================================================
+
+There are several implementation details worth checking
+when using this specification.
+
+1. VEGA-LITE VERSION
+
+The specification declares Vega-Lite version 6 through
+its schema URL.
+
+The JavaScript libraries used to render the visualization
+must be compatible with Vega-Lite version 6.
+
+If the surrounding HTML page loads Vega-Lite version 5,
+the schema and runtime versions do not match.
+
+For example, a page loading:
+
+https://cdn.jsdelivr.net/npm/vega-lite@5
+
+should be updated to a compatible version 6 library if
+this specification is intended to use Vega-Lite 6.
+
+The Vega and Vega-Embed versions should also be checked
+for compatibility.
+
+2. COLOR SCALE LENGTHS
+
+The stroke and fill scales use explicit categorical
+domains and ranges.
+
+The number of entries in each range must match the
+number of entries in its corresponding domain.
+
+The current specification contains twenty categories
+and twenty corresponding values in each scale.
+
+3. DIRECTION ASSIGNMENTS
+
+The subtitle states that N/W observations should be
+filled and S/E observations should be hollow.
+
+The fill scale should be checked against this rule for
+every category.
+
+In particular, the final two Route 157 assignments
+currently reverse the intended direction convention.
+
+4. FILTERING
+
+The filter excludes only the value 999.
+
+It does not remove zero-minute intervals.
+
+This is intentional if zero represents a valid observed
+interval.
+
+5. AXIS DOMAINS
+
+Both axes use a fixed domain of zero to sixty minutes.
+
+This makes the equality line visually meaningful.
+
+However, observations greater than sixty minutes would
+fall outside the displayed range.
+
+6. LEGEND SCALE REFERENCE
+
+The legend uses:
+
+"scale": "stroke"
+
+to reference the stroke color scale when drawing the
+legend symbol outlines.
+
+This should be verified against the generated Vega
+specification if the legend symbols do not display
+the expected outline colors.
+
+7. JSON VALIDITY
+
+The visualization specification must remain valid JSON.
+
+Comments such as // explanation cannot be inserted
+directly into the JSON file.
+
+If documentation is required, it should be stored
+separately from the specification.
+
+============================================================
+22. CONCLUSION
+============================================================
+
+The final visualization provides a scatterplot-based
+diagnostic for examining bus headway imbalance.
+
+It compares the time interval preceding an observed bus
+with the actual interval following that bus.
+
+The diagonal reference line represents equal spacing,
+while deviations from the line reveal differences
+between consecutive headways.
+
+The use of route-associated outline colors and filled
+or hollow circle interiors provides multiple categorical
+distinctions within a single visualization.
+
+The resulting chart preserves individual bus observations
+and makes it possible to identify potential bunching,
+short following intervals, long service gaps, and
+relatively balanced service patterns.
+
+The layered Vega-Lite implementation combines the
+reference line, observation points, filtering, categorical
+scales, custom legend styling, and chart configuration
+into one visualization.

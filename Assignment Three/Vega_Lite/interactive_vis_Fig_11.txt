@@ -1,0 +1,1887 @@
+INTERACTIVE HEADWAY IMBALANCE AND BUNCHING DIAGNOSTIC
+Vega-Lite Visualization: Code Documentation and Implementation Process
+
+============================================================
+1. OVERVIEW AND PURPOSE
+============================================================
+
+This visualization is an interactive scatterplot designed to
+examine CTA bus headway regularity using observed intervals
+between consecutive buses.
+
+It builds upon the static version of the Headway Imbalance
+and Bunching Diagnostic by introducing several interactive
+features.
+
+The visualization compares two measurements:
+
+1. Observation Previous:
+   The number of minutes between the previous bus and the
+   currently observed bus.
+
+2. Actual Next:
+   The number of minutes between the currently observed bus
+   and the next bus.
+
+The purpose is to identify differences between the spacing
+before and after an observed bus.
+
+These differences can reveal irregular service, bus bunching,
+and unusually long gaps between buses.
+
+The interactive visualization provides four main features:
+
+1. Route filtering:
+   Users can select an individual CTA route or display
+   observations from all routes.
+
+2. Direction filtering:
+   Users can select a travel direction or display all
+   directions.
+
+3. Hover tooltips:
+   Users can hover over individual points to inspect detailed
+   information about the corresponding bus observation.
+
+4. Zooming and panning:
+   Users can zoom into particular regions of the scatterplot
+   and move around the chart to examine observations more
+   closely.
+
+The visualization also includes a diagonal reference line
+representing equal headways.
+
+Points on the diagonal indicate that the previous and
+following intervals are equal.
+
+Points above or below the diagonal indicate differences
+between the two intervals.
+
+============================================================
+2. VEGA-LITE SCHEMA AND GENERAL CONFIGURATION
+============================================================
+
+"$schema": "https://vega.github.io/schema/vega-lite/v6.json"
+
+This property specifies the Vega-Lite JSON schema version.
+
+It tells Vega-Lite how to interpret the visualization
+specification and which syntax and features are expected.
+
+The specification uses Vega-Lite version 6.
+
+"description": "Interactive CTA bus headway diagnostic.
+Route and Direction dropdowns filter observations; hover
+for details; drag to pan, scroll to zoom, double-click to
+reset."
+
+This provides a description of the visualization and
+summarizes its interactive capabilities.
+
+It identifies the two dropdown filters, the hover tooltips,
+and the zooming and panning interactions.
+
+"title": {
+    "text": "Headway Imbalance and Bunching Diagnostic",
+    "subtitle": "Select a route or direction; hover over points
+    for details. Solid = N/W, hollow = S/E; dashed line =
+    equal headways."
+}
+
+The title property defines the heading displayed above
+the visualization.
+
+The text property specifies the main title.
+
+The subtitle provides instructions for interacting with
+the chart and explains its visual encoding.
+
+It communicates that:
+
+- Users can select a route or direction.
+- Hovering over a point reveals additional information.
+- Solid circles represent northbound and westbound buses.
+- Hollow circles represent southbound and eastbound buses.
+- The dashed diagonal represents equal headways.
+
+width: 650
+
+This specifies the width of the visualization in pixels.
+
+It provides enough horizontal space for the scatterplot
+and the legends.
+
+height: 560
+
+This specifies the height of the visualization in pixels.
+
+It provides sufficient room for the plotted observations
+and quantitative axes.
+
+============================================================
+3. INTERACTIVE PARAMETERS
+============================================================
+
+"params": [
+    {...},
+    {...}
+]
+
+The params property defines interactive parameters that
+control the visualization.
+
+The specification defines two parameters:
+
+1. routeFilter
+2. directionFilter
+
+These parameters are connected to dropdown input controls.
+
+They allow users to dynamically filter the observations
+without changing the underlying dataset.
+
+Unlike a static visualization, the interactive chart
+responds to user selections.
+
+------------------------------------------------------------
+3.1 ROUTE FILTER
+------------------------------------------------------------
+
+{
+    "name": "routeFilter",
+    "value": "All",
+    "bind": {
+        "input": "select",
+        "name": "Route: ",
+        "options": [
+            "All",
+            "8",
+            "20",
+            "22",
+            "36",
+            "56",
+            "66",
+            "146",
+            "147",
+            "157"
+        ],
+        "labels": [
+            "All routes",
+            "Route 8",
+            "Route 20",
+            "Route 22",
+            "Route 36",
+            "Route 56",
+            "Route 66",
+            "Route 146",
+            "Route 147",
+            "Route 157"
+        ]
+    }
+}
+
+"name": "routeFilter"
+
+This assigns the name routeFilter to the interactive
+parameter.
+
+The parameter is referenced later in the data filtering
+expression.
+
+"value": "All"
+
+This specifies the default selection.
+
+When the visualization first loads, all routes are
+displayed.
+
+"bind": {
+    "input": "select"
+}
+
+This connects the parameter to a dropdown selection input.
+
+The dropdown allows users to select a particular route.
+
+"name": "Route: "
+
+This defines the label displayed beside the dropdown.
+
+"options": [...]
+
+This defines the actual values available for selection.
+
+The options include:
+
+All
+8
+20
+22
+36
+56
+66
+146
+147
+157
+
+Selecting "All" displays observations from every route.
+
+Selecting a route number displays only observations
+belonging to that route.
+
+"labels": [...]
+
+This defines the human-readable labels shown to users.
+
+For example:
+
+The option "8" is displayed as "Route 8".
+
+The option "20" is displayed as "Route 20".
+
+This separates the internal parameter values from the
+labels displayed in the user interface.
+
+The route filter provides a convenient way to isolate
+individual bus routes and examine their headway patterns.
+
+------------------------------------------------------------
+3.2 DIRECTION FILTER
+------------------------------------------------------------
+
+{
+    "name": "directionFilter",
+    "value": "All",
+    "bind": {
+        "input": "select",
+        "name": "Direction: ",
+        "options": [
+            "All",
+            "N",
+            "S",
+            "E",
+            "W"
+        ],
+        "labels": [
+            "All directions",
+            "North (N)",
+            "South (S)",
+            "East (E)",
+            "West (W)"
+        ]
+    }
+}
+
+"name": "directionFilter"
+
+This assigns the name directionFilter to the second
+interactive parameter.
+
+"value": "All"
+
+This specifies that all directions are displayed by default.
+
+"bind": {
+    "input": "select"
+}
+
+This connects the parameter to another dropdown menu.
+
+"name": "Direction: "
+
+This defines the label displayed beside the direction
+dropdown.
+
+"options": [...]
+
+This specifies the available direction values:
+
+All
+N
+S
+E
+W
+
+"labels": [...]
+
+These are the human-readable labels displayed in the
+dropdown.
+
+N is displayed as North (N).
+
+S is displayed as South (S).
+
+E is displayed as East (E).
+
+W is displayed as West (W).
+
+Selecting a particular direction filters the observations
+to display only buses traveling in that direction.
+
+The direction filter is useful for examining whether
+headway irregularities differ across travel directions.
+
+============================================================
+4. LAYERED VISUALIZATION STRUCTURE
+============================================================
+
+"layer": [
+    {...},
+    {...}
+]
+
+The layer property allows multiple visualization layers
+to be combined into one chart.
+
+The specification contains two primary layers.
+
+Layer 1:
+A diagonal reference line representing equal headways.
+
+Layer 2:
+The interactive scatterplot containing the actual bus
+observations.
+
+The layered structure allows both layers to share the
+same coordinate system.
+
+This makes it possible to compare observations directly
+against the reference line.
+
+The first layer provides a constant visual benchmark.
+
+The second layer responds to user interactions.
+
+============================================================
+5. FIRST LAYER: DIAGONAL REFERENCE LINE
+============================================================
+
+"data": {
+    "values": [
+        {"x": 0, "y": 0},
+        {"x": 60, "y": 60}
+    ]
+}
+
+The first layer contains two data points.
+
+The first point is located at (0, 0).
+
+The second point is located at (60, 60).
+
+These points define the beginning and end of the diagonal
+reference line.
+
+The line represents the relationship:
+
+Actual Next = Observation Previous
+
+In other words, the interval following the observed bus
+is equal to the interval preceding it.
+
+"mark": {
+    "type": "line",
+    "color": "#555555",
+    "strokeDash": [5, 5],
+    "strokeWidth": 2,
+    "clip": true
+}
+
+The mark property determines how the reference data is
+displayed.
+
+"type": "line"
+
+This specifies that the layer should be drawn as a line.
+
+"color": "#555555"
+
+This sets the line color to dark gray.
+
+"strokeDash": [5, 5]
+
+This makes the line dashed rather than solid.
+
+The two values determine the approximate dash and gap
+lengths.
+
+"strokeWidth": 2
+
+This specifies the thickness of the reference line.
+
+"clip": true
+
+This ensures that the line is clipped to the plotting area.
+
+It prevents the line from extending outside the visible
+chart region when the coordinate scales are adjusted.
+
+============================================================
+6. REFERENCE LINE AXIS ENCODINGS
+============================================================
+
+HORIZONTAL AXIS
+
+"x": {
+    "field": "x",
+    "type": "quantitative",
+    "axis": {
+        "title": "Observation Previous (minutes)",
+        "grid": true,
+        "values": [
+            0, 5, 10, 15, 20, 25, 30,
+            35, 40, 45, 50, 55, 60
+        ]
+    },
+    "scale": {
+        "domain": [0, 60],
+        "nice": false
+    }
+}
+
+"field": "x"
+
+This uses the x field from the reference line data.
+
+"type": "quantitative"
+
+This specifies that the horizontal variable is numerical.
+
+"axis": {...}
+
+This defines the appearance of the horizontal axis.
+
+"title"
+
+This sets the axis title to Observation Previous
+(minutes).
+
+"grid": true
+
+This enables grid lines.
+
+"values"
+
+This explicitly specifies tick marks at five-minute
+increments from zero to sixty.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+This defines the horizontal scale.
+
+The domain is fixed between zero and sixty minutes.
+
+The nice property is disabled to prevent Vega-Lite from
+automatically changing the specified domain.
+
+VERTICAL AXIS
+
+"y": {
+    "field": "y",
+    "type": "quantitative",
+    "axis": {
+        "title": "Actual Next (minutes)",
+        "grid": true,
+        "values": [
+            0, 5, 10, 15, 20, 25, 30,
+            35, 40, 45, 50, 55, 60
+        ]
+    },
+    "scale": {
+        "domain": [0, 60],
+        "nice": false
+    }
+}
+
+"field": "y"
+
+This uses the y field from the reference line data.
+
+"type": "quantitative"
+
+This identifies the vertical variable as numerical.
+
+"title"
+
+This labels the vertical axis as Actual Next (minutes).
+
+"grid": true
+
+This enables grid lines across the chart.
+
+"values"
+
+This specifies tick marks at five-minute increments.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+This fixes the vertical domain between zero and sixty
+minutes.
+
+Both axes use identical domains.
+
+This is important because the diagonal line should
+represent actual equality between the two measurements.
+
+============================================================
+7. SECOND LAYER: INTERACTIVE SCATTERPLOT
+============================================================
+
+The second layer contains the bus observations.
+
+It also introduces an additional interactive parameter
+for zooming and panning.
+
+The data is represented using a values array containing
+individual JSON objects.
+
+Each object represents one bus observation.
+
+The records contain the following fields:
+
+"id"
+
+This identifies an observation within the supplied data.
+
+Some IDs are reused at different stops, so they should
+not be interpreted as globally unique record identifiers.
+
+"route"
+
+This specifies the CTA bus route number.
+
+Examples include routes 8, 20, 22, 36, 56, 66, 146,
+147, and 157.
+
+"stop"
+
+This specifies the bus stop or intersection where the
+observation was recorded.
+
+Examples include:
+
+- Halsted and Fulton
+- Grand and Kingsbury
+- Clark and Washington
+- La Salle and Madison
+- Lake and Halsted
+- Sheridan and Granville
+- Clark and Devon
+- Michigan and Randolph
+- Broadway and Wilson
+- Foster and Marine Drive
+
+"cta"
+
+This contains the CTA stop identifier associated with
+the observation.
+
+It distinguishes stops that might otherwise have
+similar or related names.
+
+"direction"
+
+This specifies the direction of travel.
+
+N = Northbound
+S = Southbound
+E = Eastbound
+W = Westbound
+
+"previous"
+
+This stores the number of minutes between the previous
+bus and the currently observed bus.
+
+It determines the horizontal position of the point.
+
+"actualNext"
+
+This stores the number of minutes between the currently
+observed bus and the next bus.
+
+It determines the vertical position of the point.
+
+"comments"
+
+This contains contextual information about the observation.
+
+Examples include:
+
+- Early or late arrivals.
+- Buses arriving close together.
+- Possible bunching.
+- Long service gaps.
+- Observations of relatively regular service.
+
+These comments are displayed through the hover tooltip.
+
+============================================================
+8. ZOOMING AND PANNING PARAMETER
+============================================================
+
+"params": [
+    {
+        "name": "zoomPan",
+        "select": "interval",
+        "bind": "scales"
+    }
+]
+
+This parameter introduces interactive zooming and panning.
+
+"name": "zoomPan"
+
+This assigns the name zoomPan to the interaction parameter.
+
+"select": "interval"
+
+This specifies an interval selection.
+
+An interval selection allows users to interact with a
+continuous region of the visualization.
+
+"bind": "scales"
+
+This connects the interval selection to the chart scales.
+
+As a result, the user can interact directly with the
+coordinate system.
+
+The interaction supports:
+
+- Dragging to pan around the chart.
+- Scrolling to zoom into or out of the chart.
+- Examining smaller regions of the scatterplot.
+
+The parameter is defined within the second layer,
+so the zooming and panning interaction applies to the
+scatterplot layer.
+
+The reference line is separately defined in the first
+layer.
+
+============================================================
+9. DATA TRANSFORMATIONS AND FILTERING
+============================================================
+
+"transform": [
+    {...},
+    {...},
+    {...}
+]
+
+The transform property applies filtering operations
+before the observations are displayed.
+
+The specification contains three filters.
+
+------------------------------------------------------------
+9.1 INVALID OBSERVATION FILTER
+------------------------------------------------------------
+
+{
+    "filter": "datum.previous != 999 &&
+               datum.actualNext != 999"
+}
+
+This filter excludes observations containing the
+sentinel value 999.
+
+datum.previous != 999
+
+This checks that the previous interval is not equal
+to 999.
+
+datum.actualNext != 999
+
+This checks that the actual following interval is
+not equal to 999.
+
+The && operator means that both conditions must be true.
+
+Therefore, an observation is displayed only when both
+headway measurements are valid.
+
+Zero-minute intervals are retained because zero can
+represent a valid observed interval.
+
+------------------------------------------------------------
+9.2 ROUTE FILTER
+------------------------------------------------------------
+
+{
+    "filter": "routeFilter === 'All' ||
+               datum.route === routeFilter"
+}
+
+This transformation connects the route dropdown to
+the observation dataset.
+
+routeFilter === 'All'
+
+This checks whether the user selected All routes.
+
+If the condition is true, observations from every
+route are retained.
+
+datum.route === routeFilter
+
+This checks whether the route associated with an
+observation matches the selected dropdown value.
+
+The || operator means OR.
+
+Therefore, an observation is retained when either:
+
+1. The user selected All routes.
+2. The observation belongs to the selected route.
+
+For example, selecting Route 8 displays only records
+where datum.route is equal to "8".
+
+The route filtering operation updates the scatterplot
+when the dropdown selection changes.
+
+------------------------------------------------------------
+9.3 DIRECTION FILTER
+------------------------------------------------------------
+
+{
+    "filter": "directionFilter === 'All' ||
+               datum.direction === directionFilter"
+}
+
+This transformation connects the direction dropdown
+to the observation dataset.
+
+directionFilter === 'All'
+
+This checks whether the user selected All directions.
+
+If true, observations from all directions are retained.
+
+datum.direction === directionFilter
+
+This checks whether the observation's direction matches
+the selected direction.
+
+The || operator means OR.
+
+An observation is therefore retained when either:
+
+1. The user selected All directions.
+2. The observation belongs to the selected direction.
+
+For example, selecting North (N) displays only records
+where datum.direction is equal to "N".
+
+The route and direction filters are applied together.
+
+For example, selecting Route 8 and North (N) displays
+only northbound observations belonging to Route 8.
+
+============================================================
+10. SCATTERPLOT MARK CONFIGURATION
+============================================================
+
+"mark": {
+    "type": "point",
+    "size": 130,
+    "strokeWidth": 2,
+    "opacity": 0.9,
+    "clip": true
+}
+
+This defines the visual appearance of the bus observations.
+
+"type": "point"
+
+This specifies that individual observations should be
+displayed as points in a scatterplot.
+
+Each valid bus observation is represented by a circle.
+
+"size": 130
+
+This determines the approximate size of each point.
+
+"strokeWidth": 2
+
+This controls the thickness of the circle outlines.
+
+"opacity": 0.9
+
+This sets the point opacity to ninety percent.
+
+The slight transparency can help distinguish overlapping
+observations.
+
+"clip": true
+
+This ensures that marks are clipped to the visible
+plotting area.
+
+Points outside the current visible scale region are
+not drawn beyond the chart boundaries.
+
+This is particularly useful when users zoom or pan.
+
+============================================================
+11. HORIZONTAL AXIS: PREVIOUS HEADWAY
+============================================================
+
+"x": {
+    "field": "previous",
+    "type": "quantitative",
+    "axis": {
+        "title": "Observation Previous (minutes)",
+        "grid": true,
+        "values": [
+            0, 5, 10, 15, 20, 25, 30,
+            35, 40, 45, 50, 55, 60
+        ]
+    },
+    "scale": {
+        "domain": [0, 60],
+        "nice": false
+    }
+}
+
+This encoding determines the horizontal position of
+each observation.
+
+"field": "previous"
+
+The previous field contains the interval between the
+previous bus and the observed bus.
+
+"type": "quantitative"
+
+This identifies the measurement as numerical data.
+
+"axis": {...}
+
+This defines the horizontal axis appearance.
+
+"title"
+
+This labels the axis Observation Previous (minutes).
+
+"grid": true
+
+This enables grid lines.
+
+"values"
+
+This defines tick marks at five-minute increments.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+This fixes the horizontal scale between zero and
+sixty minutes.
+
+============================================================
+12. VERTICAL AXIS: ACTUAL FOLLOWING HEADWAY
+============================================================
+
+"y": {
+    "field": "actualNext",
+    "type": "quantitative",
+    "axis": {
+        "title": "Actual Next (minutes)",
+        "grid": true,
+        "values": [
+            0, 5, 10, 15, 20, 25, 30,
+            35, 40, 45, 50, 55, 60
+        ]
+    },
+    "scale": {
+        "domain": [0, 60],
+        "nice": false
+    }
+}
+
+This encoding determines the vertical position of
+each observation.
+
+"field": "actualNext"
+
+This field contains the actual interval between the
+observed bus and the next bus.
+
+"type": "quantitative"
+
+This identifies the measurement as numerical.
+
+"axis": {...}
+
+This defines the vertical axis appearance.
+
+"title"
+
+This labels the axis Actual Next (minutes).
+
+"grid": true
+
+This enables grid lines.
+
+"values"
+
+This specifies tick marks at five-minute increments.
+
+"scale": {
+    "domain": [0, 60],
+    "nice": false
+}
+
+This fixes the vertical scale between zero and
+sixty minutes.
+
+Both axes use the same domain, preserving the meaning
+of the diagonal equality reference line.
+
+============================================================
+13. STROKE ENCODING: ROUTE COLORS
+============================================================
+
+"stroke": {
+    "field": "route",
+    "type": "nominal",
+    "scale": {
+        "domain": [...],
+        "range": [...]
+    },
+    "legend": {
+        "title": "Route colors",
+        "orient": "right",
+        "symbolType": "circle"
+    }
+}
+
+The stroke encoding controls the outline color of each
+scatterplot point.
+
+"field": "route"
+
+The outline color is determined by the bus route number.
+
+Unlike the static version, which used a combined
+route-stop-direction category, this interactive version
+uses route alone.
+
+This means that observations belonging to the same
+route receive the same outline color across different
+stops and directions.
+
+"type": "nominal"
+
+This identifies route as categorical data.
+
+"scale": {
+    "domain": [...],
+    "range": [...]
+}
+
+The domain defines the route categories.
+
+The range defines the colors assigned to those routes.
+
+The route domain contains:
+
+8
+20
+22
+36
+56
+66
+146
+147
+157
+
+The range assigns colors such as:
+
+#1f77b4 = Blue
+#ff7f0e = Orange
+#2ca02c = Green
+#d62728 = Red
+#9467bd = Purple
+#17becf = Teal
+#8c564b = Brown
+#e377c2 = Pink
+#7f7f7f = Gray
+#bcbd22 = Olive
+
+These colors help distinguish the different routes.
+
+The same route color is used across its observations.
+
+IMPORTANT:
+The supplied domain contains nine route categories,
+but the range contains ten colors.
+
+The tenth color does not correspond to a route category
+in the supplied domain.
+
+The range should contain nine colors if the intention
+is to assign exactly one color to each listed route.
+
+"legend": {
+    "title": "Route colors",
+    "orient": "right",
+    "symbolType": "circle"
+}
+
+This configures the route legend.
+
+"title": "Route colors"
+
+This gives the legend a descriptive heading.
+
+"orient": "right"
+
+This positions the legend to the right of the chart.
+
+"symbolType": "circle"
+
+This specifies circular legend symbols.
+
+The legend helps users identify which route each
+color represents.
+
+============================================================
+14. FILL ENCODING: DIRECTION DISTINCTION
+============================================================
+
+"fill": {
+    "condition": {
+        "test": "datum.direction === 'N' ||
+                datum.direction === 'W'",
+        "field": "route",
+        "type": "nominal",
+        "scale": {
+            "domain": [...],
+            "range": [...]
+        }
+    },
+    "value": "white"
+}
+
+The fill encoding determines the interior color of
+each scatterplot point.
+
+It uses a conditional expression based on direction.
+
+The purpose is to distinguish northbound and westbound
+observations from southbound and eastbound observations.
+
+"condition": {...}
+
+This specifies that the fill should depend on a condition.
+
+"test": "datum.direction === 'N' ||
+        datum.direction === 'W'"
+
+This checks whether the observation direction is
+northbound or westbound.
+
+The || operator means OR.
+
+If the observation is northbound or westbound, the
+condition evaluates to true.
+
+"field": "route"
+
+When the condition is true, the point interior is
+assigned the color associated with its route.
+
+"type": "nominal"
+
+This specifies that the route is categorical data.
+
+"scale": {
+    "domain": [...],
+    "range": [...]
+}
+
+This uses the route color scale to determine the
+interior color.
+
+" value": "white"
+
+When the condition is false, the point interior
+is set to white.
+
+Therefore, the intended encoding is:
+
+Northbound (N):
+Filled circle using the route color.
+
+Westbound (W):
+Filled circle using the route color.
+
+Southbound (S):
+White interior with a colored outline.
+
+Eastbound (E):
+White interior with a colored outline.
+
+The stroke encoding continues to provide the route
+color for the circle outline.
+
+This allows direction to be distinguished through
+the fill while route identity is represented through
+color.
+
+============================================================
+15. TOOLTIP ENCODING: HOVER INTERACTION
+============================================================
+
+"tooltip": [
+    {...},
+    {...},
+    {...}
+]
+
+The tooltip property defines the information displayed
+when a user hovers over a point.
+
+Instead of displaying every observation's details
+directly on the chart, the visualization provides
+additional information on demand.
+
+This keeps the scatterplot relatively uncluttered.
+
+Each tooltip entry specifies a data field, its data type,
+and a human-readable title.
+
+------------------------------------------------------------
+15.1 OBSERVATION ID
+------------------------------------------------------------
+
+{
+    "field": "id",
+    "type": "ordinal",
+    "title": "Observation ID"
+}
+
+"field": "id"
+
+This displays the observation identifier.
+
+"type": "ordinal"
+
+This treats the identifier as a discrete category.
+
+"title": "Observation ID"
+
+This provides the label shown in the tooltip.
+
+------------------------------------------------------------
+15.2 ROUTE
+------------------------------------------------------------
+
+{
+    "field": "route",
+    "type": "nominal",
+    "title": "Route"
+}
+
+This displays the CTA route number associated with
+the observation.
+
+The route is treated as categorical data.
+
+------------------------------------------------------------
+15.3 DIRECTION
+------------------------------------------------------------
+
+{
+    "field": "direction",
+    "type": "nominal",
+    "title": "Direction"
+}
+
+This displays the travel direction.
+
+Possible values are N, S, E, and W.
+
+------------------------------------------------------------
+15.4 STOP
+------------------------------------------------------------
+
+{
+    "field": "stop",
+    "type": "nominal",
+    "title": "Stop"
+}
+
+This displays the name of the stop or intersection
+where the observation was recorded.
+
+This is useful when multiple observations belong
+to the same route but were recorded at different stops.
+
+------------------------------------------------------------
+15.5 CTA STOP ID
+------------------------------------------------------------
+
+{
+    "field": "cta",
+    "type": "nominal",
+    "title": "CTA Stop ID"
+}
+
+This displays the CTA identifier associated with
+the observation.
+
+It provides an additional way to distinguish
+different stop locations.
+
+------------------------------------------------------------
+15.6 PREVIOUS HEADWAY
+------------------------------------------------------------
+
+{
+    "field": "previous",
+    "type": "quantitative",
+    "title": "Previous gap (min)"
+}
+
+This displays the previous headway in minutes.
+
+It corresponds to the horizontal coordinate of
+the point.
+
+------------------------------------------------------------
+15.7 ACTUAL FOLLOWING HEADWAY
+------------------------------------------------------------
+
+{
+    "field": "actualNext",
+    "type": "quantitative",
+    "title": "Actual next gap (min)"
+}
+
+This displays the actual interval between the observed
+bus and the following bus.
+
+It corresponds to the vertical coordinate of the point.
+
+------------------------------------------------------------
+15.8 COMMENTS
+------------------------------------------------------------
+
+{
+    "field": "comments",
+    "type": "nominal",
+    "title": "Comments"
+}
+
+This displays the contextual comments associated
+with the observation.
+
+Examples include early arrivals, late arrivals,
+bunching, and long service gaps.
+
+This is particularly useful because two observations
+with similar numerical coordinates may have different
+contextual explanations.
+
+============================================================
+16. CONFIGURATION AND VISUAL STYLING
+============================================================
+
+"config": {
+    "view": {
+        "stroke": "#cccccc"
+    },
+    "axis": {
+        "labelFontSize": 11,
+        "titleFontSize": 13,
+        "titleFontWeight": "normal"
+    },
+    "legend": {
+        "labelFontSize": 12,
+        "titleFontSize": 12
+    }
+}
+
+The config property defines styling defaults for
+the visualization.
+
+These settings affect the appearance of the chart
+rather than its underlying data.
+
+VIEW CONFIGURATION
+
+"view": {
+    "stroke": "#cccccc"
+}
+
+This specifies a light-gray border around the chart.
+
+The border visually separates the plotting area
+from the surrounding page.
+
+AXIS CONFIGURATION
+
+"labelFontSize": 11
+
+This sets the font size of the numerical axis labels.
+
+"titleFontSize": 13
+
+This sets the font size of the axis titles.
+
+"titleFontWeight": "normal"
+
+This prevents axis titles from appearing excessively bold.
+
+LEGEND CONFIGURATION
+
+"labelFontSize": 12
+
+This sets the font size of the legend labels.
+
+"titleFontSize": 12
+
+This sets the font size of the legend title.
+
+These settings maintain readability while allowing
+the chart and legend to fit within the available space.
+
+============================================================
+17. INTERACTION DESIGN AND USER WORKFLOW
+============================================================
+
+The interactive visualization supports several
+different ways of exploring the bus observations.
+
+ROUTE EXPLORATION
+
+The user begins with all routes displayed.
+
+They can select a specific route using the Route dropdown.
+
+The scatterplot updates to show only observations
+belonging to that route.
+
+This makes it easier to examine route-specific
+headway patterns.
+
+DIRECTION EXPLORATION
+
+The user can select a particular direction.
+
+The scatterplot then displays only observations
+belonging to that direction.
+
+This allows comparisons between northbound,
+southbound, eastbound, and westbound service.
+
+COMBINED FILTERING
+
+The route and direction filters can be used together.
+
+For example:
+
+Route: 8
+Direction: N
+
+This combination displays only northbound observations
+from Route 8.
+
+Using both filters allows users to narrow the dataset
+to a particular route-direction combination.
+
+HOVER FOR DETAILS
+
+The user can move the pointer over an individual point.
+
+The tooltip displays:
+
+- Observation ID
+- Route
+- Direction
+- Stop
+- CTA Stop ID
+- Previous gap
+- Actual next gap
+- Comments
+
+This interaction provides details without requiring
+all the information to appear permanently on the chart.
+
+ZOOM AND PAN
+
+The user can interact with the coordinate scales.
+
+Dragging allows the user to move around the chart.
+
+Scrolling allows the user to zoom in or out.
+
+This is useful when several observations overlap or
+when users want to inspect a smaller region.
+
+============================================================
+18. HOW TO INTERPRET THE SCATTERPLOT
+============================================================
+
+Each point represents one bus observation.
+
+The horizontal coordinate represents the interval
+between the previous bus and the currently observed bus.
+
+The vertical coordinate represents the interval
+between the currently observed bus and the next bus.
+
+The dashed diagonal represents equal intervals.
+
+POINTS ON THE DIAGONAL
+
+A point on the diagonal indicates that the previous
+and following intervals are equal.
+
+Example:
+
+Previous = 10 minutes
+Actual Next = 10 minutes
+
+This indicates balanced spacing around the observed bus.
+
+POINTS ABOVE THE DIAGONAL
+
+A point above the diagonal indicates that the following
+interval is longer than the previous interval.
+
+Example:
+
+Previous = 5 minutes
+Actual Next = 15 minutes
+
+The observed bus was followed by a longer gap than
+the gap preceding it.
+
+This can indicate a service gap following closely
+spaced buses.
+
+POINTS BELOW THE DIAGONAL
+
+A point below the diagonal indicates that the following
+interval is shorter than the previous interval.
+
+Example:
+
+Previous = 15 minutes
+Actual Next = 5 minutes
+
+The observed bus was followed by another bus relatively
+quickly.
+
+This can indicate a short following interval and may
+be associated with bunching.
+
+POINTS NEAR THE ORIGIN
+
+Points near (0, 0) indicate short intervals both before
+and after the observed bus.
+
+These observations may indicate buses arriving
+close together.
+
+POINTS FAR FROM THE ORIGIN
+
+Points farther from the origin indicate longer intervals.
+
+For example, a point near (30, 30) indicates that
+the observed bus had approximately thirty-minute
+intervals on both sides.
+
+============================================================
+19. IMPLEMENTATION PROCESS
+============================================================
+
+The interactive visualization was implemented using
+a layered Vega-Lite specification.
+
+The implementation process can be summarized as follows.
+
+STEP 1: ORGANIZE THE OBSERVATION DATA
+
+Bus observations were represented as individual JSON
+records.
+
+Each record contains the route, stop, CTA identifier,
+direction, previous headway, actual following headway,
+and contextual comments.
+
+This structure preserves individual observations
+rather than aggregating them into route-level averages.
+
+STEP 2: DEFINE THE INTERACTIVE PARAMETERS
+
+Two dropdown parameters were created.
+
+The routeFilter parameter allows users to select
+a particular CTA route.
+
+The directionFilter parameter allows users to select
+a travel direction.
+
+Both parameters default to All.
+
+STEP 3: CREATE THE REFERENCE LINE
+
+A separate dataset containing two points was created.
+
+These points define a diagonal line from (0, 0) to
+(60, 60).
+
+The line provides a benchmark for comparing previous
+and following headways.
+
+STEP 4: CREATE THE SCATTERPLOT
+
+The observation dataset was added as the second layer.
+
+Each valid observation is represented by an individual
+circular point.
+
+The previous headway determines the horizontal position.
+
+The actual following headway determines the vertical
+position.
+
+STEP 5: ADD ZOOMING AND PANNING
+
+An interval selection parameter named zoomPan was added.
+
+It is bound to the chart scales.
+
+This allows users to interact with the coordinate system
+and inspect smaller regions of the scatterplot.
+
+STEP 6: IMPLEMENT DATA FILTERING
+
+Three filter transformations were applied.
+
+The first removes observations containing invalid
+sentinel values.
+
+The second filters observations based on the selected
+route.
+
+The third filters observations based on the selected
+direction.
+
+These transformations allow the scatterplot to update
+dynamically in response to user selections.
+
+STEP 7: APPLY ROUTE COLOR ENCODING
+
+The stroke encoding assigns a consistent outline color
+to each bus route.
+
+The route color scale uses an explicit domain and range.
+
+This makes route categories visually distinguishable.
+
+STEP 8: APPLY DIRECTION FILL ENCODING
+
+The fill encoding uses a conditional expression.
+
+Northbound and westbound observations receive colored
+interiors.
+
+Southbound and eastbound observations receive white
+interiors.
+
+This provides an additional visual distinction between
+travel directions.
+
+STEP 9: IMPLEMENT HOVER TOOLTIPS
+
+The tooltip encoding was added to the point marks.
+
+It exposes additional observation information when
+the user hovers over an individual point.
+
+This follows the details-on-demand interaction principle.
+
+STEP 10: APPLY FINAL STYLING
+
+The final configuration defines the chart border,
+axis fonts, legend fonts, and other visual properties.
+
+These settings improve readability and maintain
+a consistent visual appearance.
+
+============================================================
+20. DESIGN RATIONALE
+============================================================
+
+The scatterplot was selected because it allows two
+quantitative measurements to be compared simultaneously.
+
+The previous and following headways are displayed
+on separate axes, making differences between the two
+intervals visible.
+
+The diagonal reference line provides an immediate
+visual benchmark for identifying balanced headways.
+
+The route dropdown allows users to isolate particular
+routes without needing separate charts.
+
+The direction dropdown supports comparisons between
+different travel directions.
+
+The two filters can also be combined, allowing users
+to examine a specific route-direction combination.
+
+The route color encoding makes it possible to identify
+the route associated with each observation.
+
+The filled and hollow circle encoding adds another
+categorical distinction without requiring separate
+visualizations.
+
+The tooltip interaction provides additional information
+without overcrowding the chart.
+
+Finally, zooming and panning allow users to examine
+dense regions and overlapping observations in greater
+detail.
+
+Together, these design decisions support a more flexible
+exploration of bus headway imbalance and irregular
+service patterns.
+
+============================================================
+21. TECHNICAL NOTES AND VALIDATION
+============================================================
+
+Several implementation details should be checked when
+using this specification.
+
+1. VEGA-LITE VERSION
+
+The specification declares Vega-Lite version 6.
+
+The JavaScript libraries used to render the visualization
+must be compatible with Vega-Lite version 6.
+
+If the surrounding HTML page loads Vega-Lite version 5,
+the schema and runtime versions do not match.
+
+The Vega, Vega-Lite, and Vega-Embed libraries should
+be checked for compatibility.
+
+2. ROUTE COLOR DOMAIN AND RANGE
+
+The route color domain contains nine values:
+
+8, 20, 22, 36, 56, 66, 146, 147, 157
+
+However, the supplied range contains ten colors.
+
+Only nine colors are required for the nine route
+categories.
+
+The extra color should be removed unless another
+route category is intended.
+
+The same correction should be applied to both the
+stroke scale and the conditional fill scale.
+
+3. DIRECTION ENCODING
+
+The subtitle states:
+
+Solid = N/W
+Hollow = S/E
+
+The fill condition implements this convention.
+
+Northbound and westbound observations receive their
+route-associated fill color.
+
+Southbound and eastbound observations receive white.
+
+The stroke encoding continues to provide colored
+outlines for all observations.
+
+4. FILTERING BEHAVIOR
+
+The route and direction filters are applied after
+the invalid observation filter.
+
+This means that observations containing 999 in either
+headway field are excluded regardless of the selected
+route or direction.
+
+5. ZERO-MINUTE INTERVALS
+
+Zero-minute intervals are retained.
+
+They can represent buses arriving within the same
+recorded minute.
+
+The filter excludes 999, not zero.
+
+6. AXIS DOMAINS
+
+Both axes use a fixed domain from zero to sixty minutes.
+
+This ensures that the diagonal line represents equality.
+
+However, observations greater than sixty minutes would
+fall outside the displayed range.
+
+7. ZOOM AND PAN
+
+The zoomPan parameter uses an interval selection
+bound to scales.
+
+It enables interaction with the scatterplot's
+coordinate system.
+
+The reference line is in a separate layer, so its
+behavior should be checked when users zoom or pan.
+
+8. TOOLTIP DATA
+
+The tooltip references fields that are present in
+the observation records.
+
+These include:
+
+id
+route
+direction
+stop
+cta
+previous
+actualNext
+comments
+
+The tooltip therefore provides both numerical and
+contextual information about each observation.
+
+9. DATA IDENTIFIERS
+
+The id field is reused across different stops.
+
+It identifies observations within their respective
+sequences but is not a globally unique identifier.
+
+The route, stop, and CTA fields provide additional
+context for distinguishing observations.
+
+10. JSON VALIDITY
+
+The specification must remain valid JSON.
+
+Comments such as // explanation cannot be inserted
+directly into the JSON file.
+
+Documentation should be stored separately from the
+visualization specification.
+
+============================================================
+22. COMPARISON WITH THE STATIC VISUALIZATION
+============================================================
+
+The interactive visualization builds upon the static
+Headway Imbalance and Bunching Diagnostic.
+
+Both versions share the same fundamental analytical
+structure.
+
+They use:
+
+- The same previous and actual following headway
+  measurements.
+- A scatterplot representation.
+- A diagonal equality reference line.
+- Quantitative axes with matching domains.
+- Route-associated colors.
+- Filled and hollow circle distinctions.
+
+However, the interactive version introduces additional
+functionality.
+
+STATIC VERSION
+
+The static version presents all observations at once.
+
+It provides a fixed view of the data.
+
+Users can inspect the overall distribution of points,
+but they cannot dynamically isolate a route or direction
+through the visualization itself.
+
+INTERACTIVE VERSION
+
+The interactive version adds:
+
+- Route dropdown filtering.
+- Direction dropdown filtering.
+- Combined filtering.
+- Hover-based details-on-demand.
+- Zooming.
+- Panning.
+
+These features allow users to investigate particular
+subsets of the data and inspect individual observations.
+
+The interactive version therefore supports a more
+exploratory analytical workflow.
+
+============================================================
+23. CONCLUSION
+============================================================
+
+The interactive Headway Imbalance and Bunching Diagnostic
+provides a scatterplot-based approach for examining
+CTA bus headway regularity.
+
+It compares the interval preceding an observed bus
+with the actual interval following that bus.
+
+The diagonal reference line represents equal headways,
+while deviations from the line reveal differences
+between consecutive intervals.
+
+The route dropdown and direction dropdown allow users
+to filter observations dynamically.
+
+The route color encoding and direction-based fill
+encoding provide categorical distinctions.
+
+The hover tooltip exposes additional information about
+individual observations, including stop identifiers,
+headway measurements, and contextual comments.
+
+The zooming and panning interaction allows users to
+inspect smaller regions of the scatterplot.
+
+Together, these features provide an interactive
+environment for exploring potential bus bunching,
+short following intervals, long service gaps, and
+relatively balanced service patterns.
+
+The layered Vega-Lite implementation combines
+interactive parameters, data transformations,
+quantitative encodings, categorical scales, tooltips,
+and chart styling into one visualization.
