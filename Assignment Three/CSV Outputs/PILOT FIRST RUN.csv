@@ -1,0 +1,9 @@
+submitted_at,participant_id,group,condition,task,route,answer_stop,previous_headway,actual_next_headway,answer_direction,mean_direction_1,mean_direction_2,true_stop,true_previous_headway,true_actual_next_headway,true_direction,true_mean_direction_1,true_mean_direction_2,stop_correct,previous_correct,actual_correct,direction_correct,mean1_correct,mean2_correct,task_correct,previous_abs_error,actual_abs_error,mean1_abs_error,mean2_abs_error,tolerance_pct,tolerance_floor_min,explanation,confidence,difficulty,elapsed_seconds
+2026-11-05T21:25:35.895Z,PILOT1,1,Static,1,22,Clark and Berwyn,0,26,,,,Clark and Berwyn,0,26,,,,1,1,1,,,,1,0,0,,,0.05,1,Looked at green dots above line,4,2,47.59
+2026-11-05T21:26:41.277Z,PILOT1,1,Static,2,36,,,,Direction 2,7,20,,,,Direction 2,6.4,20,,,,1,1,1,1,,,0.6,0,0.05,1,Looked at red dots and estimated,4,4,65.28
+2026-11-05T21:27:20.569Z,PILOT1,1,Interactive,1,147,Michigan and Randolph,2,28,,,,Michigan and Randolph,2,28,,,,1,1,1,,,,1,0,0,,,0.02,0.5,Found dot hovered,5,1,39.22
+2026-11-05T21:28:32.184Z,PILOT1,1,Interactive,2,146,,,,Direction 1,20,7,,,,Direction 1,20.2,7.6,,,,1,1,0,0,,,0.2,0.6,0.02,0.5,Filtered and then raw computed,5,1,71.56
+2026-11-05T21:30:10.374Z,PILOT5,1,Static,1,22,Clark and Berwyn,0,26,,,,Clark and Berwyn,0,26,,,,1,1,1,,,,1,0,0,,,0.05,1,Estimated found bubble,5,4,43.66
+2026-11-05T21:30:51.064Z,PILOT5,1,Static,2,36,,,,Direction 2,5,20,,,,Direction 2,6.4,20,,,,1,0,1,0,,,1.4,0,0.05,1,Looked at red bubbles,3,5,40.62
+2026-11-05T21:31:27.708Z,PILOT5,1,Interactive,1,147,Michigan and Randolph,2,28,,,,Michigan and Randolph,2,28,,,,1,1,1,,,,1,0,0,,,0.02,0.5,Filtered using menu and then found bubble,5,1,36.59
+2026-11-05T21:32:44.945Z,PILOT5,1,Interactive,2,146,,,,Direction 1,20,9,,,,Direction 1,20.2,7.6,,,,1,1,0,0,,,0.2,1.4,0.02,0.5,"Looked at bubbles. North was fairly easy, south more of a guess",2,5,77.16
