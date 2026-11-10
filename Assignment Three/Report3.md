@@ -151,7 +151,6 @@ SECTION 6: CURIO
 
     How to run:
     Step 1: Open terminal and navigate to curio directory (git version)
-![Screenshot of terminal](Curio/Screenshots/curio_start.png)
 ![Screenshot of terminal](Curio/Screenshots/First_command.png)
 ![Screenshot of terminal](Curio/Screenshots/Virtual_Environment.png)
 ![Screenshot of terminal](Curio/Screenshots/nvm_and_hash.png)
