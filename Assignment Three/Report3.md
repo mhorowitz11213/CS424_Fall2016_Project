@@ -187,8 +187,6 @@ SECTION 6: CURIO
 ![Screenshot of direction control](Curio/Screenshots/Toggle_N_direction.png)
 ![Screenshot of direction control](Curio/Screenshots/Toggle_S_direction.png)
 
-    Step 4: Click on the visualization node to open the visualization in a new tab
-
 SECTION 7: References
 
     Amar, R., Eagan, J., & Stasko, J. (2005). Low-level components of analytic activity in information visualization. IEEE InfoVis 2005, 111–117.
