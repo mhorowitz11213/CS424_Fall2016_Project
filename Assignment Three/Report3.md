@@ -3,12 +3,14 @@ Matthew Horowitz, Mahd Rai, Kaya (Shambhawi) Sharma
 
 SECTION ONE: IMPLEMENTING INTERACTION
 
-    At this point in the project, a visualization has been created unifying multiple different visualizations into a single visual analytic system. However, at this point, further research was warranted into whether or not interactions are necessary for all, or parts of the visualization. Looking over the previous final vizualization, it became clear that some subcomponents may or may not need interactions or need specific types of interactions. 
-    As the group examined each sub component, it became clear that one visualization in particular needed to be the visualization in the groups visual analytics system named “Headway Imbalance and Bunching Diagnostic” --from Assignment 2-- was selected for further inspection, as this is one of the most important visualizations the group has produced. The importance of this visualization is that it is key to one of the most important domain questions posed by the group: whether or not headways meet CTA standards, and whether or not the is a large discrepancy between previous and next arrival times, perhaps also indicating the occurance of a non-existing bus recorded by Ventra. Given the importance of this visualization
+    At this point in the project, a visualization system has been created unifying multiple different visualizations into a single visual analytic system. However, at this point, further research was warranted into whether or not interactions are necessary for all, or parts of the visualization. Looking over the previous final vizualization, it became clear that some subcomponents may or may not need interactions or need specific types of interactions. 
+    As the group examined each sub component, one visualization in particular was seen as essential to the group's visual analytics system. Named “Headway Imbalance and Bunching Diagnostic” --from Assignment 2--, this visualization was selected for further inspection, because it is one the most important visualizations the group has produced. The importance of this visualization is that it answers one of the most important domain questions posed by the group: whether or not headways meet CTA standards--at an aggregate level across lines and/or across stops and at a disaggregate level by line or individual stop--, and whether or not the is a large discrepancy between previous and next arrival times, perhaps also indicating the occurance of a non-existing bus recorded by Ventra. Given the importance of this visualization, further attention needed to be given to it, and especially whether or not interaction was needed to ensure users can decode and calculate bus headways.
 
     Description of Visualization: 
 
     The visualization uses a scatterplot to examine the relationship between the time gap before a bus arrives and the time gap until the following bus arrives at the same stop. The horizontal axis represents the previous bus gap, measured in minutes, while the vertical axis represents the actual next bus gap, also measured in minutes. Each point represents an observed bus headway at a particular CTA stop. The points are colored according to their bus route, and their fill distinguishes between travel directions: filled circles represent northbound and westbound observations, while hollow circles represent southbound and eastbound observations. A dashed diagonal reference line, where the previous and following gaps are equal (y=x), provides a baseline for interpreting headway consistency. Points close to this line indicate that the two consecutive gaps are relatively similar. Points substantially above or below the line indicate a larger difference between the preceding and following bus intervals. For example, a point with a relatively short previous gap and a much longer following gap may indicate that buses arrived close together and were subsequently followed by a longer service gap, which can be associated with bus bunching. Both the static and interactive implementations use the same underlying CTA bus headway dataset and retain the same central visual encoding. This allows the two versions to communicate the same information while differing in how users explore and examine the observations.
+
+    Static Implementation:
     
     The static implementation preserves the original design from Assignment 2. It presents the observations in a single scatterplot, displaying the available routes, stops, and directions simultaneously. The static visualization uses the following visual encodings:
     - Position: The previous bus gap is encoded on the x-axis, and the actual following bus gap is encoded on the y-axis.
@@ -19,31 +21,33 @@ SECTION ONE: IMPLEMENTING INTERACTION
     Both axes use a consistent range of 0–60 minutes, with grid lines and tick marks at five-minute intervals. This makes it easier to compare observations and estimate the magnitude of differences between consecutive bus gaps. The static visualization is intended to provide an overview of the entire dataset. Users can examine the overall distribution of observations, identify potential bunching patterns, and compare routes and directions by referring to the color and symbol encodings. The legend provides the information needed to distinguish the different route and stop combinations without requiring interaction. Importantly, the static version is not intended to be a simplified or deliberately less informative version of the interactive visualization. It displays the observations together, allowing users to examine the full dataset and make comparisons across routes and stops without needing to change any settings.
     The interactive implementation retains the same scatterplot design, dataset, axes, reference line, and visual encodings. However, it introduces interactions that allow users to explore subsets of the data and examine individual observations in greater detail.
 
-    I implemented the interactive visualization using Vega-Lite, with the following interactions:
+    Interactive Implementation:
 
-    Route filtering
+    At this stage, there are concerns that displaying all bus lines, and not allowing users to hover over points has created a visualization that is hard to use, making it difficult to determine headways. As such, an interactive version was built, using using Vega-Lite, with the following interactions:
 
-    A dropdown menu allows users to select an individual bus route or display all routes. This makes it possible to isolate a particular route and examine its headway patterns without the visual complexity of displaying every route simultaneously.
+        -Route filtering
 
-    For example, a user can select Route 36 to examine its observations independently, then switch to Route 146 to compare the distribution of headway gaps between the two routes.
+        A dropdown menu allows users to select an individual bus route or display all routes. This makes it possible to isolate a particular route and examine its headway patterns without the visual complexity of displaying every route simultaneously.
 
-    Direction filtering
+        For example, a user can select Route 36 to examine its observations independently, then switch to Route 146 to compare the distribution of headway gaps between the two routes.
 
-    A second dropdown menu allows users to filter observations by direction: northbound, southbound, eastbound, or westbound. Users can also select all directions.
+        -Direction filtering
 
-    This interaction is useful because headway patterns may differ between directions, even when observations belong to the same route. Filtering by direction makes it easier to examine whether potential bunching or irregular service intervals are concentrated in a particular direction.
+        A second dropdown menu allows users to filter observations by direction: northbound, southbound, eastbound, or westbound. Users can also select all directions.
 
-    Hover tooltips
+        This interaction is useful because headway patterns may differ between directions, even when observations belong to the same route. Filtering by direction makes it easier to examine whether potential bunching or irregular service intervals are concentrated in a particular direction.
 
-    Hovering over an individual point reveals additional information about that observation, including its observation ID, route, direction, stop name, CTA stop ID, previous bus gap, actual following bus gap, and associated comments.
+        -Hover tooltips
 
-    This supports details-on-demand by allowing users to inspect individual observations without displaying all of their descriptive information directly on the chart. The tooltip is particularly useful when several points are close together or when users want to understand the context behind an unusual headway pattern.
+        Hovering over an individual point reveals additional information about that observation, including its observation ID, route, direction, stop name, CTA stop ID, previous bus gap, actual following bus gap, and associated comments.
 
-    Zooming and panning
+        This supports details-on-demand by allowing users to inspect individual observations without displaying all of their descriptive information directly on the chart. The tooltip is particularly useful when several points are close together or when users want to understand the context behind an unusual headway pattern. Furthermore, the tool tip allows users to see the actual headways--previous and next arrival times--. This is key, it enables users to see relative position of a bus arrival time--from the x-y axis orientation--and actual times by hovering.
 
-    Users can scroll to zoom into a particular region of the scatterplot and drag to pan across the visualization. Double-clicking resets the view.
+        -Zooming and panning
 
-    This interaction allows users to examine clusters of observations more closely, particularly when multiple points are concentrated in a small region of the chart.
+        Users can scroll to zoom into a particular region of the scatterplot and drag to pan across the visualization. Double-clicking resets the view.
+
+        This interaction allows users to examine clusters of observations more closely, particularly when multiple points are concentrated in a small region of the chart.
 
     The interactions were selected to support analytical exploration rather than simply adding visual effects. In particular, they address the difficulty of examining individual routes, directions, and observations when the entire dataset is displayed simultaneously.
 
@@ -82,9 +86,12 @@ SECTION ONE: IMPLEMENTING INTERACTION
     - Written explanations: Whether participants refer to relevant visual evidence when explaining their answers.
     Overall, the expected benefit of the interactive implementation is that it reduces the effort required to isolate and investigate relevant subsets of the data. However, the static visualization may still be advantageous for tasks that benefit from seeing the entire dataset at once. The evaluation is intended to examine these differences rather than assume that the interactive version will necessarily perform better.
 
-SECTION 2: Evaluation Design
+SECTION 2: EVALUATING DESIGN
 
-    This study asks whether adding interaction to a visualization of Chicago Transit Authority (CTA) bus headways changes how accurately and how quickly people complete analytical tasks. The visualization is a scatter plot of each observed bus’s previous gap (x) against its actual next gap (y), with a dashed y = x line marking perfectly even spacing. Points far above the line show a short gap behind and a long gap ahead, which is the signature of bus bunching (Newell & Potts, 1964; Pangilinan, Wilson & Moore, 2008). The static condition shows all nine routes at once, with a long legend that maps color and fill to route, stop and direction. The interactive condition adds Route and Direction dropdown filters, hover tooltips with exact values, and pan and zoom. Both conditions are built from one Vega-Lite grammar of graphics with identical data, axes and encodings, so interaction is the only manipulated variable (Satyanarayan, Moritz, Wongsuphasawat & Heer, 2017; Lam et al., 2012). I have framed the evaluation questions around the bus-bunching domain. If your Assignment 2 data question was worded differently, adjust the wording but keep this link to it.
+    The key issue at this point is whether adding interaction to the previously created static plot aids users in understand bus headways. To answer this question, an experiement will be conducted to see if users can find specific observations and conduct basic calculations from the visualization, and get their feedback. This experiment is designed to determine if adding interaction to a visualization of Chicago Transit Authority (CTA) bus headways changes how accurately and how quickly people complete the afformentioned analytical tasks. 
+    
+    The visualization is a scatter plot of each observed bus’s previous gap (x) against its actual next gap (y), with a dashed y = x line marking perfectly even spacing. Points far above the line show a short gap behind and a long gap ahead, which is the signature of bus bunching (Newell & Potts, 1964; Pangilinan, Wilson & Moore, 2008). The static condition shows all nine routes at once, with a long legend that maps color and fill to route, stop and direction. The interactive condition adds Route and Direction dropdown filters, hover tooltips with exact values, and pan and zoom. Both conditions are built from one Vega-Lite grammar of graphics with identical data, axes and encodings, so interaction is the only manipulated variable (Satyanarayan, Moritz, Wongsuphasawat & Heer, 2017; Lam et al., 2012). 
+    I have framed the evaluation questions around the bus-bunching domain. If your Assignment 2 data question was worded differently, adjust the wording but keep this link to it.
 
     Two evaluation questions guide the design. The first is whether interaction improves task accuracy. The second is whether it reduces task completion time. They lead to two directional hypotheses. H1 states that, for tasks that require isolating one route and reading exact values, the interactive version yields higher accuracy than the static version. H2 states that filtering a nine-route chart down to one route removes visual search through a 21-entry legend, so Task 1 is completed faster interactively. For Task 2 the time effect is treated as exploratory, because operating controls carries an interaction cost (Lam, 2008) that may cancel the benefit. These hypotheses follow the argument that selection, filtering and details-on-demand help people focus on relevant subsets of data (Shneiderman, 1996; Yi, Kang, Stasko & Jacko, 2007; Heer & Shneiderman, 2012). They also respect the advice to evaluate by task type rather than expecting one blanket effect (Brehmer & Munzner, 2013).
 
