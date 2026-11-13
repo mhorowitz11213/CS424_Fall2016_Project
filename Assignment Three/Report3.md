@@ -156,11 +156,12 @@ SECTION 2: EVALUATING DESIGN
     Taken together, the study measures whether interaction, specifically filtering and details-on-demand, improves accuracy and speed for tasks where the same information is available in both conditions, and it does so while controlling for task difficulty, order and memory. All attempts were taken to ensure that the survey minimized bias, captured appropriate information, and did so in a way that ensured that participants could complete the survey without too much difficulty. With the pre-pilot confirming that the group met these requirements, the survey was completed and then the evaluation was conducted.
 
 SECTION THREE: CONDUCTING THE EVALUATION:
+
+    Note: The survey can be found at: https://mhorowitz11213.github.io/CS424_Fall2016_Project/ 
     
     At this stage, the survey was deployed first to two pilot participants, with their responses and feedback recorded, to both confirm findings from 
 
-    Survey:
-    The survey can be found at: https://mhorowitz11213.github.io/CS424_Fall2016_Project/
+    
 
 
 SECTION 6: CURIO
