@@ -27,10 +27,10 @@ submitted_at,participant_id,group,condition,task,route,answer_stop,previous_head
 2026-11-13T00:09:39.928Z,P7777,1,Static,2,36,,,,Direction 2,8,20,,,,Direction 2,6.4,20,,,,1,0,1,0,,,1.6,0,0.05,1,Look at red symbols,5,3,91.96
 2026-11-13T00:10:37.665Z,P7777,1,Interactive,1,147,Michigan and Randolph,2,28,,,,Michigan and Randolph,2,28,,,,1,1,1,,,,1,0,0,,,0.02,0.5,Filtered and hovered over circle,5,1,57.6
 2026-11-13T00:12:15.226Z,P7777,1,Interactive,2,146,,,,Direction 1,20,9,,,,Direction 1,20.2,7.6,,,,1,1,0,0,,,0.2,1.4,0.02,0.5,Filtered and guessed. Less certain on southbound,4,3,97.44
-2026-11-13T00:24:22.356Z,P5555,2,Interactive,1,22,Clark and Devon,0,25,,,,Clark and Berwyn,0,26,,,,0,1,0,,,,0,0,1,,,0.02,0.5,,5,1,384.94
-2026-11-13T00:25:38.102Z,P5555,2,Interactive,2,36,,,,Direction 1,5,9,,,,Direction 2,6.4,20,,,,0,0,0,0,,,1.4,11,0.02,0.5,,5,1,75.69
-2026-11-13T00:25:51.921Z,P5555,2,Static,1,147,Sheridan and Granville,2,9,,,,Michigan and Randolph,2,28,,,,0,1,0,,,,0,0,19,,,0.05,1,,5,1,13.78
-2026-11-13T00:26:04.711Z,P5555,2,Static,2,146,,,,Direction 2,5,4,,,,Direction 1,20.2,7.6,,,,0,0,0,0,,,15.2,3.6,0.05,1,,5,1,12.76
+2026-11-13T00:24:22.356Z,P5556,2,Interactive,1,22,Clark and Devon,0,25,,,,Clark and Berwyn,0,26,,,,0,1,0,,,,0,0,1,,,0.02,0.5,,5,1,384.94
+2026-11-13T00:25:38.102Z,P5556,2,Interactive,2,36,,,,Direction 1,5,9,,,,Direction 2,6.4,20,,,,0,0,0,0,,,1.4,11,0.02,0.5,,5,1,75.69
+2026-11-13T00:25:51.921Z,P5556,2,Static,1,147,Sheridan and Granville,2,9,,,,Michigan and Randolph,2,28,,,,0,1,0,,,,0,0,19,,,0.05,1,,5,1,13.78
+2026-11-13T00:26:04.711Z,P5556,2,Static,2,146,,,,Direction 2,5,4,,,,Direction 1,20.2,7.6,,,,0,0,0,0,,,15.2,3.6,0.05,1,,5,1,12.76
 2026-11-13T01:50:39.269Z,P010,1,Static,1,22,Clark and Berwyn,0,26,,,,Clark and Berwyn,0,26,,,,1,1,1,,,,1,0,0,,,0.05,1,I identified the green symbols using the legend and looked for the observation furthest above the y=x line.,4,2,86.25
 2026-11-13T01:53:46.397Z,P010,1,Static,2,36,,,,Direction 2,7,20,,,,Direction 2,6.4,20,,,,1,1,1,1,,,0.6,0,0.05,1,"The hollow red points were concentrated around 20 minutes, whereas the solid red points were much lower.",3,4,187.09
 2026-11-13T01:54:50.151Z,P010,1,Interactive,1,147,Michigan and Randolph,2,28,,,,Michigan and Randolph,2,28,,,,1,1,1,,,,1,0,0,,,0.02,0.5,I looked at the gray points and compared their distance from the diagonal reference line.,5,1,63.7
