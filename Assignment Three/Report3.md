@@ -1,7 +1,7 @@
 Matthew Horowitz, Mahd Rai, Kaya (Shambhawi) Sharma
 
 
-SECTION ONE: IMPLEMENTING INTERACTION
+SECTION 1: IMPLEMENTING INTERACTION
 
     At this point in the project, a visualization system has been created unifying multiple different visualizations into a single visual analytic system. However, at this point, further research was warranted into whether or not interactions are necessary for all, or parts of the visualization. Looking over the previous final vizualization, it became clear that some subcomponents may or may not need interactions or need specific types of interactions. 
     As the group examined each sub component, one visualization in particular was seen as essential to the group's visual analytics system. Named “Headway Imbalance and Bunching Diagnostic” --from Assignment 2--, this visualization was selected for further inspection, because it is one the most important visualizations the group has produced. The importance of this visualization is that it answers one of the most important domain questions posed by the group: whether or not headways meet CTA standards--at an aggregate level across lines and/or across stops and at a disaggregate level by line or individual stop--, and whether or not the is a large discrepancy between previous and next arrival times, perhaps also indicating the occurance of a non-existing bus recorded by Ventra. Given the importance of this visualization, further attention needed to be given to it, and especially whether or not interaction was needed to ensure users can decode and calculate bus headways.
@@ -155,11 +155,53 @@ SECTION 2: EVALUATING DESIGN
 
     Taken together, the study measures whether interaction, specifically filtering and details-on-demand, improves accuracy and speed for tasks where the same information is available in both conditions, and it does so while controlling for task difficulty, order and memory. All attempts were taken to ensure that the survey minimized bias, captured appropriate information, and did so in a way that ensured that participants could complete the survey without too much difficulty. With the pre-pilot confirming that the group met these requirements, the survey was completed and then the evaluation was conducted.
 
-SECTION THREE: CONDUCTING THE EVALUATION:
+SECTION 3: CONDUCTING THE EVALUATION:
 
     Note: The survey can be found at: https://mhorowitz11213.github.io/CS424_Fall2016_Project/ 
     
-    At this stage, the survey was deployed first to two pilot participants, with their responses and feedback recorded, to both confirm findings from 
+    At this point, the team deployed the finalized survey, which had been by now loaded to a GitHub page, to two pilot participants who were asked to take the study. The goal with this was to see if a) the findings from the survey, including accuracy and the time it took to complete, matched those from the pre-pilot study and b) to see if the mechanics of the survey including the GitHub page and the generated CSV outputs worked.
+    Pilot Survey:
+    Two users were selected to be pilot participants (User PILOT1 and PILOT5). The two users selected were both mathematicians and were specifically selected because team wanted to see if people with strong analytical skills could work through the visualization and calculations and wanted to hear their input.
+    The two users, and all subsequent survey participants, were informed that the survey was conducted anonymously, and that their results would be recorded automatically. Users were thanked for participating.
+    Below is a brief table and discussion of the findings from the pilot (full outputs from the pilot can be found on the GitHub repository in Assignment 3-> CSV Outputs, where all CSV files are stored and in each file each row corresponds to a task grouped by relevant user):
+
+    TASK	                                                         PILOT1	                          PILOT5
+    Finding the Correct Line 22 Stop	                             Correct	                      Correct
+    Detecting Correct Direction Line and average time for Route 36	 Correct	                      Direction Correct
+                                                                                                      Average time North incorrect
+                                                                                                      Average time South correct
+
+
+
+    Detecting Correct Stop for Line 147	                             Correct	                      Correct
+    Detecting Correct Direction for Line 146	                     Correct on identifying direction Correct on identifying Direction
+                                                                     Mean Time North correct          Mean time North correct
+                                                                     Mean Time South wrong            Mean time South wrong
+    Completion Time Task 1 in seconds	                             47.59	                          43.66
+    Completion Time Task 2 in seconds                                65.28	                          40.62
+    Completion Time Task 3 in seconds	                             39.22	                          36.59
+    Completion Time Task 4 in seconds	                             71.56	                          77.16
+
+    In addition, pilot participants left comments on each page, recorded their confidence in answers, and after taking the survey spoke with the team. 
+    The pilot study confirmed many of the pre-pilot findings. Namely, the instructions were and the survey loaded correctly. Some other outcomes were:
+        1.	Finding specific stops was easy.
+        2.	Mean times were an issue. Respondents noted that they found it a little difficult to calculate mean times on the fly, with one participant noting in their after-survey interview that they wished a calculator was included.
+    The group then met up and discussed these findings. Time was spent discussing two aspects regarding finding average next bus times:
+        The first was whether or not the margin of error should be loosened so that people who were off by a minute or two in their average next bus estimation could still be recorded as being correct. The group decided against this because team really wanted to see if respondents could easily calculate means or if their should be a calculator added later on. In addition, since the exact estimate was recorded, the group decided that the error band could always be adjusted later, and as such no changes were made to this confidence interval.
+        The second was whether or not a calculator should be added to the visualization. The key issue with doing so is that this calculator could only be added to the interactive version, and add it now would further bias respondents towards the interactive visualization.
+    With the pilot participants’ findings being in agreement with the pre-pilot participant discussions, the survey was then deployed to 21 respondents, with 11 completing the survey.
+
+    Deploying the Survey:
+    Multiple people were asked to take the survey including 10 students in the class, plus nine other people. The goal in selecting participants is to get a good cross section of potential users. Some, like those from the course have a background in visualization and bring their own expectations, others who were selected have no background in the field. The idea here was to find the best cross section possible and to see if static implementation or interactive implementation worked better and to see if the overall features of either or both worked.
+    Participants from the course were assigned user ids 1-10, half were placed into Group 1 and the other half to Group 2.
+    Respondents outside the course were given either P plus a 3 digit code, or P plus a 4 digit code with half assigned to Group 1 and the other half assigned to Group 2. These extra codes were used to ensure that no user duplicated another’s User ID, but beyond that they have no other meaning.
+    Results were collected between November 6 and November 13, and the outputs of which are discussed in Section Four.
+
+SECTION 4: QUANTITATIVE ANALYSIS
+
+
+
+
 
     
 
