@@ -168,8 +168,14 @@ SECTION 3: CONDUCTING THE EVALUATION:
 
     After confirming that the survey felt satisfactory, it was created.
 
-    Note: The survey can be found at: https://mhorowitz11213.github.io/CS424_Fall2016_Project/ 
-    
+    Note: The survey can be found at: https://mhorowitz11213.github.io/CS424_Fall2016_Project/
+
+![Figure26](Screenshots/Fig26.png)
+![Figure27](Screenshots/Fig27.png)
+![Figure28](Screenshots/Fig28.png)
+![Figure29](Screenshots/Fig29.png)
+![Figure30](Screenshots/Fig30.png)
+
     At this point, the team deployed the finalized survey, which had been by now loaded to a GitHub page, to two pilot participants who were asked to take the study. The goal with this was to see if a) the findings from the survey, including accuracy and the time it took to complete, matched those from the pre-pilot study and b) to see if the mechanics of the survey including the GitHub page and the generated CSV outputs worked.
 
     Pilot Survey:
@@ -214,10 +220,73 @@ SECTION 4: QUANTITATIVE ANALYSIS
     The survey was deployed to 19 people on November 5, with 11 responding by the due date of November 13. The survey auto collected all responses and returned them in a CSV in a similar manner to that of the pilot study.
     Below is the data dictionary describing the 35 columns auto recorded by the GitHub hosted survey:
 
-    <INSERT DATA DICTIONARY>
+# Data Dictionary
+
+## 1. Design and Identification
+
+| Column | Applies to | Values | Description |
+|---|---|---|---|
+| `submitted_at` | All | ISO 8601 UTC timestamp | Moment the participant clicked Submit Answer, taken from their device clock. |
+| `participant_id` | All | Free text, e.g. `P001` | Anonymous ID typed on the welcome screen. |
+| `group` | All | `1` or `2` | Assigned experimental group, which sets the condition and route order. |
+| `condition` | All | `Static` or `Interactive` | Chart version shown. Static has a combined route/stop legend and no controls. Interactive has route and direction dropdowns, tooltips, and zoom. |
+| `task` | All | `1` or `2` | Task 1 asks for the most uneven spacing. Task 2 compares directions. |
+| `route` | All | `22`, `147` (Task 1); `36`, `146` (Task 2) | CTA route the participant was asked about. |
+
+## 2. Participant Answers
+
+| Column | Applies to | Values | Description |
+|---|---|---|---|
+| `answer_stop` | Task 1 | Stop name | Stop chosen from the dropdown for the point farthest above the dashed line. |
+| `previous_headway` | Task 1 | Number (minutes) | Participant's reading of that point's previous headway (x-axis). |
+| `actual_next_headway` | Task 1 | Number (minutes) | Participant's reading of that point's actual next headway (y-axis). |
+| `answer_direction` | Task 2 | `Direction 1`, `Direction 2`, or `About the same` | Direction judged to have the larger average actual next headway. Direction 1 is northbound or eastbound; Direction 2 is southbound or westbound. |
+| `mean_direction_1` | Task 2 | Number (minutes) | Estimated average actual next headway for Direction 1, participant entered. |
+| `mean_direction_2` | Task 2 | Number (minutes) | Same estimate for Direction 2, participant entered. |
+
+## 3. Ground Truth
+
+| Column | Applies to | Values | Description |
+|---|---|---|---|
+| `true_stop` | Task 1 | Clark and Berwyn (route 22); Michigan and Randolph (route 147) | Stop of the true outlier observation. |
+| `true_previous_headway` | Task 1 | `0` (route 22); `2` (route 147) | True previous headway of that observation. |
+| `true_actual_next_headway` | Task 1 | `26` (route 22); `28` (route 147) | True actual next headway of that observation. |
+| `true_direction` | Task 2 | `Direction 2` (route 36); `Direction 1` (route 146) | Direction with the larger true mean. |
+| `true_mean_direction_1` | Task 2 | `6.4` (route 36); `20.2` (route 146) | True mean actual next headway for northbound/eastbound. |
+| `true_mean_direction_2` | Task 2 | `20` (route 36); `7.6` (route 146) | True mean for southbound/westbound. |
+
+## 4. Scoring Flags
+
+| Column | Applies to | Description |
+|---|---|---|
+| `stop_correct` | Task 1 | Chosen stop exactly matches `true_stop`. |
+| `previous_correct` | Task 1 | `previous_headway` is within tolerance of `true_previous_headway`. |
+| `actual_correct` | Task 1 | `actual_next_headway` is within tolerance of `true_actual_next_headway`. |
+| `direction_correct` | Task 2 | `answer_direction` equals `true_direction`. |
+| `mean1_correct` | Task 2 | `mean_direction_1` is within tolerance of `true_mean_direction_1`. |
+| `mean2_correct` | Task 2 | `mean_direction_2` is within tolerance of `true_mean_direction_2`. |
+| `task_correct` | All | `1` only if every applicable flag for that task is `1`. This is the strictest summary score. |
+
+## 5. Error Size and Tolerance Used
+
+| Column | Applies to | Description |
+|---|---|---|
+| `previous_abs_error`, `actual_abs_error` | Task 1 | Absolute difference in minutes between the answer and the truth, rounded to 2 decimals. |
+| `mean1_abs_error`, `mean2_abs_error` | Task 2 | Same, for the two direction means. |
+| `tolerance_pct` | All | Relative error allowed: `0.05` for Static, `0.02` for Interactive. |
+| `tolerance_floor_min` | All | Minimum allowance in minutes: `1.0` for Static, `0.5` for Interactive. |
+
+## 6. Self-Report and Timing
+
+| Column | Applies to | Values | Description |
+|---|---|---|---|
+| `explanation` | All | Free text | Participant's account of how they reached the answer. Apps Script prefixes an apostrophe if the text begins with `=`, `+`, `-`, or `@`; remove it when analyzing. |
+| `confidence` | All | `1` to `5` | `1` = not confident, `5` = very confident. |
+| `difficulty` | All | `1` to `5` | `1` = very easy, `5` = very difficult. |
+| `elapsed_seconds` | All | Number (2 decimals) | Seconds from when the chart finished rendering to the Submit click. Includes reading the instructions; excludes chart load time. |
 
     In addition, there were 44 rows output into the CSV, 4 rows per respondent, 2 rows for the lookup task (1 static, 1 interactive) and 2 rows for rough calculating mean next bus times (1 static, 1 interactive). This CSV file was downloaded off of the connected Google Drive, uploaded to GitHub and to Google Colab.
-    A full copy of the CSV outputs can be found in the GitHub repository under Assignment3-> CSV Outputs ->CS424_Study – Responses.csv. In addition, the outputs for the data exploration discussed below can be found in the GitHub repository under Assignment3 -> Jupyter Notebook Files -> SECTION_FOUR.ipynb. Information running the file is located in the top cell of the .ipynb file)
+    A full copy of the CSV outputs can be found in the GitHub repository under Assignment3-> CSV Outputs ->CS424_Study – Responses.csv. In addition, the outputs for the data exploration discussed below can be found in the GitHub repository under Assignment3 -> Jupyter Notebook Files -> SECTION_FOUR.ipynb. Information running the file is located in the top cell of the .ipynb file
     Next, the results were analyzed in a three step process:
         A.	First, the results were inspected by hand. Given the small size of the data—4 records per each of the 11 respondents—it was deemed sufficient to examine each of the records ensuring that there were no missing or incorrect values. After an examination, there appeared to be none
         B.	Next, in Python, the data was inspected for missing, or incorrect values. In particular, special concern was paid to values that would be considered out of range, including negative minutes, or categories not allowed. After inspecting the data in Python, no issues were found and thus data exploration could begin.
@@ -234,7 +303,8 @@ SECTION 4: QUANTITATIVE ANALYSIS
     Below is a general aggregation of number of tasks correctly conducted by participants:
         (Note, because there are two tasks per static and two task per interactive environment, the total sums to 22)
 
-        <INSERT FIGURE>
+![Figure 1](Screenshots/Fig1.png)
+![Figure 2](Screenshots/Fig2.png)
 
     As shown in the output, overall respondents did slightly better with the static visualization—13 correct tasks vs 9 incorrect tasks—than with the interactive visualization—11 correct tasks vs 11 incorrect tasks--.
     Given this seems to contradict some of the qualitative research, more granular inspection of the data was conducted.
@@ -246,7 +316,10 @@ SECTION 4: QUANTITATIVE ANALYSIS
     1: Finding correct stop and headway	                                                     9 correct, 2 incorrect	           7 correct, 4 incorrect
     2: Finding headway with greater average bus time, and estimating average next bus times	 4 correct, 7 incorrect	           4 correct, 7 incorrect
 
-    <INSERT FIGURES>
+![Figure 3](Screenshots/Fig3.png)
+![Figure 4](Screenshots/Fig4.png)
+![Figure 5](Screenshots/Fig5.png)
+![Figure 6](Screenshots/Fig6.png)
 
 
     Interestingly enough, respondents again seemed to do slightly better with the static than with the interactive, though, in both cases, respondents struggled with mean time estimation, perhaps suggesting that its not as easy as presumed to estimate average times from a scatter plot.
@@ -265,7 +338,18 @@ SECTION 4: QUANTITATIVE ANALYSIS
     5: Mean1 Correctness (North)	                     7 Correct, 4 Incorrect	       8 Correct, 3 Incorrect
     6: Mean2 Correctness (South)	                     6 Correct, 5 Incorrect	       5 Correct, 6 Incorrect
 
-    <INSERT FIGURE HERE>
+![Figure 7](Screenshots/Fig7.png)
+![Figure 8](Screenshots/Fig8.png)
+![Figure 9](Screenshots/Fig9.png)
+![Figure 10](Screenshots/Fig10.png)
+![Figure 11](Screenshots/Fig11.png)
+![Figure 12](Screenshots/Fig12.png)
+![Figure 13](Screenshots/Fig13.png)
+![Figure 14](Screenshots/Fig14.png)
+![Figure 15](Screenshots/Fig15.png)
+![Figure 16](Screenshots/Fig16.png)
+![Figure 17](Screenshots/Fig17.png)
+![Figure 18](Screenshots/Fig18.png)
 
     From the above, generally speaking respondents seemed to do better with identifying stops rather than computing means. In addition, respondents did slightly better  with the static version than the interactive version, though the group suspects this is because the Route 36 stop in the static version was a greater outlier, and finding its previous wait time was easy given it sits on the x=0 axis. It is also important to note that respondents seemed to struggle a little more with the interactive, perhaps again because of outliers that made it harder to compute the interactive southbound average next bus time. These were issues raised in the pilot, but were concepts the group wanted to test amongst a larger subset.
 
@@ -274,8 +358,7 @@ SECTION 4: QUANTITATIVE ANALYSIS
 
     Below are the outputs:
 
-    <INSERT FIGURE>
-
+![Figure 19](Screenshots/Fig19.png)
 
     From the boxplot above we can see that the range of predicted means—based on the interquartile range-- is much tighter with the interactive visualization than with the static visualization, even while medians stayed fairly consistent—around 1 to 2 minutes off per direction per visualization type--. The presence of outliers, particularly with the southbound interactive mean is expected given the previous data exploration, and is most likely due to the presence of an extreme value that makes computing the mean next bus for this condition difficult.
 
@@ -286,7 +369,8 @@ SECTION 4: QUANTITATIVE ANALYSIS
 
     Below are the outputs:
 
-    <INSERT FIGURE>
+![Figure 20](Screenshots/Fig20.png)
+![Figure 21](Screenshots/Fig21.png)
 
     The findings show the median time to complete the two tasks took around 150 seconds in either environment. However, the spread appears to be greater for the interactive, with one respondent taking over 500 seconds. Returning to the qualitative study conducted earlier, many respondents noted that they panned around the screen and used multiple filters provided in the interactive visual. Perhaps, this resulted in some users spending more time in the interactive visualization. However, for both environments were fairly similar, ranging from about 75 to 250 seconds. As such, it is hard to say if there is much of a meaningful difference between the two environments in terms of elapsed time.
 
@@ -295,7 +379,9 @@ SECTION 4: QUANTITATIVE ANALYSIS
 	Confidence in Answer:
 
 	Below are the spread values for confidence in one’s responses:
-	<INSERT FIGURE HERE>
+
+![Figure 22](Screenshots/Fig22.png)
+![Figure 23](Screenshots/Fig23.png)
 
     And it’s with the confidence boxplot that the group can really see the difference in user experience between static and interactive visualization. For task 1, with the interactive visualization, with only one exception, all 10 other respondents rating their confidence in their answer as a 5, the highest rating. On the other hand, the median score for the static implementation was 1 whole point lower—4—with much greater spread in confidence with the interquartile range going from 4-5. Returning to the comments, most users noted that the tool tip really helped in understanding the data points. This indicates the strength of the interactive approach.
     For task 2 however, the confidence of users dropped by a whole point—5 to 4—for the interactive visualization while staying steady for the static implementation. Furthermore, while the spread in confidence increased for task 2 in both implementations with the IQR ranging from 3-5 in the static and 3.5-4.5 in the interactive versions. This shows that computing means can be difficult, especially when the arrival times vary greatly within a line, and again, makes the group question the potential for adding a calculator, which can only be done in an interactive implementation.
@@ -304,7 +390,9 @@ SECTION 4: QUANTITATIVE ANALYSIS
     Finally, the group was interested in how easy the users felt it was to complete these tasks. Ideally, visualizations should be easy to use and the data they present should be processed by the user with great ease. 
 
     Below is the spread of self reported scores on ease of completion:
-    <INSERT FIGURES HERE>
+
+![Figure 24](Screenshots/Fig24.png)
+![Figure 25](Screenshots/Fig25.png)
 
 
     Similar to confidence, users reported great ease when it came to identifying stops using the interactive environment. The median score for task 1 in interactive visualization was 1, indicating it was easy, with an interquartile range from 1 to 2. With the static implementation, task 1’s ease score was a median of 2 with and IQR of 1.5 to 3, indicating the power of the tool tip and filter.
@@ -386,8 +474,9 @@ SECTION 6: CURIO
 ![Screenshot of direction control](Curio/Screenshots/Toggle_S_direction.png)
 
 SECTION 7: REFERENCES
-Below are a list of all sources that were either cited, read, or reference by papers the group read in the process of writing this report, in order to help justify all survey construct choices. This exhaustive search was done to ensure that all choices made met the highest standards in survey creation.
-Sources were founded through Google Search, including Gemini, reading sources cited in articles, from textbooks found in O'Reilly, and from textbooks used in previous courses of instruction.
+
+    Below are a list of all sources that were either cited, read, or reference by papers the group read in the process of writing this report, in order to help justify all survey construct choices. This exhaustive search was done to ensure that all choices made met the highest standards in survey creation.
+    Sources were founded through Google Search, including Gemini, reading sources cited in articles, from textbooks found in O'Reilly, and from textbooks used in previous courses of instruction.
 
     Amar, R., Eagan, J., & Stasko, J. (2005). Low-level components of analytic activity in information visualization. IEEE InfoVis 2005, 111–117.
     Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. Journal of Memory and Language, 68(3), 255–278.
