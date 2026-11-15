@@ -211,86 +211,116 @@ SECTION 3: CONDUCTING THE EVALUATION:
 
 SECTION 4: QUANTITATIVE ANALYSIS
 
-The survey was deployed to 19 people on November 5, with 11 responding by the due date of November 13. The survey auto collected all responses and returned them in a CSV in a similar manner to that of the pilot study.
-Below is the data dictionary describing the 35 columns auto recorded by the GitHub hosted survey:
-<INSERT DATA DICTIONARY>
-In addition, there were 44 rows output into the CSV, 4 rows per respondent, 2 rows for the lookup task (1 static, 1 interactive) and 2 rows for rough calculating mean next bus times (1 static, 1 interactive). This CSV file was downloaded off of the connected Google Drive, uploaded to GitHub and to Google Colab.
-(A full copy of the CSV outputs can be found in the GitHub repository under Assignment3-> CSV Outputs ->CS424_Study – Responses.csv. In addition, the outputs for the data exploration discussed below can be found in the GitHub repository under Assignment3 -> Jupyter Notebook Files -> SECTION_FOUR.ipynb. Information running the file is located in the top cell of the .ipynb file)
-Next, the results were analyzed in a three step process:
-A.	First, the results were inspected by hand. Given the small size of the data—4 records per each of the 11 respondents—it was deemed sufficient to examine each of the records ensuring that there were no missing or incorrect values. After an examination, there appeared to be none
-B.	Next, in Python, the data was inspected for missing, or incorrect values. In particular, special concern was paid to values that would be considered out of range, including negative minutes, or categories not allowed. After inspecting the data in Python, no issues were found and thus data exploration could begin.
-C.	Respondents’ comments were then read and inspected. While the main focus of this section is quantitative, the group wanted to use the comments and overall concerns to guide the quantitative research.
-Qualitative Research Comments:
-As noted above, the comments were the first layers of inspection. The group felt for a small survey, these comments could help guide the team to better understand the data and help perhaps add details to any outputs that might diverge from the results given during the pre-pilot and pilot phases.
-While most respondents noted that it was fairly easy to find points in both static and interactive environments, some noted that when it came to the mean next bus time calculations, they felt that they had to guess. Looking over their confidence scores—which tells the group how confident the respondents were in their answer--, showed two interesting points:
-1.	Confidence scores appear to be slightly higher for the interactive visualization
-2.	Confidence scores appear to be slightly lower for mean calculations than for tasks requiring the location of specific stops. This will be kept in mind during the quantitative analysis.
-Task Correctness Aggregation:
-Subsequently, the group wanted to start at the most topic level and then continuously explore the data with greater granularity. As such, first the group wanted to see how many tasks were completed correctly by the participants. For this study, a correct task is one where: a) TASK1: a bus stop and line are correctly identified, b) TASK2: the mean next bus time—within a plus of minus 5% static, 2% interactive-- and the correct headway are identified--, with each task conducted in a static and interactive environment. Each task is recorded separately, thus the need for four records per participant.
-Below is a general aggregation of number of tasks correctly conducted by participants:
-(Note, because there are two tasks per static and two task per interactive environment, the total sums to 22)
-<INSERT FIGURE>
-As shown in the output, overall respondents did slightly better with the static visualization—13 correct tasks vs 9 incorrect tasks—than with the interactive visualization—11 correct tasks vs 11 incorrect tasks--.
-Given this seems to contradict some of the qualitative research, more granular inspection of the data was conducted.
-Task Correctness by Environment and Task Type:
-At this point, the group can now start to examine whether or not a task type can be correctly conducted in each of the environments. Here the goal is to see if environment affects each of the specific tasks, and the ability for users to correctly utilize a visualization. Below are the outputs 
-TASK	STATIC	INTERACTIVE
-1: Finding correct stop and headway	9 correct, 2 incorrect	7 correct, 4 incorrect
-2: Finding headway with greater average bus time, and estimating average next bus times	4 correct, 7 incorrect	4 correct, 7 incorrect
+    The survey was deployed to 19 people on November 5, with 11 responding by the due date of November 13. The survey auto collected all responses and returned them in a CSV in a similar manner to that of the pilot study.
+    Below is the data dictionary describing the 35 columns auto recorded by the GitHub hosted survey:
 
-<INSERT FIGURES>
-Interestingly enough, respondents again seemed to do slightly better with the static than with the interactive, though, in both cases, respondents struggled with mean time estimation, perhaps suggesting that its not as easy as presumed to estimate average times from a scatter plot.
-Data Inspection: Deep Granularity:
-Going back to the qualitative study initially conducted, respondents noted that they found it easier to find it easier to find stop and isolate lines using the filtering tool in the interactive visualization. Yet the previous two sections seem to contradict these findings with users being able to find appropriate stops with greater accuracy in the static environment than in the interactive environment. At this point, the group does not that the sample size is small, the differences are minimal, and different stops and routes were selected for the static environment compared to the interactive environment. This will be discussed in greater detail in limitations.
-Still, in further granular inspection of the data is warranted, down to the sub tasks.
-Below are the outputs and figures:
+    <INSERT DATA DICTIONARY>
+
+    In addition, there were 44 rows output into the CSV, 4 rows per respondent, 2 rows for the lookup task (1 static, 1 interactive) and 2 rows for rough calculating mean next bus times (1 static, 1 interactive). This CSV file was downloaded off of the connected Google Drive, uploaded to GitHub and to Google Colab.
+    A full copy of the CSV outputs can be found in the GitHub repository under Assignment3-> CSV Outputs ->CS424_Study – Responses.csv. In addition, the outputs for the data exploration discussed below can be found in the GitHub repository under Assignment3 -> Jupyter Notebook Files -> SECTION_FOUR.ipynb. Information running the file is located in the top cell of the .ipynb file)
+    Next, the results were analyzed in a three step process:
+        A.	First, the results were inspected by hand. Given the small size of the data—4 records per each of the 11 respondents—it was deemed sufficient to examine each of the records ensuring that there were no missing or incorrect values. After an examination, there appeared to be none
+        B.	Next, in Python, the data was inspected for missing, or incorrect values. In particular, special concern was paid to values that would be considered out of range, including negative minutes, or categories not allowed. After inspecting the data in Python, no issues were found and thus data exploration could begin.
+        C.	Respondents’ comments were then read and inspected. While the main focus of this section is quantitative, the group wanted to use the comments and overall concerns to guide the quantitative research.
+
+    Qualitative Research Comments:
+    As noted above, the comments were the first layers of inspection. The group felt for a small survey, these comments could help guide the team to better understand the data and help perhaps add details to any outputs that might diverge from the results given during the pre-pilot and pilot phases.
+    While most respondents noted that it was fairly easy to find points in both static and interactive environments, some noted that when it came to the mean next bus time calculations, they felt that they had to guess. Looking over their confidence scores—which tells the group how confident the respondents were in their answer--, showed two interesting points:
+        1.	Confidence scores appear to be slightly higher for the interactive visualization
+        2.	Confidence scores appear to be slightly lower for mean calculations than for tasks requiring the location of specific stops. This will be kept in mind during the quantitative analysis.
+
+    Task Correctness Aggregation:
+    Subsequently, the group wanted to start at the most topic level and then continuously explore the data with greater granularity. As such, first the group wanted to see how many tasks were completed correctly by the participants. For this study, a correct task is one where: a) TASK1: a bus stop and line are correctly identified, b) TASK2: the mean next bus time—within a plus of minus 5% static, 2% interactive-- and the correct headway are identified--, with each task conducted in a static and interactive environment. Each task is recorded separately, thus the need for four records per participant.
+    Below is a general aggregation of number of tasks correctly conducted by participants:
+        (Note, because there are two tasks per static and two task per interactive environment, the total sums to 22)
+
+        <INSERT FIGURE>
+
+    As shown in the output, overall respondents did slightly better with the static visualization—13 correct tasks vs 9 incorrect tasks—than with the interactive visualization—11 correct tasks vs 11 incorrect tasks--.
+    Given this seems to contradict some of the qualitative research, more granular inspection of the data was conducted.
+    Task Correctness by Environment and Task Type:
+    At this point, the group can now start to examine whether or not a task type can be correctly conducted in each of the environments. Here the goal is to see if environment affects each of the specific tasks, and the ability for users to correctly utilize a visualization. Below are the outputs:
+
+
+    TASK	                                                                                 STATIC	                           INTERACTIVE
+    1: Finding correct stop and headway	                                                     9 correct, 2 incorrect	           7 correct, 4 incorrect
+    2: Finding headway with greater average bus time, and estimating average next bus times	 4 correct, 7 incorrect	           4 correct, 7 incorrect
+
+    <INSERT FIGURES>
+
+
+    Interestingly enough, respondents again seemed to do slightly better with the static than with the interactive, though, in both cases, respondents struggled with mean time estimation, perhaps suggesting that its not as easy as presumed to estimate average times from a scatter plot.
+
+    Data Inspection: Deep Granularity:
+    Going back to the qualitative study initially conducted, respondents noted that they found it easier to find it easier to find stop and isolate lines using the filtering tool in the interactive visualization. Yet the previous two sections seem to contradict these findings with users being able to find appropriate stops with greater accuracy in the static environment than in the interactive environment. At this point, the group does not that the sample size is small, the differences are minimal, and different stops and routes were selected for the static environment compared to the interactive environment. This will be discussed in greater detail in limitations.
+    Still, in further granular inspection of the data is warranted, down to the sub tasks.
+
+    Below are the outputs and figures:
  
-TASK	STATIC	INTERACTIVE
-1: Stop Correctness	10 Correct, 1 Incorrect	9 Correct, 2 Incorrect
-2: Previous Correctness	11 Correct, 0 Incorrect	9 Correct, 2 Incorrect
-3: Actual Correctness	9 Correct, 2 Incorrect	8 Correct, 3 Incorrect
-4: Direction Correctness	10 Correct, 1 Incorrect	9 Correct, 2 Incorrect
-5: Mean1 Correctness (North)	7 Correct, 4 Incorrect	8 Correct, 3 Incorrect
-6: Mean2 Correctness (South)	6 Correct, 5 Incorrect	5 Correct, 6 Incorrect
-<INSERT FIGURE HERE>
+    TASK	                                             STATIC	                       INTERACTIVE
+    1: Stop Correctness	                                 10 Correct, 1 Incorrect	   9 Correct, 2 Incorrect
+    2: Previous Correctness	                             11 Correct, 0 Incorrect	   9 Correct, 2 Incorrect
+    3: Actual Correctness	                             9 Correct, 2 Incorrect	       8 Correct, 3 Incorrect
+    4: Direction Correctness	                         10 Correct, 1 Incorrect	   9 Correct, 2 Incorrect
+    5: Mean1 Correctness (North)	                     7 Correct, 4 Incorrect	       8 Correct, 3 Incorrect
+    6: Mean2 Correctness (South)	                     6 Correct, 5 Incorrect	       5 Correct, 6 Incorrect
 
-From the above, generally speaking respondents seemed to do better with identifying stops rather than computing means. In addition, respondents did slightly better  with the static version than the interactive version, though the group suspects this is because the Route 36 stop in the static version was a greater outlier, and finding its previous wait time was easy given it sits on the x=0 axis. It is also important to note that respondents seemed to struggle a little more with the interactive, perhaps again because of outliers that made it harder to compute the interactive southbound average next bus time. These were issues raised in the pilot, but were concepts the group wanted to test amongst a larger subset.
-Exploring the Spread of Mean Next Bus Time:
-Unlike finding the correct bus stop observation, which was recorded as correct/incorrect, computing the mean next bus time allowed users to enter the amount of time they estimated from the visualization. Rather than looking at the spread of the guesses, what became more interesting is the spread of the error—to see how far off the average respondent was from the real mean value--. The reason for examining the statistic is it helps the group to understand if people are computing mean values that are close to the real value, or if they are very far off. And if they far off, then perhaps relaxing the threshold for a correct answer or adding a calculator is warranted.
-Below are the outputs:
-<INSERT FIGURE>
-From the boxplot above we can see that the range of predicted means—based on the interquartile range-- is much tighter with the interactive visualization than with the static visualization, even while medians stayed fairly consistent—around 1 to 2 minutes off per direction per visualization type--. The presence of outliers, particularly with the southbound interactive mean is expected given the previous data exploration, and is most likely due to the presence of an extreme value that makes computing the mean next bus for this condition difficult.
-Completion Time:
-With the exploration of tasks out of the way, next the completion time was explored. In particular, the group wanted to see not the average, but the spread of completion time to see if there were any outliers and to gain a better understanding of where and what condition may have affected the time it took to complete a task.
-It should also be noted that completion time included the time it took for respondents to report how confident they were in their answers and how easy they felt the task was, along with writing comments. Since these sub-requirements were repeated all four conditions—the two tasks in both static and interactive environments--, including them in the task time should not bias either environment.
-Below are the outputs for task time. The two tasks are aggregated into either static or interactive. This was done because the general tasks—finding an observation of a stop, and calculating mean next bus times—repeats across the two environments, thus warranted this approach.
-Below are the outputs
-<INSERT FIGURE>
-The findings show the median time to complete the two tasks took around 150 seconds in either environment. However, the spread appears to be greater for the interactive, with one respondent taking over 500 seconds. Returning to the qualitative study conducted earlier, many respondents noted that they panned around the screen and used multiple filters provided in the interactive visual. Perhaps, this resulted in some users spending more time in the interactive visualization. However, for both environments were fairly similar, ranging from about 75 to 250 seconds. As such, it is hard to say if there is much of a meaningful difference between the two environments in terms of elapsed time.
-Self Reported Scores:
-Wrapping up the exploratory analysis, the self-reported scores: confidence in answer, and ease of completion were examined, with boxplots. Here the goal is to add richness to the qualitative findings. 
+    <INSERT FIGURE HERE>
+
+    From the above, generally speaking respondents seemed to do better with identifying stops rather than computing means. In addition, respondents did slightly better  with the static version than the interactive version, though the group suspects this is because the Route 36 stop in the static version was a greater outlier, and finding its previous wait time was easy given it sits on the x=0 axis. It is also important to note that respondents seemed to struggle a little more with the interactive, perhaps again because of outliers that made it harder to compute the interactive southbound average next bus time. These were issues raised in the pilot, but were concepts the group wanted to test amongst a larger subset.
+
+    Exploring the Spread of Mean Next Bus Time:
+    Unlike finding the correct bus stop observation, which was recorded as correct/incorrect, computing the mean next bus time allowed users to enter the amount of time they estimated from the visualization. Rather than looking at the spread of the guesses, what became more interesting is the spread of the error—to see how far off the average respondent was from the real mean value--. The reason for examining the statistic is it helps the group to understand if people are computing mean values that are close to the real value, or if they are very far off. And if they far off, then perhaps relaxing the threshold for a correct answer or adding a calculator is warranted.
+
+    Below are the outputs:
+
+    <INSERT FIGURE>
+
+
+    From the boxplot above we can see that the range of predicted means—based on the interquartile range-- is much tighter with the interactive visualization than with the static visualization, even while medians stayed fairly consistent—around 1 to 2 minutes off per direction per visualization type--. The presence of outliers, particularly with the southbound interactive mean is expected given the previous data exploration, and is most likely due to the presence of an extreme value that makes computing the mean next bus for this condition difficult.
+
+    Completion Time:
+    With the exploration of tasks out of the way, next the completion time was explored. In particular, the group wanted to see not the average, but the spread of completion time to see if there were any outliers and to gain a better understanding of where and what condition may have affected the time it took to complete a task.
+    It should also be noted that completion time included the time it took for respondents to report how confident they were in their answers and how easy they felt the task was, along with writing comments. Since these sub-requirements were repeated all four conditions—the two tasks in both static and interactive environments--, including them in the task time should not bias either environment.
+    Below are the outputs for task time. The two tasks are aggregated into either static or interactive. This was done because the general tasks—finding an observation of a stop, and calculating mean next bus times—repeats across the two environments, thus warranted this approach.
+
+    Below are the outputs:
+
+    <INSERT FIGURE>
+
+    The findings show the median time to complete the two tasks took around 150 seconds in either environment. However, the spread appears to be greater for the interactive, with one respondent taking over 500 seconds. Returning to the qualitative study conducted earlier, many respondents noted that they panned around the screen and used multiple filters provided in the interactive visual. Perhaps, this resulted in some users spending more time in the interactive visualization. However, for both environments were fairly similar, ranging from about 75 to 250 seconds. As such, it is hard to say if there is much of a meaningful difference between the two environments in terms of elapsed time.
+
+    Self Reported Scores:
+    Wrapping up the exploratory analysis, the self-reported scores: confidence in answer, and ease of completion were examined, with boxplots. Here the goal is to add richness to the qualitative findings. 
 	Confidence in Answer:
+
 	Below are the spread values for confidence in one’s responses:
 	<INSERT FIGURE HERE>
-And it’s with the confidence boxplot that the group can really see the difference in user experience between static and interactive visualization. For task 1, with the interactive visualization, with only one exception, all 10 other respondents rating their confidence in their answer as a 5, the highest rating. On the other hand, the median score for the static implementation was 1 whole point lower—4—with much greater spread in confidence with the interquartile range going from 4-5. Returning to the comments, most users noted that the tool tip really helped in understanding the data points. This indicates the strength of the interactive approach.
-For task 2 however, the confidence of users dropped by a whole point—5 to 4—for the interactive visualization while staying steady for the static implementation. Furthermore, while the spread in confidence increased for task 2 in both implementations with the IQR ranging from 3-5 in the static and 3.5-4.5 in the interactive versions. This shows that computing means can be difficult, especially when the arrival times vary greatly within a line, and again, makes the group question the potential for adding a calculator, which can only be done in an interactive implementation.
-Ease of Completion:
-Finally, the group was interested in how easy the users felt it was to complete these tasks. Ideally, visualizations should be easy to use and the data they present should be processed by the user with great ease. 
-Below is the spread of self reported scores on ease of completion:
-<INSERT FIGURES HERE>
-Similar to confidence, users reported great ease when it came to identifying stops using the interactive environment. The median score for task 1 in interactive visualization was 1, indicating it was easy, with an interquartile range from 1 to 2. With the static implementation, task 1’s ease score was a median of 2 with and IQR of 1.5 to 3, indicating the power of the tool tip and filter.
-Similar to confidence scores, ease scores were also higher, indicating greater difficulty, for task 2, computing mean next bus times. For both static and interactive the median score was 3, with an IQR of 2.5-4 for static and 2-3.5 for interactive. As noted multiple times throughout this report, estimated computations tend to be difficult for many respondents and perhaps, including a calculator of having some type of pre-computed summary static is necessary for users to gain the greatest insights.
-Limitations:
-Finally, the group notes that there are multiple limitations:
-1.	Limited number of respondents. Given the time to complete this section, the group was only able to recruit 2 pre-pilot, 2 pilot, and 11 survey respondents. This small sample size means that only limited insights could be generated.
-2.	Including the self-reported scores and comments on the same page as the visualization and thus meaning that these additional requirements were included in the task completion time. Initially, the group wanted to have respondents complete these additional queries after completing a task, so that this did not affect completion time. However, during the pre-pilot study, it became clear that the moving these questions onto a new page in the survey would separate them from the actual visualization, making it harder to answer these important metrics. The group heavily relied on them, along with comments as a way of grounding survey result understanding. After going through multiple scenarios, including moving these self-reported metrics to a new page, or asking users to press start/stop so that only the actual tasks were times, the set-up used in this implementation—including self-reported questions in task time—was the best option the team could come up with.
-3.	The inclusion of a calculator. During the pre-pilot and pilot phases, initial respondents noted that it can be difficult to estimate summary statics. However, since only the interactive visualization can include a calculator, the group did not include one, so as not to bias the results. In addition, the group looked at the responses that came from the 11 respondents as an opportunity to see if their responses cross-validated the need for a calculator, which the group believes it in fact did.
+
+    And it’s with the confidence boxplot that the group can really see the difference in user experience between static and interactive visualization. For task 1, with the interactive visualization, with only one exception, all 10 other respondents rating their confidence in their answer as a 5, the highest rating. On the other hand, the median score for the static implementation was 1 whole point lower—4—with much greater spread in confidence with the interquartile range going from 4-5. Returning to the comments, most users noted that the tool tip really helped in understanding the data points. This indicates the strength of the interactive approach.
+    For task 2 however, the confidence of users dropped by a whole point—5 to 4—for the interactive visualization while staying steady for the static implementation. Furthermore, while the spread in confidence increased for task 2 in both implementations with the IQR ranging from 3-5 in the static and 3.5-4.5 in the interactive versions. This shows that computing means can be difficult, especially when the arrival times vary greatly within a line, and again, makes the group question the potential for adding a calculator, which can only be done in an interactive implementation.
+
+    Ease of Completion:
+    Finally, the group was interested in how easy the users felt it was to complete these tasks. Ideally, visualizations should be easy to use and the data they present should be processed by the user with great ease. 
+
+    Below is the spread of self reported scores on ease of completion:
+    <INSERT FIGURES HERE>
+
+
+    Similar to confidence, users reported great ease when it came to identifying stops using the interactive environment. The median score for task 1 in interactive visualization was 1, indicating it was easy, with an interquartile range from 1 to 2. With the static implementation, task 1’s ease score was a median of 2 with and IQR of 1.5 to 3, indicating the power of the tool tip and filter.
+    Similar to confidence scores, ease scores were also higher, indicating greater difficulty, for task 2, computing mean next bus times. For both static and interactive the median score was 3, with an IQR of 2.5-4 for static and 2-3.5 for interactive. As noted multiple times throughout this report, estimated computations tend to be difficult for many respondents and perhaps, including a calculator of having some type of pre-computed summary static is necessary for users to gain the greatest insights.
+
+    Limitations:
+    Finally, the group notes that there are multiple limitations:
+    1.	Limited number of respondents. Given the time to complete this section, the group was only able to recruit 2 pre-pilot, 2 pilot, and 11 survey respondents. This small sample size means that only limited insights could be generated.
+    2.	Including the self-reported scores and comments on the same page as the visualization and thus meaning that these additional requirements were included in the task completion time. Initially, the group wanted to have respondents complete these additional queries after completing a task, so that this did not affect completion time. However, during the pre-pilot study, it became clear that the moving these questions onto a new page in the survey would separate them from the actual visualization, making it harder to answer these important metrics. The group heavily relied on them, along with comments as a way of grounding survey result understanding. After going through multiple scenarios, including moving these self-reported metrics to a new page, or asking users to press start/stop so that only the actual tasks were times, the set-up used in this implementation—including self-reported questions in task time—was the best option the team could come up with.
+    3.	The inclusion of a calculator. During the pre-pilot and pilot phases, initial respondents noted that it can be difficult to estimate summary statics. However, since only the interactive visualization can include a calculator, the group did not include one, so as not to bias the results. In addition, the group looked at the responses that came from the 11 respondents as an opportunity to see if their responses cross-validated the need for a calculator, which the group believes it in fact did.
 
 SECTION 5: REFLECTION AND RECOMMENDATIONS
 
-The visualization “Headway Imbalance and Bunching Diagnostic” is one of the most important visualizations in the overall visual analytic system, as it was designed to help users answer the domain questions regarding bus reliability and bunching. Initially envisioned as an interactive visualization, the group wanted to test if this visualization really needed to be interactive, or if interactivity did in fact make the visualization too complicated, complex to work with, or allowed for over filtering—whereby users remove to many lines at one time making it to hard to do any cross comparisons--.
-Before conducting this survey, the group had a general idea that interactivity would be better, largely due to the calculator issue. Estimating summary statistics from observations with great spread can be very difficult. But, given that some of the domain questions revolve around estimating reliability at the bus line level, summary statistics are of the utmost essence. This was in fact confirmed by the survey responses.
-Still, there were some surprises. When it came to identifying a specific stop, users did quite well with the static implementation, in fact users were more likely to find the correct stop in the static implementation than in the interactive implementation. It’s possible that this could be due to the fact that the stop observation selected was noticeable, or users perhaps over filtering the bus lines—the interactive approach allows for both line and direction filtering—stopping users from comparing the two headways of lines 147 and 146. Still, the fact that users found the requested observation with greater likelihood in the static implementation did surprise the group and swayed us in our firm belief that interactivity is better. But the comments left by participants, along with the drop in task correctness for estimating average bus times, still forces us to lean towards an interactive implementation with a calculator. However, the group will have to factor in issues of over filtering, particularly headway over filtering, something we had not thought about before conducting this survey. Going forward, the group will have to ponder these tradeoffs, but overall, this survey did confirm many of our suspicions regarding users’ abilities in computing summary statics.
+    The visualization “Headway Imbalance and Bunching Diagnostic” is one of the most important visualizations in the overall visual analytic system, as it was designed to help users answer the domain questions regarding bus reliability and bunching. Initially envisioned as an interactive visualization, the group wanted to test if this visualization really needed to be interactive, or if interactivity did in fact make the visualization too complicated, complex to work with, or allowed for over filtering—whereby users remove to many lines at one time making it to hard to do any cross comparisons--.
+    Before conducting this survey, the group had a general idea that interactivity would be better, largely due to the calculator issue. Estimating summary statistics from observations with great spread can be very difficult. But, given that some of the domain questions revolve around estimating reliability at the bus line level, summary statistics are of the utmost essence. This was in fact confirmed by the survey responses.
+    Still, there were some surprises. When it came to identifying a specific stop, users did quite well with the static implementation, in fact users were more likely to find the correct stop in the static implementation than in the interactive implementation. It’s possible that this could be due to the fact that the stop observation selected was noticeable, or users perhaps over filtering the bus lines—the interactive approach allows for both line and direction filtering—stopping users from comparing the two headways of lines 147 and 146. Still, the fact that users found the requested observation with greater likelihood in the static implementation did surprise the group and swayed us in our firm belief that interactivity is better. But the comments left by participants, along with the drop in task correctness for estimating average bus times, still forces us to lean towards an interactive implementation with a calculator. However, the group will have to factor in issues of over filtering, particularly headway over filtering, something we had not thought about before conducting this survey. Going forward, the group will have to ponder these tradeoffs, but overall, this survey did confirm many of our suspicions regarding users’ abilities in computing summary statics.
 
 
 SECTION 6: CURIO
@@ -356,7 +386,7 @@ SECTION 6: CURIO
 ![Screenshot of direction control](Curio/Screenshots/Toggle_S_direction.png)
 
 SECTION 7: REFERENCES
-Below are a list of all sources that were either cited or read in the process of writing this report, in order to help justify all survey construct choices. This exhaustive search was done to ensure that all choices made met the highest standards in survey creation.
+Below are a list of all sources that were either cited, read, or reference by papers the group read in the process of writing this report, in order to help justify all survey construct choices. This exhaustive search was done to ensure that all choices made met the highest standards in survey creation.
 Sources were founded through Google Search, including Gemini, reading sources cited in articles, from textbooks found in O'Reilly, and from textbooks used in previous courses of instruction.
 
     Amar, R., Eagan, J., & Stasko, J. (2005). Low-level components of analytic activity in information visualization. IEEE InfoVis 2005, 111–117.
