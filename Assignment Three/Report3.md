@@ -389,5 +389,4 @@ Sources were founded through Google Search, including Gemini, reading sources ci
     van Teijlingen, E., & Hundley, V. (2001). The importance of pilot studies. Social Research Update, 35.
     Ware, C. (2012). Information visualization: Perception for design (3rd ed.). Morgan Kaufmann.
     Wickelgren, W. A. (1977). Speed-accuracy tradeoff and information processing dynamics. Acta Psychologica, 41(1), 67–85.
-    Wilcoxon, F. (1945). Individual comparisons by ranking methods. Biometrics Bulletin, 1(6), 80–83.
     Williams, E. J. (1949). Experimental designs balanced for the estimation of residual effects of treatments. Australian Journal of Scientific Research A, 2, 149–168.
