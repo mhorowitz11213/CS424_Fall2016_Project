@@ -171,7 +171,7 @@ SECTION 3: CONDUCTING THE EVALUATION:
     Note: The survey can be found at: https://mhorowitz11213.github.io/CS424_Fall2016_Project/ 
     
     At this point, the team deployed the finalized survey, which had been by now loaded to a GitHub page, to two pilot participants who were asked to take the study. The goal with this was to see if a) the findings from the survey, including accuracy and the time it took to complete, matched those from the pre-pilot study and b) to see if the mechanics of the survey including the GitHub page and the generated CSV outputs worked.
-    
+
     Pilot Survey:
     Two users were selected to be pilot participants (User PILOT1 and PILOT5). The two users selected were both mathematicians and were specifically selected because team wanted to see if people with strong analytical skills could work through the visualization and calculations and wanted to hear their input.
     The two users, and all subsequent survey participants, were informed that the survey was conducted anonymously, and that their results would be recorded automatically. Users were thanked for participating.
@@ -356,7 +356,7 @@ SECTION 6: CURIO
 ![Screenshot of direction control](Curio/Screenshots/Toggle_S_direction.png)
 
 SECTION 7: REFERENCES
-Below are a list of all sources that were either cited or read in the process of writing this report, in order to help justify all survey construct choices.
+Below are a list of all sources that were either cited or read in the process of writing this report, in order to help justify all survey construct choices. This exhaustive search was done to ensure that all choices made met the highest standards in survey creation.
 Sources were founded through Google Search, including Gemini, reading sources cited in articles, from textbooks found in O'Reilly, and from textbooks used in previous courses of instruction.
 
     Amar, R., Eagan, J., & Stasko, J. (2005). Low-level components of analytic activity in information visualization. IEEE InfoVis 2005, 111–117.
