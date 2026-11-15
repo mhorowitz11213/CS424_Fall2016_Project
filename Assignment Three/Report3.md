@@ -173,7 +173,7 @@ SECTION 3: CONDUCTING THE EVALUATION:
     At this point, the team deployed the finalized survey, which had been by now loaded to a GitHub page, to two pilot participants who were asked to take the study. The goal with this was to see if a) the findings from the survey, including accuracy and the time it took to complete, matched those from the pre-pilot study and b) to see if the mechanics of the survey including the GitHub page and the generated CSV outputs worked.
 
     Pilot Survey:
-    Two users were selected to be pilot participants (User PILOT1 and PILOT5). The two users selected were both mathematicians and were specifically selected because team wanted to see if people with strong analytical skills could work through the visualization and calculations and wanted to hear their input.
+    Two users were selected to be pilot participants (User PILOT1 and PILOT5), and who took the survey under the same conditions as the 11 participants discussed later. The two users selected were both mathematicians and were specifically selected because team wanted to see if people with strong analytical skills could work through the visualization and calculations and wanted to hear their input.
     The two users, and all subsequent survey participants, were informed that the survey was conducted anonymously, and that their results would be recorded automatically. Users were thanked for participating.
     Below is a brief table and discussion of the findings from the pilot (full outputs from the pilot can be found on the GitHub repository in Assignment 3-> CSV Outputs, where all CSV files are stored and in each file each row corresponds to a task grouped by relevant user):
 
